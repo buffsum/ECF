@@ -10939,14 +10939,29 @@ p {
 .cta {
   padding-top: 5rem;
   padding-bottom: 5rem;
-  background-color: rgba(180,195,86,255);
+  background-color: #b4c356;
 }
+
+/* Habitat */
+.cta2 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: transparent;
+}
+
+.cta2 .cta-inner {
+  position: relative;
+  padding: 3rem;
+  margin: 0.5rem;
+}
+
 .cta .cta-inner {
   position: relative;
   padding: 3rem;
   margin: 0.5rem;
 }
 
+/* Page services cote à cote - POURQUOI ???*/
 .cta .cta-inner2 {
   /* position: relative; */
   /* display: grid;
@@ -10956,6 +10971,34 @@ p {
   padding: 3rem;
   margin: 0.5rem;
   margin-right: 10px; /* Optionnel : ajoute un espace entre les éléments */
+  /* faire en sorte que celui de gauche soit gros et fixe */
+}
+
+/* Page services cote à cote */
+.cta2 .cta-inner4 {
+  padding: 3rem;
+  margin: 0.5rem;
+  margin-right: 10px; /* Optionnel : ajoute un espace entre les éléments */
+  width: 100%;
+  max-width: 400px; /* Ajustez cette valeur selon vos besoins */
+  height: 400px; /* Ajustez cette valeur selon vos besoins */
+  overflow: hidden; /* Pour s'assurer que le contenu ne dépasse pas */
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.cta .cta-inner4 {
+  padding: 3rem;
+  margin: 0.5rem;
+  margin-right: 10px; /* Optionnel : ajoute un espace entre les éléments */
+  width: 100%;
+  max-width: 400px; /* Ajustez cette valeur selon vos besoins */
+  height: 400px; /* Ajustez cette valeur selon vos besoins */
+  overflow: hidden; /* Pour s'assurer que le contenu ne dépasse pas */
+  display: flex;
+  align-items: center;
+  justify-content: center; 
 }
 
 .cta .cta-inner3 {
@@ -11114,6 +11157,7 @@ form textarea {
 
 form input[type="submit"] {
   background-color: #b4c356;
+  /* background-color: white; */
   color: white;
   padding: 10px 20px;
   border: none;

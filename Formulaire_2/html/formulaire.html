@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Formulaire de contact</title>
+  <link href="../css/style.css" rel="stylesheet"/>
+</head>
+
+<body>
+  <h1>Formulaire de contact</h1>
+  
+  <section>
+    <form id="formulaire">
+      <fieldset id="infos">
+        <legend><h2>Informations</h2></legend>
+
+        <div id="div_nm">
+            <label for="name">Nom : </label><input type="text" name="nom" id="name" placeholder="Parker" required="true">
+        </div>
+        <div id="div_fnm">
+            <label for="firstname">Prénom : </label><input type="text" name="prenom" id="firstname" placeholder="Peter" required="true">
+        </div>
+
+        <div id="choiceStatut">
+            <label for="statut">Statut :</label>
+            <div>
+                <input type="radio" name="statut" id="particulier" required="true" checked><label for="particulier">Particulier</label>
+            </div>
+            <div>
+                <input type="radio" name="statut" id="professionnel" required="true"><label for="professionnel">Professionnel</label>
+            </div>
+        </div>
+
+        <div id="div_st">
+            <label for="societe">Société :</label><input type="text" name="societe" placeholder="Nom de la société" id="societe" required>
+        </div>
+      </fieldset>
+
+
+      <fieldset id="message">
+        <legend><h2>Message</h2></legend>
+        <div>
+          <label for="objet">Objet :</label>
+          <select type="text" name="objet" id="objet" required>
+            <option value="demande_de_contact">Demande de contact</option>
+            <option value="offre_d'emploi" selected>Offre d'emploi</option>
+            <option value="envoi_d'une_brochure_tarifiaire" >Envoi d'une brochure tarifaire</option>
+          </select>
+        </div>
+        <div>
+          <label for="email">Email :</label><input type="email" id="email" name="email" placeholder="email@mail.com" required>
+        </div>
+          <textarea name="message" id="message" cols="" rows="10" placeholder="Message..." required></textarea>
+          <button type="submit">Envoyer</button>
+      </fieldset>
+    </form>
+  </section>
+  <script src="../scripts/event.js" type="module"></script>
+</body>
+
+</html>

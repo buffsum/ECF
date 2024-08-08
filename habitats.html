@@ -14,73 +14,121 @@
         <link href="css/styles.css" rel="stylesheet" />
     </head>
     <body>
-        <header>
-            <h1 class="site-heading text-center text-faded d-none d-lg-block">
-                <span class="site-heading-upper text-primary mb-3">Brocéliande (logo?)</span>
-                <span class="site-heading-lower">Zoo Arcadia</span>
-            </h1>
+        <header classe="text-center">
+            <a href="index.html">
+                <img class="img-logo center" src="assets/img/logo.png" alt="logo Zoo Arcadia" />
+            </a>
         </header>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
             <div class="container">
-                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">REMPLACER</a>
+                <!-- quand écran petit -->
+                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">ZOO ARCADIA</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
                         <!-- <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Home</a></li> -->
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="services.html">Services</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="habitats.html">Habitats</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Avis</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Contact</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Connexion</a></li>
-                        <!-- <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="about.html">Services</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="products.html">Products</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="store.html">Store</a></li> -->
+                        <!-- <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="habitats.html">Habitats</a></li> -->
+                        <li class="nav-item px-lg-4 dropdown">
+                            <a class="nav-link text-uppercase dropdown-toggle" href="habitats.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Habitats</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="habitats.html">Voir tous les habitats</a></li>
+                                <li><a class="dropdown-item" href="habitat1.html">Habitat 1</a></li>
+                                <li><a class="dropdown-item" href="habitat2.html">Habitat 2</a></li>
+                                <li><a class="dropdown-item" href="habitat3.html">Habitat 3</a></li>
+                                <li><a class="dropdown-item" href="habitat4.html">Habitat 4</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html#avis">Avis</a></li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="contact.html">Contact</a></li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="connexion.html">Connexion</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
         <!-- Visite guide -->
-        <section class="page-section cta2">
+        <section class="page-section2 cta2">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-9 mx-auto">
-                        <h2 class="section-heading mb-4">
-                            <span class="section-heading-upper text-center">Visite des habitats avec un guide</span>
-                            <span class="section-heading-lower text-center">Services</span>
-                        </h2>
+                    <div class="col-xl-12 mx-auto">
+                        
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="cta-inner4 bg-faded text-center rounded">
-                                    <p class="mb-0">Il est possible de visiter nos habitats avec un guide<br></br></p>
+                                <h2 class="section-heading mb-4">
+                                    <span class="section-heading-lower2 text-center">Habitat 1</span>
+                                    <span class="section-heading-upper2 text-center">Savane Africaine</span>
+                                </h2>
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <p class="mb-0">Bienvenue dans notre Habitat de la <b>Savane Africaine</b>, un espace où la biodiversité de ce magnifique écosystème 
+                                        est recréée pour vous offrir <b>une expérience immersive et éducative</b>. Dans cet habitat, vous pourrez observer 
+                                    <b>une variété d'animaux cohabitant harmonieusement</b>, sans la présence de prédateurs majeurs, ce qui met en avant 
+                                <b>leur comportement naturel et leurs interactions pacifiques</b>.<br></br></p>
+                                    <!-- <div class ="col-md-6"> -->
+                                    <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/multiple.jpg" alt="..." />
+                                    <!-- </div> -->
                                 </div>
+                                <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat1.html">Voir plus d'informations sur l'habitat</a></div>
+                                
                             </div>
-                            <div class="col-md-6">
-                                <div class="cta-inner4 bg-faded text-center rounded">
-                                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner">
-                                            <div class="carousel-item active">
-                                                <img src="assets/img/intro.jpg" class="d-block w-100" alt="tortue de mer">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="assets/img/about.jpg" class="d-block w-100" alt="mer">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="assets/img/multiple.jpg" class="d-block w-100" alt="océan.">
-                                            </div>
-                                        </div>
-                                        <!-- Boutons de navigation -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
+                            <!-- <div class="row"> -->
+                                <div class="col-md-6">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">Habitat 2</span>
+                                        <span class="section-heading-upper2 text-center">Forêt d'Eucalyptus</span>
+                                        <!-- <span class="section-heading-lower">Worth Drinking</span> -->
+                                    </h2>
+                                    <div class="inner5 bg-faded text-center rounded">
+                                        <p class="mb-0">Bienvenue dans notre Habitat de la <b>Forêt d'Eucalyptus en Australie</b>, une reconstitution immersive de l'un des écosystèmes 
+                                            les plus <b>uniques au monde</b>. Cet habitat abrite une diversité d'animaux fascinants, chacun ayant <b>évolué pour prospérer dans cet environnement</b> 
+                                            riche en eucalyptus. Venez découvrir <b>la vie secrète de ces créatures extraordinaires</b>, chacune jouant un rôle crucial dans cet écosystème.</b>.<br></br></p>
+                                        <!-- <div class ="col-md-6"> -->
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/kangoroo.jpg" alt="..." />
+                                        <!-- </div> -->
                                     </div>
+                                    <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat2.html">Voir plus d'informations sur l'habitat</a></div>
                                 </div>
+                            
+                                <!-- 2 nouveaux blocks -->
+                                <div class="row">
+                                    <div class="col-xl-12 mx-auto">
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h2 class="section-heading2 mb-4">
+                                                    <span class="section-heading-lower2 text-center">Habitat 3</span>
+                                                    <span class="section-heading-upper2 text-center">Forêt Boréale</span>
+                                                </h2>
+                                                <div class="inner5 bg-faded text-center rounded">
+                                                    <p class="mb-0">Bienvenue dans notre Habitat de la <b>Savane Africaine</b>, un espace où la biodiversité de ce magnifique écosystème 
+                                                        est recréée pour vous offrir <b>une expérience immersive et éducative</b>. Dans cet habitat, vous pourrez observer 
+                                                    <b>une variété d'animaux cohabitant harmonieusement</b>, sans la présence de prédateurs majeurs, ce qui met en avant 
+                                                <b>leur comportement naturel et leurs interactions pacifiques</b>.<br></br></p>
+                                                    <!-- <div class ="col-md-6"> -->
+                                                    <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/ours.jpg" alt="..." />
+                                                    <!-- </div> -->
+                                                </div>
+                                                <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat3.html">Voir plus d'informations sur l'habitat</a></div>
+                                                
+                                            </div>
+                                            <!-- <div class="row"> -->
+                                                <div class="col-md-6">
+                                                    <h2 class="section-heading2 mb-4">
+                                                        <span class="section-heading-lower2 text-center">Habitat 4</span>
+                                                        <span class="section-heading-upper2 text-center">Forêt Tropicale</span>
+                                                        <!-- <span class="section-heading-lower">Worth Drinking</span> -->
+                                                    </h2>
+                                                    <div class="inner5 bg-faded text-center rounded">
+                                                        <p class="mb-0">Bienvenue dans notre Habitat de la <b>Forêt d'Eucalyptus en Australie</b>, une reconstitution immersive de l'un des écosystèmes 
+                                                            les plus <b>uniques au monde</b>. Cet habitat abrite une diversité d'animaux fascinants, chacun ayant <b>évolué pour prospérer dans cet environnement</b> 
+                                                            riche en eucalyptus. Venez découvrir <b>la vie secrète de ces créatures extraordinaires</b>, chacune jouant un rôle crucial dans cet écosystème.</b>.<br></br></p>
+                                                        <!-- <div class ="col-md-6"> -->
+                                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/singe.jpg" alt="..." />
+                                                        <!-- </div> -->
+                                                    </div>
+                                                    <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat4.html">Voir plus d'informations sur l'habitat</a></div>
+                                                </div>
                             </div>
                         </div>
                     </div>

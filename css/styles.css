@@ -603,6 +603,24 @@ progress {
   height: auto;
 }
 
+/* logo */
+header {
+  text-align: center;
+  padding: 1rem;
+}
+
+/* .img-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+} */
+
+/* pour les habitats */
+.img-fluid2 {
+  max-width: 75%;
+  height: auto;
+}
+
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;
@@ -676,6 +694,7 @@ progress {
   margin-right: calc(-0.5 * var(--bs-gutter-x));
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
+
 .row > * {
   flex-shrink: 0;
   width: 100%;
@@ -10861,19 +10880,67 @@ p {
   line-height: 4rem;
 }
 
+/* Entre chaque section vert anis */
 .page-section {
+  margin-top: 1rem;
+  margin-bottom: 5rem;
+}
+
+/* Entre chaque section pour habitats*/
+.page-section2 {
   margin-top: 5rem;
   margin-bottom: 5rem;
 }
 
 .section-heading {
   text-transform: uppercase;
+  /* margin-top: 10px; */
+  /* padding-top: 3rem; */
 }
+
+.section-heading2 {
+  text-transform: uppercase;
+  /* margin-top: 10px; */
+  padding-top: 3rem;
+}
+
 .section-heading .section-heading-upper {
   display: block;
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: 800;
 }
+
+/* Pour habitats */
+
+.section-heading .section-heading-upper2 {
+  display: block;
+  font-size: 2rem;
+  font-weight: 600;
+  color: white;
+}
+
+
+.section-heading2 .section-heading-upper2 {
+  display: block;
+  font-size: 2rem;
+  font-weight: 600;
+  color: white;
+}
+
+.section-heading .section-heading-lower2 {
+  display: block;
+  font-size: 2rem;
+  font-weight: 70;
+  color: white;
+}
+
+.section-heading2 .section-heading-lower2 {
+  display: block;
+  font-size: 2rem;
+  font-weight: 70;
+  color: white;
+}
+
 .section-heading .section-heading-lower {
   display: block;
   font-size: 3rem;
@@ -10936,15 +11003,16 @@ p {
   }
 }
 
+/* section vert anis */
 .cta {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   background-color: #b4c356;
 }
 
 /* Habitat */
 .cta2 {
-  padding-top: 5rem;
+  padding-top: 1rem;
   padding-bottom: 5rem;
   background-color: transparent;
 }
@@ -10975,18 +11043,49 @@ p {
 }
 
 /* Page services cote à cote */
-.cta2 .cta-inner4 {
+.page-section2 .inner4 {
   padding: 3rem;
   margin: 0.5rem;
   margin-right: 10px; /* Optionnel : ajoute un espace entre les éléments */
   width: 100%;
-  max-width: 400px; /* Ajustez cette valeur selon vos besoins */
+  max-width: 1000px; /* Ajustez cette valeur selon vos besoins */
   height: 400px; /* Ajustez cette valeur selon vos besoins */
   overflow: hidden; /* Pour s'assurer que le contenu ne dépasse pas */
   display: flex;
   align-items: center;
   justify-content: center; 
 }
+
+/* Pour les habitats */
+.page-section2 .inner5 {
+  padding: 3rem;
+  margin: 0.5rem;
+  margin-right: 10px; 
+  margin-bottom: 10px;
+  padding-bottom: 3rem;
+  padding-top: 3rem;
+  /* width: 100%; */
+  /* max-width: 1000px;  */
+  /* height: 400px; */
+  /* overflow: hidden;  */
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+
+/* 
+.cta2 .cta-inner4 {
+  padding: 3rem;
+  margin: 0.5rem;
+  margin-right: 10px; 
+  width: 100%;
+  max-width: 800px; 
+  height: 400px; 
+  overflow: hidden; 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+} */
 
 .cta .cta-inner4 {
   padding: 3rem;
@@ -11044,8 +11143,14 @@ p {
     /* float: left; */
   }
 
-  .intro2 .intro2-img {
+  /* .intro .intro-logo {
     width: 75%;
+    float: center;
+    float: left;
+  } */
+
+  .intro2 .intro2-img {
+    width: 100%;
     /* float: right; */
     float: left;
   }
@@ -11072,6 +11177,16 @@ p {
     left: 0;
     position: absolute;
     bottom: -2rem;
+  }
+
+  /* pour bouton habitats */
+  .intro-button2 {
+    width: 50%;
+    /* left: 0; */
+    /* position: center; */
+    justify-content: center;
+    margin-top: -2rem;
+    /* bottom: -2rem; */
   }
 
   .intro2 .intro2-text .intro2-button {

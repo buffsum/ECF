@@ -82,17 +82,29 @@ def habitats():
     habitats = Habitat.query.all()
     return render_template('habitats.html', habitats=habitats)
 
-# Route pour afficher les détails d'un habitat spécifique et ses animaux
+# Route pour afficher les détails d'un habitat spécifique
 @app.route('/habitat/<int:habitat_id>')
 def habitat_detail(habitat_id):
-    habitat = Habitat.query.get_or_404(habitat_id)
-    return render_template('habitat_detail.html', habitat=habitat)
+    # Dictionnaire de correspondance entre ID d'habitat et fichiers HTML
+    habitat_pages = {
+        1: 'habitat1.html',
+        2: 'habitat2.html',
+        3: 'habitat3.html',
+        4: 'habitat4.html'
+    }
+
+    # Obtenir le fichier HTML correspondant à l'ID d'habitat
+    habitat_page = habitat_pages.get(habitat_id, '404.html')  # Page par défaut si ID non trouvé
+
+    return render_template(habitat_page)
 
 # Route pour afficher les détails d'un animal spécifique et ses fiches vétérinaires
 @app.route('/animal/<int:animal_id>')
 def animal_detail(animal_id):
     animal = Animal.query.get_or_404(animal_id)
     return render_template('animal_detail.html', animal=animal)
+
+import commands
 
 if __name__ == '__main__':
     db.create_all()  # Crée la base de données si elle n'existe pas

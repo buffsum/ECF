@@ -52,7 +52,7 @@
 
         <!-- Habitat 1 -->
         <h2 class="section-heading3 mb-4">
-            <span class="section-heading-upper text-center">Savane Africaine</span>
+            <span class="section-heading-upper text-center">{{ habitat.name }}</span>
         </h2>
 
         <!-- ***** 2 nouveaux blocks **** -->
@@ -62,24 +62,31 @@
                     <div class="col-xl-12 mx-auto">
                         <div class="row">
                             <!-- ****** Zèbre 1 ****** -->
+                            {% for animal in animals %}
                             <div class="col-md-6">
                                 <div class="inner5 bg-faded text-center rounded">
                                     <h2 class="section-heading mb-4">
-                                        <span class="section-heading-lower2 text-center">- Kibo -</span>
-                                        <span class="section-heading-upper2 text-center">Zèbre</span>
+                                        <span class="section-heading-lower2">- {{ animal.name }} -</span>
+                                        <span class="section-heading-upper2">{{ animal.species }}</span>
                                     </h2>
                                     <div class="encadrement">
                                         <p class="mb-0">Kibo est un zèbre calme et protecteur. Il est très attaché à son groupe et veille toujours à rester près de ses compagnons. 
                                             Bien que plus réservé que Zara, Kibo est un observateur attentif et joue un rôle clé dans la cohésion du troupeau.</b>.<br></br></p>
-                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/zebre1.jpg" alt="..." />
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/{{ animal.image }}" alt="{{ animal.name }}" />
                                     </div>
-                                    <div class="encadrement2" id="avisKibo_H1">
+                                    <div class="encadrement2" id="avis{{ animal.id }}">
                                         <p class="title">Avis du vétérinaire</p>
-                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                        <p class="details" style="display: none;">
+                                            <strong>Date du passage :</strong> {{ animal.veterinarian_visit_date }}<br>
+                                            <strong>État de l'animal :</strong> {{ animal.condition }}<br>
+                                            <strong>Nourriture proposée :</strong> {{ animal.food_provided }}<br>
+                                            <strong>Grammage de la nourriture :</strong> {{ animal.food_grams }}<br>
+                                            <strong>Détails de l'état de l'animal :</strong> {{ animal.condition_details }}
+                                        </p>
                                     </div>
                                 </div>
-                                <!-- <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat1.html">Voir plus d'informations sur l'habitat</a></div> -->
                             </div>
+                            {% endfor %}
                             
                             <!-- ****** Zèbre 2 ****** -->
                                 <div class="col-md-6">

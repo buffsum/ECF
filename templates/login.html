@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link href="css/connexion.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <script>
+        function handleClick() {
+            console.log('Container clicked');
+        }
+    </script>
+    <!-- <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .top, .bottom, .center {
+            margin: 10px;
+        }
+    </style> -->
+</head>
+<body>
+    <div class="container" onclick="handleClick()">
+        <a href="#" class="back-arrow" onclick="handleBackClick(event)">&#8592; Retour</a>
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="center">
+        <form action="/register" method="POST">
+            <h2>Connexion</h2>
+            <input type="username" id="username" placeholder="email">
+            <input type="password" id="password" placeholder="password">
+            <input type="submit" value="Se connecter">
+            <h2>&nbsp;</h2>
+        </form>
+        </div>
+    </div>
+
+    <!-- templates/login.html -->
+<!-- <form action="{{ url_for('login') }}" method="post">
+    <label for="username">Email :</label>
+    <input type="email" id="username" name="username" required>
+    
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" required>
+    
+    <button type="submit">Se connecter</button>
+</form> -->
+
+
+    <!-- <script>
+        function handleBackClick(event) {
+            event.preventDefault();
+            history.back();
+        }
+    </script> -->
+    <script src="js/server.js"></script>
+</body>
+</html>

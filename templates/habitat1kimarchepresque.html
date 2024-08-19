@@ -83,17 +83,17 @@
                                     <div class="encadrement2" id="avis{{ animal.name }}_H1">
                                         <p class="title">Avis du vétérinaire</p>
                                         {% if vet_records_by_animal[animal.id] %}
-                                            <p class="details">
-                                                {% for record in vet_records_by_animal[animal.id] %}
-                                                    Date: {{ record.date }}<br>
-                                                    État de l'animal: {{ record.health_status }}<br>
-                                                    Nourriture proposée: {{ record.food }}<br>
-                                                    Grammage de la nourriture: {{ record.weight }}<br>
-                                                    Détails: {{ record.details }}<br><br>
-                                                {% endfor %}
-                                            </p>
+                                            {% for record in vet_records_by_animal[animal.id] %}
+                                                <div class="vet-record">
+                                                    <h3>Visite du {{ record.date.strftime('%d %B %Y') }}</h3>
+                                                    <p><strong>État de santé :</strong> {{ record.health_status }}</p>
+                                                    <p><strong>Nourriture :</strong> {{ record.food }}</p>
+                                                    <p><strong>Grammage :</strong> {{ record.weight }}g</p>
+                                                    <p><strong>Détails :</strong> {{ record.details }}</p>
+                                                </div>
+                                            {% endfor %}
                                         {% else %}
-                                            <p class="details">Aucun enregistrement vétérinaire disponible.</p>
+                                            <p>Aucun enregistrement vétérinaire disponible.</p>
                                         {% endif %}
                                     </div>
                                 </div>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 
@@ -33,17 +33,21 @@ class Animal(db.Model):
     species = db.Column(db.String(100), nullable=False)
     image = db.Column(db.String(200))
     habitat_id = db.Column(db.Integer, db.ForeignKey('habitat.id'), nullable=False)
-    vet_records = db.relationship('VetRecord', backref='animal', lazy=True)
+    # vet_records = db.relationship('VetRecord', backref='animal', lazy=True)
+    vet_records = db.relationship('VetRecord', back_populates='animal', lazy=True)
+
 
 # Modèle Fiche Vétérinaire
 class VetRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
-    food = db.Column(db.String(100))
-    weight = db.Column(db.Float)
-    health_status = db.Column(db.Text)
-    details = db.Column(db.Text)
+    food = db.Column(db.String(100), nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    health_status = db.Column(db.String(200), nullable=False)
+    details = db.Column(db.Text, nullable=True)
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
+    animal = db.relationship('Animal', back_populates='vet_records')
+
 
 # Modèle Avis
 class Review(db.Model):
@@ -90,10 +94,56 @@ def habitats():
 #     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
 
 @app.route('/habitat/<int:habitat_id>')
-def habitat_1(habitat_id):
+def habitat1(habitat_id):
     habitat = Habitat.query.get_or_404(habitat_id)
     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
-    return render_template('habitat1.html', habitat=habitat, animals=animals)
+
+    # Récupère les enregistrements vétérinaires pour tous les animaux de l'habitat
+    vet_records_by_animal = {}
+    for animal in animals:
+        vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
+
+    return render_template('habitat1.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+
+
+# @app.route('/habitat1')
+# def habitat1(habitat_id):
+#     habitat = Habitat.query.get_or_404(habitat_id)
+#     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
+
+#     # Si un animal spécifique est sélectionné
+#     animal_id = request.args.get('animal_id')
+#     selected_animal = None
+#     vet_records = None
+#     if animal_id:
+#         selected_animal = Animal.query.get(animal_id)
+#         vet_records = VetRecord.query.filter_by(animal_id=animal_id).all()
+
+#     return render_template('habitat1.html', habitat=habitat, animals=animals, selected_animal=selected_animal, vet_records=vet_records)
+
+# Route pour afficher les détails d'un animal spécifique et ses fiches vétérinaires
+# @app.route('/animal/<int:animal_id>')
+# def animal_detail(animal_id):
+#     animal = Animal.query.get_or_404(animal_id)
+#     vet_records = VetRecord.query.filter_by(animal_id=animal_id).all()
+#     return render_template('habitat1.html', animal=animal, vet_records=vet_records)
+# on change ? j'ai remplacé animal_detail par habitat1.html
+
+import commands
+
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # Crée la base de données si elle n'existe pas
+    app.run(debug=True)
+
+
+# a voir si on ne revient pas à ça :
+# def habitat1():
+#     habitat = Habitat.query.get_or_404(1)
+#     animals = Animal.query.filter_by(habitat_id=1).all()
+#     vet_records_by_animal = {animal.id: VetRecord.query.filter_by(animal_id=animal.id).all() for animal in animals}
+#     return render_template('habitat1.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+
 
     
     # Exemple de données pour un habitat spécifique
@@ -104,21 +154,6 @@ def habitat_1(habitat_id):
     #     VetRecord(date=date(2024, 1, 1), food="Herbes", weight=300, health_status="Bonne santé", details="Aucun problème détecté", animal_id=1),
     #     VetRecord(date=date(2024, 1, 10), food="Herbes", weight=305, health_status="Excellente santé", details="Contrôle de routine", animal_id=2),
     # ]
-
-    
-# Route pour afficher les détails d'un animal spécifique et ses fiches vétérinaires
-@app.route('/animal/<int:animal_id>')
-def animal_detail(animal_id):
-    animal = Animal.query.get_or_404(animal_id)
-    vet_records = VetRecord.query.filter_by(animal_id=animal_id).all()
-    return render_template('animal_detail.html', animal=animal, vet_records=vet_records)
-
-import commands
-
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # Crée la base de données si elle n'existe pas
-    app.run(debug=True)
 
 
 # if __name__ == '__main__':

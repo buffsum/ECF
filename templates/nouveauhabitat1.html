@@ -55,51 +55,66 @@
             <span class="section-heading-upper text-center">{{ habitat.name }}</span>
         </h2>
 
-        <!-- ***** 2 nouveaux blocks **** -->
+        <!-- Section des animaux -->
         <section class="page-section2 cta2">
             <div class="container">
+                <!-- Début de la ligne pour contenir les blocs -->
                 <div class="row">
                     <div class="col-xl-12 mx-auto">
-                        <div class="row">
-                            {% for animal in animals %}
-                            <div class="col-md-6">
-                                <div class="inner5 bg-faded text-center rounded">
-                                    <h2 class="section-heading mb-4">
-                                        <span class="section-heading-lower2">- {{ animal.name }} -</span>
-                                        <span class="section-heading-upper2">{{ animal.species }}</span>
-                                    </h2>
-                                    <div class="encadrement">
-                                        <!-- <p class="mb-0">{{ animal.description }}</p> -->
-                                         <!-- Description spécifique pour certains animaux -->
-                                        {% if animal.name == 'Kibo' %}
-                                            <p class="mb-0">Kibo est ?un super zèbre<br></br></p>
-                                        {% elif animal.name == 'Luna' %}
-                                            <p class="mb-0">Luna est une gazelle très calme<br></br></p>
-                                        {% else %}
-                                            <p class="mb-0">Description générique pour {{ animal.name }}<br></br></p>
-                                        {% endif %}
-                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="{{ url_for('static', filename='assets/img/' ~ animal.image) }}" alt="{{ animal.name }}" />
-                                    </div>
-                                    <div class="encadrement2" id="avis{{ animal.name }}_H1">
-                                        <p class="title">Avis du vétérinaire</p>
-                                        {% for record in vet_records %}
-                                            <div class="vet-record">
-                                                <h3>Visite du {{ record.date.strftime('%d %B %Y') }}</h3>
-                                                <p><strong>État de santé :</strong> {{ record.health_status }}</p>
-                                                <p><strong>Nourriture :</strong> {{ record.food }}</p>
-                                                <p><strong>Grammage :</strong> {{ record.weight }}g</p>
-                                                <p><strong>Détails :</strong> {{ record.details }}</p>
-                                            </div>
-                                        {% endfor %}
-                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposée, le grammage de la nourriture, détails de l'état de l'animal</p>
-                                    </div>
+                    <!-- Début de la boucle pour les animaux -->
+                    {% for animal in habitat.animals %}
+                        <!-- Début d'un nouveau bloc tous les deux animaux -->
+                        {% if loop.index0 % 2 == 0 %}
+                            <div class="row">
+                        {% endif %}
+    
+                        <div class="col-md-6">
+                            <div class="inner5 bg-faded text-center rounded">
+                                <h2 class="section-heading mb-4">
+                                    <span class="section-heading-lower2">- {{ animal.name }} -</span>
+                                    <span class="section-heading-upper2">{{ animal.species }}</span>
+                                </h2>
+                                <div class="encadrement">
+                                    <!-- Description spécifique pour certains animaux -->
+                                    {% if animal.name == 'Kibo' %}
+                                        <p class="mb-0">Kibo est ?un super zèbre<br></br></p>
+                                    {% elif animal.name == 'Luna' %}
+                                        <p class="mb-0">Luna est une gazelle très calme<br></br></p>
+                                    {% else %}
+                                        <p class="mb-0">Description générique pour {{ animal.name }}<br></br></p>
+                                    {% endif %}
+                                    <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/{{ animal.image }}" alt="{{ animal.name }}" />
+                                </div>
+                                <div class="encadrement2" id="avis{{ animal.name }}_H1">
+                                    <p class="title">Avis du vétérinaire</p>
+                                    <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposée, le grammage de la nourriture, détails sur l'état de l'animal</p>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
+    
+                        <!-- Fin d'un bloc après chaque paire d'animaux -->
+                        {% if loop.index % 2 == 1 or loop.index == habitat.animals|length - 1 %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <!-- Fin de la boucle pour les animaux -->
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="cta-inner4 bg-faded text-center rounded">
+                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="../static/assets/img/intro.jpg" class="d-block w-100" alt="tortue de mer">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../static/assets/img/about.jpg" class="d-block w-100" alt="mer">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../static/assets/img/multiple.jpg" class="d-block w-100" alt="océan.">
+                            </div>
+                        </div>
         </section>
        
         <footer class="footer text-faded text-center py-5">
@@ -108,6 +123,6 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="../static/js/scripts.js"></script>
+        <script src="js/scripts.js"></script>
     </body>
 </html>

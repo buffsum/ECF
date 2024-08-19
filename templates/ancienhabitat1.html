@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Habitat 1 - Savane Africaine</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
+        
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="../static/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header classe="text-center">
+            <a href="index.html">
+                <img class="img-logo center" src="assets/img/logo.png" alt="logo Zoo Arcadia" />
+            </a>
+            <a href="register.html" class="btn btn-primary btn-connexion">Connexion</a>
+        </header>
+
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+            <div class="container">
+
+                <!-- quand écran petit -->
+                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">ZOO ARCADIA</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="services.html">Services</a></li>
+                        <li class="nav-item px-lg-4 dropdown">
+                            <a class="nav-link text-uppercase dropdown-toggle" href="habitats.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Habitats</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="habitats.html">Voir tous les habitats</a></li>
+                                <li><a class="dropdown-item" href="habitat1.html">Habitat 1 - Savane Africaine</a></li>
+                                <li><a class="dropdown-item" href="habitat2.html">Habitat 2 - Forêt d'eucalyptus</a></li>
+                                <li><a class="dropdown-item" href="habitat3.html">Habitat 3 - Forêt Tempérée</a></li>
+                                <li><a class="dropdown-item" href="habitat4.html">Habitat 4 - Jungle Tropicale</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html#avis">Avis</a></li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Habitat 1 -->
+        <h2 class="section-heading3 mb-4">
+            <span class="section-heading-upper text-center">{{ habitat.name }}</span>
+        </h2>
+
+        <!-- ***** 2 nouveaux blocks **** -->
+        <section class="page-section2 cta2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 mx-auto">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2">- Kibo -</span>
+                                        <span class="section-heading-upper2">Zèbre</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Kibo est un zèbre calme et protecteur. Il est très attaché à son groupe et veille toujours à rester près de ses compagnons. 
+                                            Bien que plus réservé que Zara, Kibo est un observateur attentif et joue un rôle clé dans la cohésion du troupeau.</b>.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/{{ animal.image }}" alt="{{ animal.name }}" />
+                                    </div>
+                                    <div class="encadrement2" id="avisZara_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ****** Zèbre 2 ****** -->
+                                <div class="col-md-6">
+                                    <div class="inner5 bg-faded text-center rounded">
+                                        <h2 class="section-heading mb-4">
+                                            <span class="section-heading-lower2 text-center">- Zara -</span>
+                                            <span class="section-heading-upper2 text-center">Zèbre</span>
+                                        </h2>
+                                        <div class="encadrement">
+                                            <p class="mb-0">Zara est une zèbre vive et curieuse qui adore explorer son environnement. 
+                                            Elle est souvent la première à découvrir les nouvelles zones de pâturage et montre un fort esprit de leadership au sein du troupeau. 
+                                            Ses rayures distinctives rendent Zara facilement reconnaissable parmi les autres zèbres.</b>.<br></br></p>
+                                        <!-- <div class ="col-md-6"> -->
+                                            <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/zebre2.jpg" alt="..." />
+                                        <!-- </div> -->
+                                        </div>
+                                        <div class="encadrement2" id="avisZara_H1">
+                                            <p class="title">Avis du vétérinaire</p>
+                                            <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ***** 2 nouveaux blocks **** -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 mx-auto">
+                        <div class="row">
+                            <!-- ****** Gazelle 1 ****** -->
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">- Luna -</span>
+                                        <span class="section-heading-upper2 text-center">Gazelle</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Luna est une gazelle gracieuse et rapide. Elle est connue pour sa capacité à réagir rapidement et à bondir avec une agilité incroyable. 
+                                            Luna passe beaucoup de temps à paître, mais reste toujours alerte, prête à se déplacer en un éclair si besoin.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/gazelle1.jpg" alt="..." />
+                                    </div>
+                                    <div class="encadrement2" id="avisLuna_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                                <!-- <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat1.html">Voir plus d'informations sur l'habitat</a></div> -->
+                            </div>
+                            
+                            <!-- ****** Gazelle 2 ****** -->
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">- Tara -</span>
+                                        <span class="section-heading-upper2 text-center">Gazelle</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Tara est une gazelle plus tranquille, appréciant les moments de calme sous l'ombre des arbres. Elle est douce et sociable, souvent vue en compagnie de Luna. 
+                                            Tara préfère les feuilles tendres et les plantes basses qu’elle sélectionne soigneusement.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/gazelle2.jpg" alt="..." />
+                                    </div>
+                                    <div class="encadrement2" id="avisTara_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ***** 2 nouveaux blocks **** -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 mx-auto">
+                        <div class="row">
+                            <!-- ****** Girafe 1 ****** -->
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">- Mara -</span>
+                                        <span class="section-heading-upper2 text-center">Girafe</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Mara est une girafe élégante et douce, connue pour sa grande taille et son long cou qui lui permet d’atteindre les feuilles d’acacia les plus hautes. 
+                                            Elle est souvent vue en train de brouter calmement, et sa nature paisible fait d'elle un membre apprécié du groupe.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/girafe1.jpg" alt="..." />
+                                    </div>
+                                    <div class="encadrement2" id="avisMara_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                                <!-- <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat1.html">Voir plus d'informations sur l'habitat</a></div> -->
+                            </div>
+                            
+                            <!-- ****** Girafe 2 ****** -->
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">- Jengo -</span>
+                                        <span class="section-heading-upper2 text-center">Girafe</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Jengo est un girafon curieux et joueur. Bien qu’encore jeune, il montre déjà une grande curiosité pour son environnement et aime suivre Mara partout. 
+                                            Jengo est en apprentissage constant, observant comment sa mère et les autres girafes se comportent.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/girafe2.jpg" alt="..." />
+                                    </div>
+                                    <div class="encadrement2" id="avisJengo_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ***** 2 nouveaux blocks **** -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 mx-auto">
+                        <div class="row">
+                            <!-- ****** Autruche 1 ****** -->
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">- Olga -</span>
+                                        <span class="section-heading-upper2 text-center">Autruche</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Olga est la matriarche du groupe d’autruches, une figure imposante mais douce. 
+                                            Elle mène le troupeau avec assurance et utilise ses longues pattes pour couvrir rapidement le terrain lorsqu'elle se déplace. 
+                                            Olga est omnivore, appréciant une variété de plantes et d'insectes.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/autruche1.jpg" alt="..." />
+                                    </div>
+                                    <div class="encadrement2" id="avisOlga_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                                <!-- <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat1.html">Voir plus d'informations sur l'habitat</a></div> -->
+                            </div>
+                            
+                            <!-- ****** Autruche 2 ****** -->
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">- Bibi -</span>
+                                        <span class="section-heading-upper2 text-center">Autruche</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Bibi est une autruche énergique et espiègle. Elle est toujours en mouvement, fouillant le sol à la recherche de nourriture ou interagissant avec les autres membres du troupeau. 
+                                            Sa vivacité fait d'elle une autruche très divertissante à observer.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/autruche2.jpg" alt="..." />
+                                    </div>
+                                    <div class="encadrement2" id="avisBibi_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ***** 2 nouveaux blocks **** -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 mx-auto">
+                        <div class="row">
+                            <!-- ****** Autruche 3 ****** -->
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">- Rico -</span>
+                                        <span class="section-heading-upper2 text-center">Autruche</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Rico est le plus jeune du groupe, mais il est déjà très curieux. Il suit souvent Olga et Bibi, apprenant d'elles comment se comporter. 
+                                            Rico est encore en pleine croissance, mais il montre déjà un grand appétit pour les graines et les petits insectes.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/autruche3.jpg" alt="..." />
+                                    </div>
+                                    <div class="encadrement2" id="avisRico_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                                <!-- <div class="intro-button2 mx-auto"><a class="btn btn-primary btn-xl" href="habitat1.html">Voir plus d'informations sur l'habitat</a></div> -->
+                            </div>
+                            
+                            <!-- ****** Phacochère 1 ****** -->
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2 text-center">- Togo -</span>
+                                        <span class="section-heading-upper2 text-center">Phacochère</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Togo est un phacochère robuste et plein de caractère. Connu pour ses défenses impressionnantes, il passe ses journées à fouiller le sol avec son museau en quête de racines et d’invertébrés. 
+                                            Malgré son apparence rustique, Togo est un animal intelligent et adaptable, bien intégré dans son environnement.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/phacochere1.jpg" alt="..." />
+                                    </div>
+                                    <div class="encadrement2" id="avisTogo_H1">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">bouton déroulant avec : la date du passage, l'état de l'animal, la nourriture proposé, le grammage de la nourriture, détail de l'état de l'animal</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer text-faded text-center py-5">
+            <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
+
+
+<!-- {% for animal in animals %}
+        <section class="page-section2 cta2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 mx-auto">
+                        <div class="row">
+                             ****** Zèbre 1 ****** -->
+                            
+                            <!-- <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2">- {{ animal.name }} -</span>
+                                        <span class="section-heading-upper2">{{ animal.species }}</span>
+                                    </h2>
+                                    <div class="encadrement">
+                                        <p class="mb-0">Kibo est un zèbre calme et protecteur. Il est très attaché à son groupe et veille toujours à rester près de ses compagnons. 
+                                            Bien que plus réservé que Zara, Kibo est un observateur attentif et joue un rôle clé dans la cohésion du troupeau.</b>.<br></br></p>
+                                        <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="assets/img/{{ animal.image }}" alt="{{ animal.name }}" />
+                                    </div>
+                                    <div class="encadrement2" id="avis{{ animal.id }}">
+                                        <p class="title">Avis du vétérinaire</p>
+                                        <p class="details" style="display: none;">
+                                            <strong>Date du passage :</strong> {{ animal.veterinarian_visit_date }}<br>
+                                            <strong>État de l'animal :</strong> {{ animal.condition }}<br>
+                                            <strong>Nourriture proposée :</strong> {{ animal.food_provided }}<br>
+                                            <strong>Grammage de la nourriture :</strong> {{ animal.food_grams }}<br>
+                                            <strong>Détails de l'état de l'animal :</strong> {{ animal.condition_details }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- {% endfor %} -->
+                             

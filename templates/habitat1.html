@@ -72,9 +72,37 @@
                                         <!-- <p class="mb-0">{{ animal.description }}</p> -->
                                          <!-- Description spécifique pour certains animaux -->
                                         {% if animal.name == 'Kibo' %}
-                                            <p class="mb-0">Kibo est ?un super zèbre<br></br></p>
+                                            <p class="mb-0">Kibo est un zèbre calme et protecteur. Il est très attaché à son groupe et veille toujours à rester près de ses compagnons. 
+                                                Bien que plus réservé que Zara, Kibo est un observateur attentif et joue un rôle clé dans la cohésion du troupeau.<br></br></p>
+                                        {% elif animal.name == 'Zara' %}
+                                            <p class="mb-0">Zara est une zèbre vive et curieuse qui adore explorer son environnement. 
+                                                Elle est souvent la première à découvrir les nouvelles zones de pâturage et montre un fort esprit de leadership au sein du troupeau. 
+                                                Ses rayures distinctives rendent Zara facilement reconnaissable parmi les autres zèbres.<br></br></p>
                                         {% elif animal.name == 'Luna' %}
-                                            <p class="mb-0">Luna est une gazelle très calme<br></br></p>
+                                            <p class="mb-0">Luna est une gazelle gracieuse et rapide. Elle est connue pour sa capacité à réagir rapidement et à bondir avec une agilité incroyable. 
+                                                Luna passe beaucoup de temps à paître, mais reste toujours alerte, prête à se déplacer en un éclair si besoin.<br></br></p>
+                                        {% elif animal.name == 'Tara' %}
+                                            <p class="mb-0">Tara est une gazelle plus tranquille, appréciant les moments de calme sous l'ombre des arbres. Elle est douce et sociable, souvent vue en compagnie de Luna. 
+                                                Tara préfère les feuilles tendres et les plantes basses qu’elle sélectionne soigneusement.<br></br></p>
+                                        {% elif animal.name == 'Mara' %}
+                                            <p class="mb-0">Mara est une girafe élégante et douce, connue pour sa grande taille et son long cou qui lui permet d’atteindre les feuilles d’acacia les plus hautes. 
+                                            Elle est souvent vue en train de brouter calmement, et sa nature paisible fait d'elle un membre apprécié du groupe.<br></br></p>
+                                        {% elif animal.name == 'Jengo' %}
+                                            <p class="mb-0">Jengo est un girafon curieux et joueur. Bien qu’encore jeune, il montre déjà une grande curiosité pour son environnement et aime suivre Mara partout. 
+                                                Jengo est en apprentissage constant, observant comment sa mère et les autres girafes se comportent.<br></br></p>
+                                        {% elif animal.name == 'Olga' %}
+                                            <p class="mb-0">Olga est la matriarche du groupe d’autruches, une figure imposante mais douce. 
+                                                Elle mène le troupeau avec assurance et utilise ses longues pattes pour couvrir rapidement le terrain lorsqu'elle se déplace. 
+                                                Olga est omnivore, appréciant une variété de plantes et d'insectes.<br></br></p>
+                                        {% elif animal.name == 'Bibi' %}
+                                            <p class="mb-0">Bibi est une autruche énergique et espiègle. Elle est toujours en mouvement, fouillant le sol à la recherche de nourriture ou interagissant avec les autres membres du troupeau. 
+                                                Sa vivacité fait d'elle une autruche très divertissante à observer.<br></br></p>
+                                        {% elif animal.name == 'Rico' %}
+                                            <p class="mb-0">Rico est le plus jeune du groupe, mais il est déjà très curieux. Il suit souvent Olga et Bibi, apprenant d'elles comment se comporter. 
+                                                Rico est encore en pleine croissance, mais il montre déjà un grand appétit pour les graines et les petits insectes.<br></br></p>
+                                        {% elif animal.name == 'Togo' %}
+                                            <p class="mb-0">Togo est un phacochère robuste et plein de caractère. Connu pour ses défenses impressionnantes, il passe ses journées à fouiller le sol avec son museau en quête de racines et d’invertébrés. 
+                                                Malgré son apparence rustique, Togo est un animal intelligent et adaptable, bien intégré dans son environnement.<br></br></p>
                                         {% else %}
                                             <p class="mb-0">Description générique pour {{ animal.name }}<br></br></p>
                                         {% endif %}

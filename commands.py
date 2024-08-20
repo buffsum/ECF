@@ -41,9 +41,32 @@ def add_data():
     animal18 = Animal(id=18, name="Moss", species="Échidné", image="echidne2.jpg", habitat_id=2)
     animal19 = Animal(id=19, name="Tilly", species="Wallaby", image="wallaby1.jpg", habitat_id=2)
     animal20 = Animal(id=20, name="Buddy", species="Wallaby", image="wallaby2.jpg", habitat_id=2)
+    animal21 = Animal(id=21, name="Grizz", species="Ours", image="ours1.jpg", habitat_id=3)
+    animal22 = Animal(id=22, name="Willow", species="Ours", image="ours2.jpg", habitat_id=3)
+    animal23 = Animal(id=23, name="Rusty", species="Cerf", image="cerf1.jpg", habitat_id=3)
+    animal24 = Animal(id=24, name="Bella", species="Biche", image="cerf2.jpg", habitat_id=3)
+    animal25 = Animal(id=25, name="Rocky", species="Raton laveur", image="raton1.jpg", habitat_id=3)
+    animal26 = Animal(id=26, name="Misty", species="Raton laveur", image="raton2.jpg", habitat_id=3)
+    animal27 = Animal(id=27, name="Chipper", species="Écureuil", image="ecureuil1.jpg", habitat_id=3)
+    animal28 = Animal(id=28, name="Nutmeg", species="Écureuil", image="ecureuil2.jpg", habitat_id=3)
+    animal29 = Animal(id=29, name="Ollie", species="Chouette rayée", image="chouette1.jpg", habitat_id=3)
+    animal30 = Animal(id=30, name="Hoot", species="Chouette rayée", image="chouette2.jpg", habitat_id=3)
+    animal31 = Animal(id=31, name="Milo", species="Capucin", image="capucin1.jpg", habitat_id=4)
+    animal32 = Animal(id=32, name="Maya", species="Capucin", image="capucin2.jpg", habitat_id=4)
+    animal33 = Animal(id=33, name="Coco", species="Paresseux", image="paresseux1.jpg", habitat_id=4)
+    animal34 = Animal(id=34, name="Gigi", species="Paresseux", image="paresseux2.jpg", habitat_id=4)
+    animal35 = Animal(id=35, name="Mango", species="Toucan", image="toucan1.jpg", habitat_id=4)
+    animal36 = Animal(id=36, name="Kiwi", species="Toucan", image="toucan2.jpg", habitat_id=4)
+    animal37 = Animal(id=37, name="Nina", species="Agouti", image="agouti1.jpg", habitat_id=4)
+    animal38 = Animal(id=38, name="Oscar", species="Agouti", image="agouti2.jpg", habitat_id=4)
+    animal39 = Animal(id=39, name="Simba", species="Singes-araignée", image="singe-araignee1.jpg", habitat_id=4)
+    animal40 = Animal(id=40, name="Léo", species="Singes-araignée", image="singe-araignee2.jpg", habitat_id=4)
 
     # Ajoute les instances à la session de la base de données
-    db.session.add_all([animal1, animal2, animal3, animal4, animal5, animal6, animal7, animal8, animal9, animal10])
+    db.session.add_all([animal1, animal2, animal3, animal4, animal5, animal6, animal7, animal8, animal9, animal10, 
+                        animal11, animal12, animal13, animal14, animal15, animal16, animal17, animal18, animal19, animal20, 
+                        animal21, animal22, animal23, animal24, animal25, animal26, animal27, animal28, animal29, animal30,
+                        animal31, animal32, animal33, animal34, animal35, animal36, animal37, animal38, animal39, animal40])
     db.session.commit()
 
     # Crée des fiches vétérinaires pour les animaux
@@ -57,25 +80,25 @@ def add_data():
 
     print("Données ajoutées avec succès!")
 
-@app.cli.command("add-animals")
-def add_animals():
-    animaux = [
-        {"name": "Kibo", "species": "Zèbre", "description": "Description du zèbre", "image": "zebre1.jpg", "habitat_id": 1},
-        {"name": "Luna", "species": "Gazelle", "description": "Description de la gazelle", "image": "gazelle1.jpg", "habitat_id": 1},
-        {"name": "Milo", "species": "Lion", "description": "Description du lion", "image": "lion1.jpg", "habitat_id": 2},
-        {"name": "Zara", "species": "Tigre", "description": "Description du tigre", "image": "tigre1.jpg", "habitat_id": 2},
-    ]
+# @app.cli.command("add-animals")
+# def add_animals():
+#     animaux = [
+#         {"name": "Kibo", "species": "Zèbre", "description": "Description du zèbre", "image": "zebre1.jpg", "habitat_id": 1},
+#         {"name": "Luna", "species": "Gazelle", "description": "Description de la gazelle", "image": "gazelle1.jpg", "habitat_id": 1},
+#         {"name": "Milo", "species": "Lion", "description": "Description du lion", "image": "lion1.jpg", "habitat_id": 2},
+#         {"name": "Zara", "species": "Tigre", "description": "Description du tigre", "image": "tigre1.jpg", "habitat_id": 2},
+#     ]
 
-    for animal in animaux:
-        a = Animal(
-            name=animal["name"],
-            species=animal["species"],
-            image=animal["image"],
-            habitat_id=animal["habitat_id"]
-        )
-        db.session.add(a)
-    db.session.commit()
-    print("Animaux ajoutés avec succès!")
+#     for animal in animaux:
+#         a = Animal(
+#             name=animal["name"],
+#             species=animal["species"],
+#             image=animal["image"],
+#             habitat_id=animal["habitat_id"]
+#         )
+#         db.session.add(a)
+#     db.session.commit()
+#     print("Animaux ajoutés avec succès!")
 
 @app.cli.command("reset-db")
 def reset_db():

@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
+# from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 
 app = Flask(__name__)
+app.secret_key = 'votre_clé_secrète'  # Nécessaire pour que flash fonctionne
 
 # Configuration de la base de données SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zoo.db'
@@ -48,7 +50,6 @@ class VetRecord(db.Model):
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
     animal = db.relationship('Animal', back_populates='vet_records')
 
-
 # Modèle Avis
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -69,9 +70,9 @@ def login():
 def register():
     return render_template('register.html')
 
-@app.route('/admin')
-def admin():
-    return render_template('admin.html')
+# @app.route('/admin')
+# def admin():
+#     return render_template('admin.html')
 
 @app.route('/contact')
 def contact():
@@ -89,7 +90,7 @@ def habitats():
 
 # Route pour afficher les détails d'un habitat spécifique
 @app.route('/habitat/<int:habitat_id>')
-def habitat1(habitat_id):
+def habitat(habitat_id):
     habitat = Habitat.query.get_or_404(habitat_id)
     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
 
@@ -98,40 +99,61 @@ def habitat1(habitat_id):
     for animal in animals:
         vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
 
-    return render_template('habitat1.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+    # Générez le nom du template basé sur l'habitat_id
+    template_name = f'habitat{habitat_id}.html'
 
-def habitat2(habitat_id):
-    habitat = Habitat.query.get_or_404(habitat_id)
-    animals = Animal.query.filter_by(habitat_id=habitat_id).all()
+    # Rendre le template correspondant avec les données nécessaires
+    return render_template(template_name, habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
 
-    # Récupère les enregistrements vétérinaires pour tous les animaux de l'habitat
-    vet_records_by_animal = {}
-    for animal in animals:
-        vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
+# Pour le véto
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    if request.method == 'POST':
+        # Récupérer les données du formulaire
+        date = request.form['date']
+        food = request.form['food']
+        weight = request.form['weight']
+        health_status = request.form['health_status']
+        details = request.form['details']
+        animal_id = request.form['animal_id']
+        
+        # Code pour ajouter la fiche vétérinaire dans la base de données
+        # (Ceci est un exemple, votre code peut varier)
+        
+        flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+        return redirect(url_for('admin'))
+    
+    # Afficher la page admin si GET
+    return render_template('admin.html')
 
-    return render_template('habitat2.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+# @app.route('/admin', methods=['GET', 'POST'])
+# def admin():
+#     if request.method == 'POST':
+#         # Récupérer les données du formulaire
+#         date_str = request.form['date']
+#         food = request.form['food']
+#         weight = float(request.form['weight'])
+#         health_status = request.form['health_status']
+#         details = request.form['details']
+#         animal_id = int(request.form['animal_id'])
 
-def habitat3(habitat_id):
-    habitat = Habitat.query.get_or_404(habitat_id)
-    animals = Animal.query.filter_by(habitat_id=habitat_id).all()
+#         # Convertir la chaîne de caractères en objet date
+#         record_date = date.fromisoformat(date_str)
 
-    # Récupère les enregistrements vétérinaires pour tous les animaux de l'habitat
-    vet_records_by_animal = {}
-    for animal in animals:
-        vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
+#         # Créer une nouvelle fiche vétérinaire
+#         new_record = VetRecord(date=record_date, food=food, weight=weight, health_status=health_status, details=details, animal_id=animal_id)
 
-    return render_template('habitat3.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+#         # Ajouter la fiche à la base de données
+#         db.session.add(new_record)
+#         db.session.commit()
 
-def habitat4(habitat_id):
-    habitat = Habitat.query.get_or_404(habitat_id)
-    animals = Animal.query.filter_by(habitat_id=habitat_id).all()
+#         # Message de confirmation
+#         flash('Fiche vétérinaire ajoutée avec succès!', 'success')
 
-    # Récupère les enregistrements vétérinaires pour tous les animaux de l'habitat
-    vet_records_by_animal = {}
-    for animal in animals:
-        vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
+#     # Récupérer la liste des animaux pour le menu déroulant
+#     animals = Animal.query.all()
 
-    return render_template('habitat4.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+#     return render_template('admin.html', animals=animals)
 
 import commands
 

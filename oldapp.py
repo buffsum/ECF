@@ -260,6 +260,53 @@ if __name__ == '__main__':
 
 #     return render_template(habitat_page)
 
+
+# @app.route('/habitat/<int:habitat_id>')
+# def habitat1(habitat_id):
+#     habitat = Habitat.query.get_or_404(habitat_id)
+#     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
+
+#     # Récupère les enregistrements vétérinaires pour tous les animaux de l'habitat
+#     vet_records_by_animal = {}
+#     for animal in animals:
+#         vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
+
+#     return render_template('habitat1.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+
+# @app.route('/habitat/<int:habitat_id>')
+# def habitat2(habitat_id):
+#     habitat = Habitat.query.get_or_404(habitat_id)
+#     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
+
+#     # Récupère les enregistrements vétérinaires pour tous les animaux de l'habitat
+#     vet_records_by_animal = {}
+#     for animal in animals:
+#         vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
+
+#     return render_template('habitat2.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+
+# def habitat3(habitat_id):
+#     habitat = Habitat.query.get_or_404(habitat_id)
+#     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
+
+#     # Récupère les enregistrements vétérinaires pour tous les animaux de l'habitat
+#     vet_records_by_animal = {}
+#     for animal in animals:
+#         vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
+
+#     return render_template('habitat3.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+
+# def habitat4(habitat_id):
+#     habitat = Habitat.query.get_or_404(habitat_id)
+#     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
+
+#     # Récupère les enregistrements vétérinaires pour tous les animaux de l'habitat
+#     vet_records_by_animal = {}
+#     for animal in animals:
+#         vet_records_by_animal[animal.id] = VetRecord.query.filter_by(animal_id=animal.id).all()
+
+#     return render_template('habitat4.html', habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
+
 # # Route pour afficher les détails d'un animal spécifique et ses fiches vétérinaires
 # @app.route('/animal/<int:animal_id>')
 # def animal_detail(animal_id):

@@ -14,7 +14,7 @@
         <link href="../static/css/styles.css" rel="stylesheet" />
     </head>
     <body>
-        <header classe="text-center">
+        <header class="text-center">
             <a href="{{ url_for('home') }}">
                 <img class="img-logo center" src="/static/assets/img/logo.png" alt="logo Zoo Arcadia" />
             </a>
@@ -49,6 +49,9 @@
         </nav>
 
         <!-- *********** Infos pratiques ************ -->
+        <h1>Ajouter une fiche vétérinaire</h1>
+
+        <!-- Afficher les messages de confirmation -->
         <section class="page-section2 cta2">
             <div class="container">
                 <div class="row">
@@ -57,11 +60,9 @@
                             <div class="col-md-6">
                                 <div class="inner5 bg-faded text-center rounded">
                                     <h2 class="section-heading mb-4">
-                                        <span class="section-heading-lower2">- Avis vétérinaire -</span>
+                                        <span class="section-heading-lower2">- Ajouter une fiche vétérinaire -</span>
+                                        <!-- <span class="section-heading-upper2">{{ animal.species }}</span> -->
                                     </h2>
-
-        <!-- Afficher les messages de confirmation -->
-         
                                     {% with messages = get_flashed_messages(with_categories=true) %}
                                         {% if messages %}
                                             <ul>
@@ -103,6 +104,8 @@
                     </div>
                 </div>
             </div>
+        </section>
+        
 
         <!-- *********** Footer ************ -->
         <footer class="footer text-faded text-center py-5">

@@ -59,7 +59,7 @@ def add_data():
     animal36 = Animal(id=36, name="Kiwi", species="Toucan", image="toucan2.jpg", habitat_id=4)
     animal37 = Animal(id=37, name="Nina", species="Agouti", image="agouti1.jpg", habitat_id=4)
     animal38 = Animal(id=38, name="Oscar", species="Agouti", image="agouti2.jpg", habitat_id=4)
-    animal39 = Animal(id=39, name="Simba", species="Singes-araignée", image="singe-araignee1.jpg", habitat_id=4)
+    animal39 = Animal(id=39, name="Vlad", species="Singes-araignée", image="singe-araignee1.jpg", habitat_id=4)
     animal40 = Animal(id=40, name="Léo", species="Singes-araignée", image="singe-araignee2.jpg", habitat_id=4)
 
     # Ajoute les instances à la session de la base de données
@@ -79,6 +79,7 @@ def add_data():
     db.session.commit()
 
     print("Données ajoutées avec succès!")
+
 
 # @app.cli.command("add-animals")
 # def add_animals():

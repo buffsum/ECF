@@ -17,10 +17,10 @@
     </head>
     <body>
         <header classe="text-center">
-            <a href="index.html">
+            <a href="{{ url_for('home') }}">
                 <img class="img-logo center" src="/static/assets/img/logo.png" alt="logo Zoo Arcadia" />
             </a>
-            <a href="register.html" class="btn btn-primary btn-connexion">Connexion</a>
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-connexion">Connexion</a>
         </header>
 
         <!-- Navigation-->
@@ -32,19 +32,19 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="services.html">Services</a></li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('services') }}">Services</a></li>
                         <li class="nav-item px-lg-4 dropdown">
-                            <a class="nav-link text-uppercase dropdown-toggle" href="habitats.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Habitats</a>
+                            <a class="nav-link text-uppercase dropdown-toggle" href="{{ url_for('habitats') }}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Habitats</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="habitats.html">Voir tous les habitats</a></li>
-                                <li><a class="dropdown-item" href="habitat1.html">Habitat 1 - Savane Africaine</a></li>
-                                <li><a class="dropdown-item" href="habitat2.html">Habitat 2 - Forêt d'eucalyptus</a></li>
-                                <li><a class="dropdown-item" href="habitat3.html">Habitat 3 - Forêt Tempérée</a></li>
-                                <li><a class="dropdown-item" href="habitat4.html">Habitat 4 - Jungle Tropicale</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitats') }}">Voir tous les habitats</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=1) }}">Habitat 1 - Savane Africaine</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=2) }}">Habitat 2 - Forêt d'eucalyptus</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=3) }}">Habitat 3 - Forêt Tempérée</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=4) }}">Habitat 4 - Jungle Tropicale</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html#avis">Avis</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="contact.html">Contact</a></li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('home') }}#avis">Avis</a></li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('contact') }}">Contact</a></li>
                     </ul>
                 </div>
             </div>

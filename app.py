@@ -150,7 +150,21 @@ def admin():
             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
 
     animals = Animal.query.all()
-    return render_template('admin.html', animals=animals)
+    
+    # Filtres
+    date_filter = request.args.get('date')
+    animal_filter = request.args.get('animal_id')
+
+    query = VetRecord.query
+
+    if date_filter:
+        query = query.filter_by(date=date.fromisoformat(date_filter))
+    if animal_filter:
+        query = query.filter_by(animal_id=int(animal_filter))
+
+    vet_records = query.all()
+
+    return render_template('admin.html', animals=animals, vet_records=vet_records)
 
 import commands
 

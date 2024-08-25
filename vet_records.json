@@ -14,5 +14,133 @@
         "health_status": "test15",
         "details": "test15 mara",
         "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test16",
+        "weight": 56.0,
+        "health_status": "test16",
+        "details": "test16 pour mara",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "carotte et petit poiddss",
+        "weight": 20.0,
+        "health_status": "Tout va bien",
+        "details": "j'aimerai pouvoir ajouter plus de texte, comment faire ? ",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "carotte et petit poiddss",
+        "weight": 20.0,
+        "health_status": "Tout va bien",
+        "details": "j'aimerai pouvoir ajouter plus de texte, comment faire ? ",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test17",
+        "weight": 57.0,
+        "health_status": "test17",
+        "details": "test17 voir doublon\r\n",
+        "animal_id": 5
     }
 ]

@@ -1,5 +1,6 @@
 from app import app, db, Animal, Habitat, VetRecord
 from datetime import date
+import json
 
 @app.cli.command("add-data")
 def add_data():
@@ -100,6 +101,138 @@ def add_data():
 #         db.session.add(a)
 #     db.session.commit()
 #     print("Animaux ajoutés avec succès!")
+
+# *************************************NEEEEEW
+# @app.cli.command("restore-data")
+# def restore_data():
+#     with open('vet_records.json', 'r') as f:
+#         for line in f:
+#             record = json.loads(line)
+#             vet_record = VetRecord(
+#                 date=date.fromisoformat(record['date']),
+#                 food=record['food'],
+#                 weight=record['weight'],
+#                 health_status=record['health_status'],
+#                 details=record['details'],
+#                 animal_id=record['animal_id']
+#             )
+#             db.session.add(vet_record)
+#         db.session.commit()
+
+#     print("Données restaurées avec succès!")
+
+# # Fonction pour charger les fiches vétérinaires depuis le fichier JSON
+# def load_vet_records_from_json():
+#     try:
+#         with open('vet_records.json', 'r') as file:
+#             vet_records = json.load(file)
+#             return vet_records
+#     except FileNotFoundError:
+#         return []
+#     except json.JSONDecodeError as e:
+#         # Gérer les erreurs de décodage JSON
+#         print(f"Erreur de décodage JSON: {e}")
+#         return []
+
+# # Fonction pour sauvegarder les fiches vétérinaires dans le fichier JSON
+# def save_vet_record_to_json(vet_record):
+#     vet_records = load_vet_records_from_json()
+#     vet_records.append(vet_record)
+#     with open('vet_records.json', 'w') as file:
+#         json.dump(vet_records, file, indent=4)
+
+# @app.cli.command("load-vet-records")
+# def load_vet_records():
+#     vet_records = load_vet_records_from_json()
+#     for record in vet_records:
+#         new_record = VetRecord(
+#             date=record['date'],
+#             food=record['food'],
+#             weight=record['weight'],
+#             health_status=record['health_status'],
+#             details=record['details'],
+#             animal_id=record['animal_id']
+#         )
+#         db.session.add(new_record)
+#     db.session.commit()
+#     print("Fiches vétérinaires chargées depuis le fichier JSON.")
+
+# @app.cli.command("add-vet-record")
+# def add_vet_record():
+#     record = {
+#         'date': '2024-08-21',
+#         'food': 'Herbes',
+#         'weight': 300.0,
+#         'health_status': 'Bonne santé',
+#         'details': 'Aucun problème détecté',
+#         'animal_id': 1
+#     }
+#     save_vet_record_to_json(record)
+#     print("Fiche vétérinaire ajoutée au fichier JSON.")
+
+def load_vet_records_from_json():
+    try:
+        with open('vet_records.json', 'r') as file:
+            vet_records = json.load(file)
+            return vet_records
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError as e:
+        print(f"Erreur de décodage JSON: {e}")
+        return []
+
+def save_vet_record_to_json(vet_record):
+    vet_records = load_vet_records_from_json()
+    vet_records.append(vet_record)
+    with open('vet_records.json', 'w') as file:
+        json.dump(vet_records, file, indent=4)
+
+@app.cli.command("restore-data")
+def restore_data():
+    vet_records = load_vet_records_from_json()
+    for record in vet_records:
+        vet_record = VetRecord(
+            date=date.fromisoformat(record['date']),
+            food=record['food'],
+            weight=record['weight'],
+            health_status=record['health_status'],
+            details=record['details'],
+            animal_id=record['animal_id']
+        )
+        db.session.add(vet_record)
+    db.session.commit()
+
+    print("Données restaurées avec succès!")
+
+@app.cli.command("load-vet-records")
+def load_vet_records():
+    vet_records = load_vet_records_from_json()
+    for record in vet_records:
+        new_record = VetRecord(
+            date=date.fromisoformat(record['date']),
+            food=record['food'],
+            weight=record['weight'],
+            health_status=record['health_status'],
+            details=record['details'],
+            animal_id=record['animal_id']
+        )
+        db.session.add(new_record)
+    db.session.commit()
+    print("Fiches vétérinaires chargées depuis le fichier JSON.")
+
+@app.cli.command("add-vet-record")
+def add_vet_record():
+    record = {
+        'date': '2024-08-21',
+        'food': 'Herbes',
+        'weight': 300.0,
+        'health_status': 'Bonne santé',
+        'details': 'Aucun problème détecté',
+        'animal_id': 1
+    }
+    save_vet_record_to_json(record)
+    print("Fiche vétérinaire ajoutée au fichier JSON.")
+
 
 @app.cli.command("reset-db")
 def reset_db():

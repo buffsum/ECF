@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+# from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 import json
+# import os
 
 app = Flask(__name__)
+# app.secret_key = 'votre_clé_secrète'  # Nécessaire pour que flash fonctionne
 
 # Configuration de la base de données SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zoo.db'
@@ -70,6 +73,10 @@ def login():
 def register():
     return render_template('register.html')
 
+# @app.route('/admin')
+# def admin():
+#     return render_template('admin.html')
+
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
@@ -101,10 +108,68 @@ def habitat(habitat_id):
     # Rendre le template correspondant avec les données nécessaires
     return render_template(template_name, habitat=habitat, animals=animals, vet_records_by_animal=vet_records_by_animal)
 
-# Routes véto
+# Pour le véto
+# @app.route('/admin', methods=['GET', 'POST'])
+# def admin():
+#     if request.method == 'POST':
+#         # Récupérer les données du formulaire
+#         date = request.form['date']
+#         food = request.form['food']
+#         weight = request.form['weight']
+#         health_status = request.form['health_status']
+#         details = request.form['details']
+#         animal_id = request.form['animal_id']
+        
+#         # Code pour ajouter la fiche vétérinaire dans la base de données
+#         # (Ceci est un exemple, votre code peut varier)
+        
+#         flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+#         return redirect(url_for('admin'))
+    
+#     # Afficher la page admin si GET
+#     return render_template('admin.html')
+
+# @app.route('/admin', methods=['GET', 'POST'])
+# def admin():
+#     if request.method == 'POST':
+#         # Récupérer les données du formulaire
+#         date_str = request.form['date']
+#         food = request.form['food']
+#         weight = float(request.form['weight'])
+#         health_status = request.form['health_status']
+#         details = request.form['details']
+#         animal_id = int(request.form['animal_id'])
+
+#         # Convertir la chaîne de caractères en objet date
+#         record_date = date.fromisoformat(date_str)
+
+#         # Créer une nouvelle fiche vétérinaire
+#         new_record = VetRecord(date=record_date, food=food, weight=weight, health_status=health_status, details=details, animal_id=animal_id)
+
+#         try:
+#             # Votre code pour créer et ajouter la fiche
+#             db.session.commit()
+#         except Exception as e:
+#             db.session.rollback()
+#             print(f"Erreur lors de l'enregistrement de la fiche: {e}")
+#             flash(f"Erreur lors de l'enregistrement de la fiche: {e}", 'danger')
+
+#         # Ajouter la fiche à la base de données
+#         db.session.add(new_record)
+#         db.session.commit()
+
+#         # Message de confirmation
+#         flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+#     # Récupérer la liste des animaux pour le menu déroulant
+#     animals = Animal.query.all()
+
+#     return render_template('admin.html', animals=animals)
+# Routes
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
+        # Récupérer les données du formulaire
         try:
             date_str = request.form['date']
             food = request.form['food']
@@ -113,35 +178,31 @@ def admin():
             details = request.form['details']
             animal_id = int(request.form['animal_id'])
 
+            # Convertir la chaîne de caractères en objet date
             record_date = date.fromisoformat(date_str)
 
+            # Créer une nouvelle fiche vétérinaire
             new_record = VetRecord(
                 date=record_date, food=food, weight=weight,
                 health_status=health_status, details=details,
                 animal_id=animal_id
             )
 
+            # Ajouter la fiche à la base de données
             db.session.add(new_record)
             db.session.commit()
 
-            # Lire le fichier JSON, ajouter le nouvel enregistrement, puis réécrire le fichier
-            try:
-                with open('vet_records.json', 'r') as f:
-                    vet_records = json.load(f)
-            except (FileNotFoundError, json.JSONDecodeError):
-                vet_records = []
-
-            vet_records.append({
-                'date': date_str,
-                'food': food,
-                'weight': weight,
-                'health_status': health_status,
-                'details': details,
-                'animal_id': animal_id
-            })
-
-            with open('vet_records.json', 'w') as f:
-                json.dump(vet_records, f, indent=4)
+            # Enregistrer dans un fichier JSON
+            with open('vet_records.json', 'a') as f:
+                json.dump({
+                    'date': date_str,
+                    'food': food,
+                    'weight': weight,
+                    'health_status': health_status,
+                    'details': details,
+                    'animal_id': animal_id
+                }, f)
+                f.write('\n')
 
             flash('Fiche vétérinaire ajoutée avec succès!', 'success')
 
@@ -149,7 +210,9 @@ def admin():
             db.session.rollback()
             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
 
+    # Récupérer la liste des animaux pour le menu déroulant
     animals = Animal.query.all()
+
     return render_template('admin.html', animals=animals)
 
 import commands

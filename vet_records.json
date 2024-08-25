@@ -1,10 +1,18 @@
 [
     {
-        "date": "2024-08-25", 
-        "food": "Test6", 
-        "weight": 46.0, 
-        "health_status": "test6", 
-        "details": "Test6 pour Mara", 
+        "date": "2024-08-25",
+        "food": "test14",
+        "weight": 54.0,
+        "health_status": "test14",
+        "details": "test14 mara",
+        "animal_id": 5
+    },
+    {
+        "date": "2024-08-25",
+        "food": "test15",
+        "weight": 55.0,
+        "health_status": "test15",
+        "details": "test15 mara",
         "animal_id": 5
     }
 ]

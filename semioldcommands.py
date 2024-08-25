@@ -13,6 +13,14 @@ def add_data():
     db.session.add_all([habitat1, habitat2, habitat3, habitat4])
     db.session.commit()
 
+    # Crée des animaux pour chaque habitat
+    # animals = [
+    #     animal1 = Animal(id=1, name="Kibo", species="Zèbre", image="zebre1.jpg", habitat_id=1),
+    #     animal2 = Animal(id=2, name="Luna", species="Gazelle", image="gazelle1.jpg", habitat_id=1),
+    #     animal3 = Animal(id=3, name="Milo", species="Lion", image="lion1.jpg", habitat_id=2),
+    #     animal4 = Animal(id=4, name="Zara", species="Tigre", image="tigre1.jpg", habitat_id=2),
+    # ]
+
     # Crée des instances d'animaux pour chaque habitat avec des IDs spécifiques
     animal1 = Animal(id=1, name="Kibo", species="Zèbre", image="zebre1.jpg", habitat_id=1)
     animal2 = Animal(id=2, name="Zara", species="Zèbre", image="zebre2.jpg", habitat_id=1)
@@ -72,6 +80,95 @@ def add_data():
     db.session.commit()
 
     print("Données ajoutées avec succès!")
+
+
+# @app.cli.command("add-animals")
+# def add_animals():
+#     animaux = [
+#         {"name": "Kibo", "species": "Zèbre", "description": "Description du zèbre", "image": "zebre1.jpg", "habitat_id": 1},
+#         {"name": "Luna", "species": "Gazelle", "description": "Description de la gazelle", "image": "gazelle1.jpg", "habitat_id": 1},
+#         {"name": "Milo", "species": "Lion", "description": "Description du lion", "image": "lion1.jpg", "habitat_id": 2},
+#         {"name": "Zara", "species": "Tigre", "description": "Description du tigre", "image": "tigre1.jpg", "habitat_id": 2},
+#     ]
+
+#     for animal in animaux:
+#         a = Animal(
+#             name=animal["name"],
+#             species=animal["species"],
+#             image=animal["image"],
+#             habitat_id=animal["habitat_id"]
+#         )
+#         db.session.add(a)
+#     db.session.commit()
+#     print("Animaux ajoutés avec succès!")
+
+# *************************************NEEEEEW
+# @app.cli.command("restore-data")
+# def restore_data():
+#     with open('vet_records.json', 'r') as f:
+#         for line in f:
+#             record = json.loads(line)
+#             vet_record = VetRecord(
+#                 date=date.fromisoformat(record['date']),
+#                 food=record['food'],
+#                 weight=record['weight'],
+#                 health_status=record['health_status'],
+#                 details=record['details'],
+#                 animal_id=record['animal_id']
+#             )
+#             db.session.add(vet_record)
+#         db.session.commit()
+
+#     print("Données restaurées avec succès!")
+
+# # Fonction pour charger les fiches vétérinaires depuis le fichier JSON
+# def load_vet_records_from_json():
+#     try:
+#         with open('vet_records.json', 'r') as file:
+#             vet_records = json.load(file)
+#             return vet_records
+#     except FileNotFoundError:
+#         return []
+#     except json.JSONDecodeError as e:
+#         # Gérer les erreurs de décodage JSON
+#         print(f"Erreur de décodage JSON: {e}")
+#         return []
+
+# # Fonction pour sauvegarder les fiches vétérinaires dans le fichier JSON
+# def save_vet_record_to_json(vet_record):
+#     vet_records = load_vet_records_from_json()
+#     vet_records.append(vet_record)
+#     with open('vet_records.json', 'w') as file:
+#         json.dump(vet_records, file, indent=4)
+
+# @app.cli.command("load-vet-records")
+# def load_vet_records():
+#     vet_records = load_vet_records_from_json()
+#     for record in vet_records:
+#         new_record = VetRecord(
+#             date=record['date'],
+#             food=record['food'],
+#             weight=record['weight'],
+#             health_status=record['health_status'],
+#             details=record['details'],
+#             animal_id=record['animal_id']
+#         )
+#         db.session.add(new_record)
+#     db.session.commit()
+#     print("Fiches vétérinaires chargées depuis le fichier JSON.")
+
+# @app.cli.command("add-vet-record")
+# def add_vet_record():
+#     record = {
+#         'date': '2024-08-21',
+#         'food': 'Herbes',
+#         'weight': 300.0,
+#         'health_status': 'Bonne santé',
+#         'details': 'Aucun problème détecté',
+#         'animal_id': 1
+#     }
+#     save_vet_record_to_json(record)
+#     print("Fiche vétérinaire ajoutée au fichier JSON.")
 
 def load_vet_records_from_json():
     try:

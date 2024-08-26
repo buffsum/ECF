@@ -119,7 +119,7 @@ def habitat(habitat_id):
     habitat = Habitat.query.get_or_404(habitat_id)
     
     # Incrémenter le compteur de consultations
-    habitat.consultation_count += 1
+    # habitat.consultation_count += 1
     db.session.commit()
     
     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
@@ -221,6 +221,79 @@ def increment_consultation(record_id):
     db.session.commit()  # Enregistre les modifications dans la base de données
     return redirect(request.referrer)  # Redirige vers la page précédente
 
+# @app.route('/admin', methods=['GET', 'POST'])
+# def admin():
+#     if request.method == 'POST':
+#         try:
+#             date_str = request.form['date']
+#             food = request.form['food']
+#             weight = float(request.form['weight'])
+#             health_status = request.form['health_status']
+#             details = request.form['details']
+#             animal_id = int(request.form['animal_id'])
+
+#             record_date = date.fromisoformat(date_str)
+
+#             # Créez et ajoutez le nouvel enregistrement dans la base de données
+#             new_record = VetRecord(
+#                 date=record_date, food=food, weight=weight,
+#                 health_status=health_status, details=details,
+#                 animal_id=animal_id
+#             )
+
+#             db.session.add(new_record)
+#             db.session.commit()
+
+#             # Lire le fichier JSON, ajouter le nouvel enregistrement, puis réécrire le fichier
+#             try:
+#                 with open('vet_records.json', 'r') as f:
+#                     vet_records = json.load(f)
+#             except (FileNotFoundError, json.JSONDecodeError):
+#                 vet_records = []
+
+#             vet_records.append({
+#                 'date': date_str,
+#                 'food': food,
+#                 'weight': weight,
+#                 'health_status': health_status,
+#                 'details': details,
+#                 'animal_id': animal_id
+#             })
+
+#             with open('vet_records.json', 'w') as f:
+#                 json.dump(vet_records, f, indent=4)
+
+#             flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+#         except Exception as e:
+#             db.session.rollback()
+#             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+
+#     animals = Animal.query.all()
+#     vet_records = VetRecord.query.all()
+#     habitats = Habitat.query.all()  # Ajoutez cette ligne pour récupérer les habitats
+#     consultation_counts = {animal.id: get_consultation_count(animal.id) for animal in animals}
+
+#     # Filtres
+#     date_filter = request.args.get('date')
+#     animal_filter = request.args.get('animal_id')
+
+#     query = VetRecord.query
+
+#     if date_filter:
+#         query = query.filter_by(date=date.fromisoformat(date_filter))
+#     if animal_filter:
+#         query = query.filter_by(animal_id=int(animal_filter))
+
+#     vet_records = query.all()
+
+#     # Créez un dictionnaire pour stocker le nombre de consultations par animal
+#     consultation_counts = {animal.id: 0 for animal in animals}
+#     for record in vet_records:
+#         consultation_counts[record.animal_id] += 1
+
+#     return render_template('admin.html', animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
@@ -270,28 +343,23 @@ def admin():
             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
 
     animals = Animal.query.all()
+    vet_records = VetRecord.query.all()
     habitats = Habitat.query.all()  # Ajoutez cette ligne pour récupérer les habitats
-
-    # Filtres
-    date_filter = request.args.get('date')
-    animal_filter = request.args.get('animal_id')
-
-    query = VetRecord.query
-
-    if date_filter:
-        query = query.filter_by(date=date.fromisoformat(date_filter))
-    if animal_filter:
-        query = query.filter_by(animal_id=int(animal_filter))
-
-    vet_records = query.all()
 
     # Créez un dictionnaire pour stocker le nombre de consultations par animal
     consultation_counts = {animal.id: 0 for animal in animals}
     for record in vet_records:
-        consultation_counts[record.animal_id] += 1
+        consultation_counts[record.animal_id] += record.consultation_count
 
     return render_template('admin.html', animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
 
+
+import commands
+
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # Crée la base de données si elle n'existe pas
+    app.run(debug=True)
 # @app.route('/admin', methods=['GET', 'POST'])
 # def admin():
 #     if request.method == 'POST':
@@ -361,14 +429,7 @@ def admin():
 #         consultation_counts[record.animal_id] += 1
 
 #     return render_template('admin.html', animals=animals, vet_records=vet_records, habitats=habitats)
-
-
-import commands
-
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # Crée la base de données si elle n'existe pas
-    app.run(debug=True)
+# ****************************************
 
 # from flask import Flask, render_template, request, redirect, url_for, flash
 # from flask_sqlalchemy import SQLAlchemy

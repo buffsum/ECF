@@ -143,16 +143,50 @@
                                             {% endfor %}
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
-
-                        
                     </div>
                 </div>
             </div>
-            
+        </section>
+        <!-- Statistiques des consultations -->
+        <section class="page-section2 cta2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-14 mx-auto">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2">- statistiques de consultations -</span>
+                                    </h2>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Animal</th>
+                                                <th>Nombre de Consultations</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for animal in animals %}
+                                            <tr>
+                                                <td>{{ animal.name }}</td>
+                                                <td>{{ consultation_counts[animal.id] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Afficher les messages de confirmation -->
+
 
         <!-- *********** Footer ************ -->
         <footer class="footer text-faded text-center py-5">

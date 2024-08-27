@@ -39,12 +39,12 @@ document.addEventListener("DOMContentLoaded", function() {
             const details = this.querySelector('.details');
             if (details.style.display === 'none' || details.style.display === '') {
                 details.style.display = 'block';
+                incrementConsultation(this.id.replace('avis', '').replace('_H1', ''));  // Extrait l'ID de l'animal
             } else {
                 details.style.display = 'none';
             }
 
             // Envoyer une requête pour enregistrer le clic
-            incrementConsultation(this.id.replace('avis', '').replace('_H1', ''));  // Extrait l'ID de l'animal
         });
 
         // Vérifier si l'élément est dans la fenêtre au chargement

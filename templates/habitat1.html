@@ -106,7 +106,8 @@
                                     {% endif %}
                                     <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="{{ url_for('static', filename='assets/img/' ~ animal.image) }}" alt="{{ animal.name }}" />
                                 </div>
-                                <!-- <div class="encadrement2" id="avis{{ animal.name }}_H1">
+                                <!-- Avis du vétérinaire -->
+                                <div class="encadrement2" id="avis{{ animal.id }}_H1">
                                     <p class="title">Avis du vétérinaire</p>
                                     {% if vet_records_by_animal[animal.id] %}
                                         <p class="details">
@@ -117,30 +118,14 @@
                                             Détails: {{ vet_records_by_animal[animal.id].details }}<br>
                                             Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br>
                                         </p>
+                                        <!-- Formulaire pour incrémenter le compteur de consultations -->
+                                        <!-- <form action="{{ url_for('increment_consultation', record_id=vet_records_by_animal[animal.id].id) }}" method="post">
+                                            <button type="submit" class="btn btn-primary">Consulter</button>
+                                        </form> -->
                                     {% else %}
                                         <p class="details">Aucun enregistrement vétérinaire disponible.</p>
                                     {% endif %}
-                                </div>   
-                                                              -->
-                                                              <div class="encadrement2" id="avis{{ animal.name }}_H1">
-                                                                <p class="title">Avis du vétérinaire</p>
-                                                                {% if vet_records_by_animal[animal.id] %}
-                                                                    <p class="details">
-                                                                        Date: {{ vet_records_by_animal[animal.id].date }}<br>
-                                                                        État de l'animal: {{ vet_records_by_animal[animal.id].health_status }}<br>
-                                                                        Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
-                                                                        Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br>
-                                                                        Détails: {{ vet_records_by_animal[animal.id].details }}<br>
-                                                                        Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br>
-                                                                    </p>
-                                                                    <!-- Formulaire pour incrémenter le compteur de consultations -->
-                                                                    <form action="{{ url_for('increment_consultation', record_id=vet_records_by_animal[animal.id].id) }}" method="post">
-                                                                        <button type="submit" class="btn btn-primary">Consulter</button>
-                                                                    </form>
-                                                                {% else %}
-                                                                    <p class="details">Aucun enregistrement vétérinaire disponible.</p>
-                                                                {% endif %}
-                                                            </div>     
+                                </div>     
                             </div>
                         </div>
                         {% endfor %}

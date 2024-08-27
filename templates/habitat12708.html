@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>{{ habitat.name }}</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" />
+    
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
+    
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <header class="text-center">
+        <a href="{{ url_for('home') }}">
+            <img class="img-logo center" src="{{ url_for('static', filename='assets/img/logo.png') }}" alt="logo Zoo Arcadia" />
+        </a>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-connexion">Connexion</a>
+    </header>
+
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+        <div class="container">
+            <!-- quand écran petit -->
+            <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="{{ url_for('home') }}">ZOO ARCADIA</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('services') }}">Services</a></li>
+                    <li class="nav-item px-lg-4 dropdown">
+                        <a class="nav-link text-uppercase dropdown-toggle" href="{{ url_for('habitats') }}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Habitats</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('habitats') }}">Voir tous les habitats</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=1) }}">Habitat 1 - Savane Africaine</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=2) }}">Habitat 2 - Forêt d'eucalyptus</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=3) }}">Habitat 3 - Forêt Tempérée</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=4) }}">Habitat 4 - Jungle Tropicale</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('home') }}#avis">Avis</a></li>
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Habitat 1 -->
+    <h2 class="section-heading3 mb-4">
+        <span class="section-heading-upper text-center">{{ habitat.name }}</span>
+    </h2>
+
+    <!-- Section d'animaux -->
+    <section class="page-section2 cta2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 mx-auto">
+                    <div class="row">
+                        {% for animal in animals %}
+                        <div class="col-md-6">
+                            <div class="inner5 bg-faded text-center rounded">
+                                <h2 class="section-heading mb-4">
+                                    <span class="section-heading-lower2">- {{ animal.name }} -</span>
+                                    <span class="section-heading-upper2">{{ animal.species }}</span>
+                                </h2>
+                                <div class="encadrement">
+                                    <!-- Description spécifique pour certains animaux -->
+                                    {% if animal.name == 'Kibo' %}
+                                        <p class="mb-0">Kibo est un zèbre calme et protecteur. Il est très attaché à son groupe et veille toujours à rester près de ses compagnons. 
+                                            Bien que plus réservé que Zara, Kibo est un observateur attentif et joue un rôle clé dans la cohésion du troupeau.<br></br></p>
+                                    {% elif animal.name == 'Zara' %}
+                                        <p class="mb-0">Zara est une zèbre vive et curieuse qui adore explorer son environnement. 
+                                            Elle est souvent la première à découvrir les nouvelles zones de pâturage et montre un fort esprit de leadership au sein du troupeau. 
+                                            Ses rayures distinctives rendent Zara facilement reconnaissable parmi les autres zèbres.<br></br></p>
+                                    {% elif animal.name == 'Luna' %}
+                                        <p class="mb-0">Luna est une gazelle gracieuse et rapide. Elle est connue pour sa capacité à réagir rapidement et à bondir avec une agilité incroyable. 
+                                            Luna passe beaucoup de temps à paître, mais reste toujours alerte, prête à se déplacer en un éclair si besoin.<br></br></p>
+                                    {% elif animal.name == 'Tara' %}
+                                        <p class="mb-0">Tara est une gazelle plus tranquille, appréciant les moments de calme sous l'ombre des arbres. Elle est douce et sociable, souvent vue en compagnie de Luna. 
+                                            Tara préfère les feuilles tendres et les plantes basses qu’elle sélectionne soigneusement.<br></br></p>
+                                    {% elif animal.name == 'Mara' %}
+                                        <p class="mb-0">Mara est une girafe élégante et douce, connue pour sa grande taille et son long cou qui lui permet d’atteindre les feuilles d’acacia les plus hautes. 
+                                            Elle est souvent vue en train de brouter calmement, et sa nature paisible fait d'elle un membre apprécié du groupe.<br></br></p>
+                                    {% elif animal.name == 'Jengo' %}
+                                        <p class="mb-0">Jengo est un girafon curieux et joueur. Bien qu’encore jeune, il montre déjà une grande curiosité pour son environnement et aime suivre Mara partout. 
+                                            Jengo est en apprentissage constant, observant comment sa mère et les autres girafes se comportent.<br></br></p>
+                                    {% elif animal.name == 'Olga' %}
+                                        <p class="mb-0">Olga est la matriarche du groupe d’autruches, une figure imposante mais douce. 
+                                            Elle mène le troupeau avec assurance et utilise ses longues pattes pour couvrir rapidement le terrain lorsqu'elle se déplace. 
+                                            Olga est omnivore, appréciant une variété de plantes et d'insectes.<br></br></p>
+                                    {% elif animal.name == 'Bibi' %}
+                                        <p class="mb-0">Bibi est une autruche énergique et espiègle. Elle est toujours en mouvement, fouillant le sol à la recherche de nourriture ou interagissant avec les autres membres du troupeau. 
+                                            Sa vivacité fait d'elle une autruche très divertissante à observer.<br></br></p>
+                                    {% elif animal.name == 'Rico' %}
+                                        <p class="mb-0">Rico est le plus jeune du groupe, mais il est déjà très curieux. Il suit souvent Olga et Bibi, apprenant d'elles comment se comporter. 
+                                            Rico est encore en pleine croissance, mais il montre déjà un grand appétit pour les graines et les petits insectes.<br></br></p>
+                                    {% elif animal.name == 'Togo' %}
+                                        <p class="mb-0">Togo est un phacochère robuste et plein de caractère. Connu pour ses défenses impressionnantes, il passe ses journées à fouiller le sol avec son museau en quête de racines et d’invertébrés. 
+                                            Malgré son apparence rustique, Togo est un animal intelligent et adaptable, bien intégré dans son environnement.<br></br></p>
+                                    {% else %}
+                                        <p class="mb-0">Description générique pour {{ animal.name }}<br></br></p>
+                                    {% endif %}
+                                    <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="{{ url_for('static', filename='assets/img/' ~ animal.image) }}" alt="{{ animal.name }}" />
+                                </div>
+                                <!-- Avis du vétérinaire -->
+                                <!-- <div class="encadrement2" id="avis{{ animal.name }}_H1">
+                                    <p class="title">Avis du vétérinaire</p>
+                                    {% if vet_records_by_animal[animal.id] %}
+                                        <p class="details">
+                                            Date: {{ vet_records_by_animal[animal.id].date }}<br>
+                                            État de l'animal: {{ vet_records_by_animal[animal.id].health_status }}<br>
+                                            Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
+                                            Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br>
+                                            Détails: {{ vet_records_by_animal[animal.id].details }}<br>
+                                            Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br>
+                                        </p>
+                                        Formulaire pour incrémenter le compteur de consultations
+                                        <form action="{{ url_for('increment_consultation', record_id=vet_records_by_animal[animal.id].id) }}" method="post">
+                                            <button type="submit" class="btn btn-primary">Consulter</button>
+                                        </form>
+                                    {% else %}
+                                        <p class="details">Aucun enregistrement vétérinaire disponible.</p>
+                                    {% endif %}
+                                </div>      -->
+                                <!-- <button class="vet-record-button btn btn-primary" data-animal-id="{{ animal.id }}">Avis vétérinaire</button>
+                                    <div class="vet-record-details" id="vet-record-{{ animal.id }}" style="display:none;">
+                                        {% if vet_records_by_animal[animal.id] %}
+                                        <p class="details">
+                                            Date: {{ vet_records_by_animal[animal.id].date }}<br>
+                                            État de l'animal: {{ vet_records_by_animal[animal.id].health_status }}<br>
+                                            Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
+                                            Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br>
+                                            Détails: {{ vet_records_by_animal[animal.id].details }}<br>
+                                            Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br>
+                                        </p>
+                                    {% else %}
+                                        <p class="details">Aucun enregistrement vétérinaire disponible.</p>
+                                    {% endif %}
+                                    </div> -->
+                                <!-- Avis du vétérinaire -->
+                                <div class="encadrement2" id="avis{{ animal.name }}_H1">
+                                    <p class="title">Avis du vétérinaire</p>
+                                    {% if vet_records_by_animal[animal.id] %}
+                                        <p class="details" style="display: none;">
+                                            Date: {{ vet_records_by_animal[animal.id].date }}<br>
+                                            État de l'animal: {{ vet_records_by_animal[animal.id].health_status }}<br>
+                                            Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
+                                            Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br>
+                                            Détails: {{ vet_records_by_animal[animal.id].details }}<br>
+                                            Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br>
+                                        </p>
+
+                                        <!-- Formulaire pour incrémenter le compteur de consultations -->
+                                        <form id="incrementForm_{{ animal.id }}" action="{{ url_for('increment_consultation', record_id=vet_records_by_animal[animal.id].id) }}" method="post" style="display:none;">
+                                            <!-- Ce formulaire est caché, vous pouvez utiliser JavaScript pour le soumettre automatiquement si nécessaire -->
+                                            <form id="incrementForm" action="{{ url_for('increment_consultation') }}" method="post" style="display:none;">
+                                                <input type="hidden" name="avisId" value="1">  <!-- Valeur dynamique basée sur l'animal -->
+                                            </form>
+                                            <button onclick="document.getElementById('incrementForm').submit();">Test Form Submit</button>
+                                        </form>
+                                        
+                                    {% else %}
+                                        <p class="details" style="display: none;">Aucun enregistrement vétérinaire disponible.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <footer class="footer text-faded text-center py-5">
+        <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

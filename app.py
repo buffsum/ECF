@@ -27,7 +27,7 @@ class Habitat(db.Model):
     image = db.Column(db.String(200))
     animals = db.relationship('Animal', backref='habitat', lazy=True)
     # Pour le compteur de consultations
-    consultation_count = db.Column(db.Integer, default=0)
+    # consultation_count = db.Column(db.Integer, default=0)
 
 class Animal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,10 +36,10 @@ class Animal(db.Model):
     image = db.Column(db.String(200))
     habitat_id = db.Column(db.Integer, db.ForeignKey('habitat.id'), nullable=False)
     vet_records = db.relationship('VetRecord', back_populates='animal', lazy=True)
-    consultation_count = db.Column(db.Integer, default=0)  # Nouvelle colonne pour le compteur de consultations
+    # consultation_count = db.Column(db.Integer, default=0)  # Nouvelle colonne pour le compteur de consultations
 
 class VetRecord(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date = db.Column(db.Date, nullable=False)
     food = db.Column(db.String(100), nullable=False)
     weight = db.Column(db.Float, nullable=False)
@@ -97,6 +97,7 @@ def habitat(habitat_id):
         # Trier les enregistrements vétérinaires par date en ordre décroissant et prendre le premier
         last_vet_record = VetRecord.query.filter_by(animal_id=animal.id).order_by(VetRecord.date.desc()).first()
         last_vet_records_by_animal[animal.id] = last_vet_record
+        print(f"Animal ID: {animal.id}, Consultation Count: {last_vet_record.consultation_count if last_vet_record else 'No records'}")  # Ajoute ceci pour déboguer
 
     # Générez le nom du template basé sur l'habitat_id
     template_name = f'habitat{habitat_id}.html'
@@ -104,11 +105,36 @@ def habitat(habitat_id):
     # Rendre le template correspondant avec les données nécessaires
     return render_template(template_name, habitat=habitat, animals=animals, vet_records_by_animal=last_vet_records_by_animal)
 
-@app.route('/increment-consultation/<int:record_id>', methods=['POST'])
-def increment_consultation(record_id):
-    vet_record = VetRecord.query.get_or_404(record_id)  # Récupère l'enregistrement vétérinaire par ID
-    vet_record.consultation_count += 1  # Incrémente le compteur de consultations
+@app.route('/increment-consultation/<int:animal_id_here>', methods=['POST'])
+def increment_consultation(animal_id_here):
+    # vet_record = VetRecord.query.get_or_404(record_id)  # Récupère l'enregistrement vétérinaire par ID
+    # animal_id = VetRecord.query.get_or_404(record_id).animal_id
+    animal_in_question = Animal.query.get_or_404(animal_id_here)  # Récupère l'enregistrement vétérinaire par ID
+    
+    animals = Animal.query.filter_by(habitat_id=animal_in_question.habitat_id).all()
+
+    # Récupère le dernier enregistrement vétérinaire pour chaque animal de l'habitat
+    last_vet_records_by_animal = {}
+    for animal in animals:
+        # Trier les enregistrements vétérinaires par date en ordre décroissant et prendre le premier
+        last_vet_record = VetRecord.query.filter_by(animal_id=animal.id).order_by(VetRecord.date.desc()).first()
+        last_vet_records_by_animal[animal.id] = last_vet_record
+    #print(f"TEST : {record_id}, {vet_record.animal_id}")
+    last_vet_record = last_vet_records_by_animal.get(animal_id_here)
+
+    if last_vet_record:
+        print(f"TEST animal id: {animal_id_here}, vet record id : {last_vet_record.id}")
+    else:
+        print(f"TEST animal id: {animal_id_here}, no vet records found")
+
+    #print(f"TEST animal id: {animal_id_here}, vet record id : {animal_in_question.vet_records[last_vet_record.id]}")
+    #print(f"Before Increment - VetRecord ID: {vet_record.id}, Animal ID: {vet_record.animal_id}, Current Count: {vet_record.consultation_count}")
+    last_vet_record.consultation_count += 1  # Incrémente le compteur de consultations
+
+
     db.session.commit()  # Enregistre les modifications dans la base de données
+    # print(f"After Increment - Animal ID: {vet_record.animal_id}, VetRecord ID: {vet_record.id}, New Count: {vet_record.consultation_count}")
+    #print(f"After Increment - VetRecord ID: {vet_record.id}, Animal ID: {vet_record.animal_id}, New Count: {vet_record.consultation_count}")
     return redirect(request.referrer)  # Redirige vers la page précédente
     # return '', 204  # Réponse vide avec statut HTTP 204 No Content
 
@@ -165,9 +191,15 @@ def admin():
     habitats = Habitat.query.all()  # Ajoutez cette ligne pour récupérer les habitats
 
     # Créez un dictionnaire pour stocker le nombre de consultations par animal
+    # consultation_counts = {animal.id: 0 for animal in animals}
+    # for record in vet_records:
+    #     consultation_counts[record.animal_id] += record.consultation_count
+    #     # count ou counts ??
+    #     # consultation_counts[record.animal_id] += 1
+    # return render_template('admin.html', animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
     consultation_counts = {animal.id: 0 for animal in animals}
     for record in vet_records:
-        consultation_counts[record.animal_id] += record.consultation_count
+        consultation_counts[record.animal_id] += record.consultation_count  # Utilise la valeur actuelle de consultation_count
 
     return render_template('admin.html', animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
 

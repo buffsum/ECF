@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Fonction pour vérifier si un élément est dans la fenêtre
+    // Fonction pour vérifier si un élément est dans la fenêtre - UTILE ?
     function isElementInViewport(el) {
         const rect = el.getBoundingClientRect();
         return (
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Fonction pour envoyer une requête pour incrémenter le compteur
     function incrementConsultation(avisId) {
+        console.log('Starting incrementConsultation : avisId is :', avisId);
         fetch('/increment-consultation/' + avisId, {  // URL adaptée à votre route Flask
             method: 'POST',
             headers: {
@@ -22,6 +23,8 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => {
             if (response.ok) {
                 console.log('Consultation count incremented');
+                // console.log('Consultation count incremented for avisId:', avisId);
+                // console.log('recoooord id is :', vet_records.animal_id);
             } else {
                 console.error('Error incrementing consultation count');
             }
@@ -31,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Sélectionner tous les éléments avec la classe 'encadrement2'
+    // Sélectionner/ouvrir tous les éléments avec la classe 'encadrement2'
     const avisElements = document.querySelectorAll('.encadrement2');
     avisElements.forEach(function(div) {
         // Afficher ou masquer les détails au clic
@@ -39,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const details = this.querySelector('.details');
             if (details.style.display === 'none' || details.style.display === '') {
                 details.style.display = 'block';
+                // console.log('id beforeincrement is:', this.id)
                 incrementConsultation(this.id.replace('avis', '').replace('_H1', ''));  // Extrait l'ID de l'animal
             } else {
                 details.style.display = 'none';
@@ -49,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Vérifier si l'élément est dans la fenêtre au chargement
         if (isElementInViewport(div)) {
-            incrementConsultation(div.id.replace('avis', '').replace('_H1', ''));  // Extrait l'ID de l'animal
+            incrementConsultation(div.id.replace('avis', '').replace('_H2', ''));  // Extrait l'ID de l'animal
         }
     });
 

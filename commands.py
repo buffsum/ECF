@@ -78,6 +78,7 @@ def load_vet_records_from_json():
     try:
         with open('vet_records.json', 'r') as file:
             vet_records = json.load(file)
+            print(f"Loaded vet records: {vet_records}")  # Ajoutez cette ligne pour déboguer
             return vet_records
     except FileNotFoundError:
         return []

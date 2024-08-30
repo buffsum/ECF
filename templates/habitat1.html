@@ -106,8 +106,8 @@
                                     {% endif %}
                                     <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="{{ url_for('static', filename='assets/img/' ~ animal.image) }}" alt="{{ animal.name }}" />
                                 </div>
-                                <!-- Avis du vétérinaire -->
-                                <div class="encadrement2" id="avis{{ animal.id }}_H1">
+                                <!-- Avis du vétérinaire - à voir si je supprime _H1 ou que je change pour les autres habitats -->
+                                <div class="encadrement2" id="avis{{ animal.id }}_H1"> 
                                     <p class="title">Avis du vétérinaire</p>
                                     {% if vet_records_by_animal[animal.id] %}
                                         <p class="details">
@@ -118,10 +118,6 @@
                                             Détails: {{ vet_records_by_animal[animal.id].details }}<br>
                                             Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br>
                                         </p>
-                                        <!-- Formulaire pour incrémenter le compteur de consultations -->
-                                        <!-- <form action="{{ url_for('increment_consultation', record_id=vet_records_by_animal[animal.id].id) }}" method="post">
-                                            <button type="submit" class="btn btn-primary">Consulter</button>
-                                        </form> -->
                                     {% else %}
                                         <p class="details">Aucun enregistrement vétérinaire disponible.</p>
                                     {% endif %}

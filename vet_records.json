@@ -9,28 +9,13 @@
     },
     {
         "date": "2024-08-24",
-        "food": "test15",
-        "weight": 55.0,
-        "health_status": "test15",
-        "details": "test15 mara",
-        "animal_id": 5
-    },
-    {
-        "date": "2024-08-24",
         "food": "test16",
         "weight": 56.0,
         "health_status": "test16",
         "details": "test16 pour mara",
         "animal_id": 5
     },
-    {
-        "date": "2024-08-24",
-        "food": "carotte et petit poiddss",
-        "weight": 20.0,
-        "health_status": "Tout va bien",
-        "details": "j'aimerai pouvoir ajouter plus de texte, comment faire ? ",
-        "animal_id": 5
-    },
+    
     {
         "date": "2024-08-24",
         "food": "carotte et petit poiddss",
@@ -46,5 +31,69 @@
         "health_status": "test17",
         "details": "test17 voir doublon\r\n",
         "animal_id": 5
+    },
+    {
+        "date": "2024-08-27",
+        "food": "testA",
+        "weight": 56.0,
+        "health_status": "bon",
+        "details": "ceci est un test",
+        "animal_id": 3
+    },
+    {
+        "date": "2024-08-27",
+        "food": "test2708",
+        "weight": 55.0,
+        "health_status": "test",
+        "details": "eeee",
+        "animal_id": 8
+    },
+    {
+        "date": "2024-08-28",
+        "food": "carotte",
+        "weight": 44.0,
+        "health_status": "bon ",
+        "details": "rien \u00e0 dire",
+        "animal_id": 3
+    },
+    {
+        "date": "2024-08-28",
+        "food": "bl\u00e9",
+        "weight": 50.0,
+        "health_status": "bon",
+        "details": "rien \u00e0 signaler",
+        "animal_id": 4
+    },
+    {
+        "date": "2024-08-28",
+        "food": "carotte",
+        "weight": 80.0,
+        "health_status": "bon",
+        "details": "mise \u00e0 jour Jengo",
+        "animal_id": 6
+    },
+    {
+        "date": "2024-08-28",
+        "food": "feuille",
+        "weight": 100.0,
+        "health_status": "bon",
+        "details": "avis pour Togo",
+        "animal_id": 10
+    },
+    {
+        "date": "2024-08-28",
+        "food": "pain",
+        "weight": 20.0,
+        "health_status": "bon",
+        "details": "avis pour Olga",
+        "animal_id": 7
+    },
+    {
+        "date": "2024-08-28",
+        "food": "bl\u00e9",
+        "weight": 20.0,
+        "health_status": "bon",
+        "details": "Avis pour Rico",
+        "animal_id": 9
     }
 ]

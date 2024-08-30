@@ -49,16 +49,68 @@ class VetRecord(db.Model):
     animal = db.relationship('Animal', back_populates='vet_records')
     consultation_count = db.Column(db.Integer, default=0)  # Nouveau champ pour le compteur de consultations
 
-class Review(db.Model):
+# class Review(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     visitor_name = db.Column(db.String(100), nullable=False)
+#     content = db.Column(db.Text, nullable=False)
+#     approved = db.Column(db.Boolean, default=False)  # Non approuvé par défaut
+
+class Avis(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    visitor_name = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    approved = db.Column(db.Boolean, default=False)  # Non approuvé par défaut
+    nom = db.Column(db.String(100), nullable=False)
+    pseudo = db.Column(db.String(100), nullable=False)
+    titre = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    approuve = db.Column(db.Boolean, default=False)
 
 # Routes pour les différentes pages
+
+# ******** REVIEW ********
+@app.route('/submit_review', methods=['POST'])
+def submit_review():
+    nom = request.form['nom']
+    pseudo = request.form['pseudo']
+    titre = request.form['title']
+    message = request.form['message']
+    
+    nouvel_avis = Avis(nom=nom, pseudo=pseudo, titre=titre, message=message)
+    db.session.add(nouvel_avis)
+    db.session.commit()
+    
+    flash('Votre avis a été soumis et est en attente de validation.')
+    return redirect(url_for('home'))
+
+@app.route('/approve_review/<int:avis_id>')
+def approve_review(avis_id):
+    avis = Avis.query.get_or_404(avis_id)
+    avis.approuve = True
+    db.session.commit()
+    flash('Avis approuvé.')
+    return redirect(url_for('admin'))
+
+@app.route('/disapprove_review/<int:avis_id>')
+def disapprove_review(avis_id):
+    avis = Avis.query.get_or_404(avis_id)
+    db.session.delete(avis)
+    db.session.commit()
+    flash('Avis supprimé.')
+    return redirect(url_for('admin'))
+
+@app.route('/delete_review/<int:avis_id>', methods=['POST'])
+def delete_review(avis_id):
+    avis = Avis.query.get_or_404(avis_id)
+    db.session.delete(avis)
+    db.session.commit()
+    flash('Avis supprimé avec succès.', 'success')
+    return redirect(url_for('admin'))
+
+# ******** FIN REVIEW ********
+
 @app.route('/')
 def home():
-    return render_template('index.html')
+    # Récupérer les avis validés (approuvés)
+    avis_valides = Avis.query.filter_by(approuve=True).all()
+    return render_template('index.html', avis_valides=avis_valides)
 
 @app.route('/login')
 def login():
@@ -217,7 +269,10 @@ def admin():
     for record in vet_records:
         consultation_counts[record.animal_id] += record.consultation_count  # Utilise la valeur actuelle de consultation_count
 
-    return render_template('admin.html', animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
+    avis_a_valider = Avis.query.filter_by(approuve=False).all()
+    # return render_template('admin.html', avis_a_valider=avis_a_valider)
+
+    return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
 
 import commands
 

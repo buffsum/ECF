@@ -11363,6 +11363,23 @@ fieldset {
 }
 
 
+/* avis */
+.list-group-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.list-group-item h5 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.list-group-item p {
+  margin: 0;
+  font-size: 1rem;
+}
 
 
 /* Connexion */
@@ -11571,3 +11588,4 @@ body {
   border: 1px solid #ccc;
   font-family: inherit;
 } */
+

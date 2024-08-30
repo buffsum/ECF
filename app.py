@@ -186,8 +186,24 @@ def admin():
             db.session.rollback()
             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
 
+    # Récupérer les valeurs des filtres depuis le formulaire
+    filter_date = request.args.get('date')
+    filter_animal_id = request.args.get('animal_id')
+
+    # Commencer par une requête qui ne filtre rien
+    query = VetRecord.query
+
+    # Appliquer un filtre par date si une date est spécifiée
+    if filter_date:
+        query = query.filter(VetRecord.date == date.fromisoformat(filter_date))
+
+    # Appliquer un filtre par animal_id si un animal est spécifié
+    if filter_animal_id:
+        query = query.filter(VetRecord.animal_id == filter_animal_id)
+
     animals = Animal.query.all()
-    vet_records = VetRecord.query.all()
+    # vet_records = VetRecord.query.all()
+    vet_records = query.all()
     habitats = Habitat.query.all()  # Ajoutez cette ligne pour récupérer les habitats
 
     # Créez un dictionnaire pour stocker le nombre de consultations par animal

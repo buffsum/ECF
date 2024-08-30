@@ -15,7 +15,6 @@
         "details": "test16 pour mara",
         "animal_id": 5
     },
-    
     {
         "date": "2024-08-24",
         "food": "carotte et petit poiddss",
@@ -95,5 +94,61 @@
         "health_status": "bon",
         "details": "Avis pour Rico",
         "animal_id": 9
+    },
+    {
+        "date": "2024-08-30",
+        "food": "test 11",
+        "weight": 11.0,
+        "health_status": "test 11",
+        "details": "test 11 eucalyptus",
+        "animal_id": 11
+    },
+    {
+        "date": "2024-08-30",
+        "food": "test 12",
+        "weight": 12.0,
+        "health_status": "test 12",
+        "details": "test 12 bambou",
+        "animal_id": 12
+    },
+    {
+        "date": "2024-08-30",
+        "food": "test 13",
+        "weight": 13.0,
+        "health_status": "test 13",
+        "details": "test walt",
+        "animal_id": 13
+    },
+    {
+        "date": "2024-08-30",
+        "food": "test 21",
+        "weight": 21.0,
+        "health_status": "test 21",
+        "details": "test grizz",
+        "animal_id": 21
+    },
+    {
+        "date": "2024-08-30",
+        "food": "test 22",
+        "weight": 22.0,
+        "health_status": "test 22",
+        "details": "test willow",
+        "animal_id": 22
+    },
+    {
+        "date": "2024-08-30",
+        "food": "test 13",
+        "weight": 22.0,
+        "health_status": "22",
+        "details": "22",
+        "animal_id": 1
+    },
+    {
+        "date": "2024-08-30",
+        "food": "test 13",
+        "weight": 22.0,
+        "health_status": "22",
+        "details": "22",
+        "animal_id": 1
     }
 ]

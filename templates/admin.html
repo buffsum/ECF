@@ -187,48 +187,48 @@
 
         <!-- Avis -->
          <!-- Section pour la modération des avis -->
-        <section class="page-section2 cta2">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-14 mx-auto">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="inner5 bg-faded text-center rounded">
-                                    <h2 class="section-heading mb-4">
-                                        <span class="section-heading-lower2">- Modération des Avis -</span>
-                                    </h2>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Nom</th>
-                                                <th>Pseudo</th>
-                                                <th>Titre</th>
-                                                <th>Message</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for avis in avis_a_valider %}
-                                            <tr>
-                                                <td>{{ avis.nom }}</td>
-                                                <td>{{ avis.pseudo }}</td>
-                                                <td>{{ avis.titre }}</td>
-                                                <td>{{ avis.message }}</td>
-                                                <td>
-                                                    <a href="{{ url_for('approve_review', avis_id=avis.id) }}" class="btn btn-success">Approuver</a>
-                                                    <a href="{{ url_for('disapprove_review', avis_id=avis.id) }}" class="btn btn-danger">Supprimer</a>
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
+    <section class="page-section2 cta2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-14 mx-auto">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="inner5 bg-faded text-center rounded">
+                                <h2 class="section-heading mb-4">
+                                    <span class="section-heading-lower2">- Modération des Avis -</span>
+                                </h2>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nom</th>
+                                            <th>Pseudo</th>
+                                            <th>Titre</th>
+                                            <th>Message</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for avis in avis_a_valider %}
+                                        <tr>
+                                            <td>{{ avis.nom }}</td>
+                                            <td>{{ avis.pseudo }}</td>
+                                            <td>{{ avis.titre }}</td>
+                                            <td>{{ avis.message }}</td>
+                                            <td>
+                                                <a href="{{ url_for('approve_review', avis_id=avis.id) }}" class="btn btn-success">Approuver</a>
+                                                <a href="{{ url_for('disapprove_review', avis_id=avis.id) }}" class="btn btn-danger">Supprimer</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
 

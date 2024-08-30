@@ -63,9 +63,6 @@ class Avis(db.Model):
     message = db.Column(db.Text, nullable=False)
     approuve = db.Column(db.Boolean, default=False)
 
-# Routes pour les différentes pages
-
-# ******** REVIEW ********
 @app.route('/submit_review', methods=['POST'])
 def submit_review():
     nom = request.form['nom']
@@ -79,6 +76,11 @@ def submit_review():
     
     flash('Votre avis a été soumis et est en attente de validation.')
     return redirect(url_for('home'))
+
+# @app.route('/admin')
+# def admin():
+#     avis_a_valider = Avis.query.filter_by(approuve=False).all()
+#     return render_template('admin.html', avis_a_valider=avis_a_valider)
 
 @app.route('/approve_review/<int:avis_id>')
 def approve_review(avis_id):
@@ -96,21 +98,14 @@ def disapprove_review(avis_id):
     flash('Avis supprimé.')
     return redirect(url_for('admin'))
 
-@app.route('/delete_review/<int:avis_id>', methods=['POST'])
-def delete_review(avis_id):
-    avis = Avis.query.get_or_404(avis_id)
-    db.session.delete(avis)
-    db.session.commit()
-    flash('Avis supprimé avec succès.', 'success')
-    return redirect(url_for('admin'))
-
-# ******** FIN REVIEW ********
+# Routes pour les différentes pages
 
 @app.route('/')
 def home():
     # Récupérer les avis validés (approuvés)
     avis_valides = Avis.query.filter_by(approuve=True).all()
     return render_template('index.html', avis_valides=avis_valides)
+
 
 @app.route('/login')
 def login():

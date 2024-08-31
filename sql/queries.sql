@@ -12,3 +12,6 @@ SELECT * FROM animal WHERE id = 1;
 
 -- Voir les fiches vétérinaires pour un animal spécifique
 SELECT * FROM vet_record WHERE animal_id = 1;
+
+-- Pour chopper les users
+SELECT * FROM user;

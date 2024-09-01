@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 from functools import wraps
 
 from flask_wtf import FlaskForm
+from flask_migrate import Migrate
 from wtforms import StringField, TextAreaField, SubmitField, MultipleFileField
 from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
@@ -26,6 +27,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialisation de l'extension SQLAlchemy
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Modèles
 class User(db.Model):
@@ -73,6 +75,12 @@ class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
+    images = db.Column(db.PickleType, nullable=True)  # Utilisation de PickleType pour stocker une liste d'images
+
+    def __init__(self, title, description, images=None):
+        self.title = title
+        self.description = description
+        self.images = images if images is not None else []
 
 class ServiceForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -191,7 +199,12 @@ def new_service():
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image_filenames.append(filename)
-        # Sauvegarder le service et les images dans la base de données
+        
+        # Ajout du service à la base de données
+        new_service = Service(title=title, description=description, images=image_filenames)
+        db.session.add(new_service)
+        db.session.commit()  # Assurez-vous que cette ligne est présente pour enregistrer les changements
+        
         flash('Service added successfully!', 'success')
         return redirect(url_for('services'))
     return render_template('service_form.html', form=form)

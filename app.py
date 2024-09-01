@@ -1,11 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session
 from functools import wraps
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, SubmitField, MultipleFileField
+from wtforms.validators import DataRequired
+from werkzeug.utils import secure_filename
+import os
+
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 import json
 
 app = Flask(__name__)
+# app.config['UPLOAD_FOLDER'] = 'static/uploads/'
+app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
+# Assurez-vous que le dossier existe
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
 # Configuration de la base de données SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zoo.db'
@@ -56,6 +68,18 @@ class Avis(db.Model):
     message = db.Column(db.Text, nullable=False)
     approuve = db.Column(db.Boolean, default=False)
 
+# *********** SERVICES ***********
+class Service(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+
+class ServiceForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    images = MultipleFileField('Images')
+    submit = SubmitField('Submit')
+
 def role_required(role):
     def decorator(f):
         @wraps(f)
@@ -81,7 +105,7 @@ def submit_review():
     db.session.commit()
     
     flash('Votre avis a été soumis et est en attente de validation.')
-    return redirect(url_for('index'))
+    return redirect(url_for('home'))
 
 @app.route('/approve_review/<int:avis_id>')
 def approve_review(avis_id):
@@ -145,9 +169,87 @@ def register():
 def contact():
     return render_template('contact.html')
 
+# *********** ROUTES SERVICES ***********
 @app.route('/services')
 def services():
-    return render_template('services.html')
+    services = Service.query.all()
+    # print(testservices)  # Ajoutez cette ligne pour vérifier les services récupérés
+    return render_template('services.html', services=services)
+
+@app.route('/service/new', methods=['GET', 'POST'])
+def new_service():
+    if 'user_role' not in session or session['user_role'] != 'admin':
+        return redirect(url_for('login'))
+    
+    form = ServiceForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        description = form.description.data
+        images = form.images.data
+        image_filenames = []
+        for image in images:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            image_filenames.append(filename)
+        # Sauvegarder le service et les images dans la base de données
+        flash('Service added successfully!', 'success')
+        return redirect(url_for('services'))
+    return render_template('service_form.html', form=form)
+
+@app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
+def edit_service(service_id):
+    if 'user_role' not in session or session['user_role'] != 'admin':
+        return redirect(url_for('login'))
+    service = Service.query.get_or_404(service_id)
+    form = ServiceForm()
+    if form.validate_on_submit():
+        service.title = form.title.data
+        service.description = form.description.data
+        db.session.commit()
+        flash('Service updated successfully!', 'success')
+        return redirect(url_for('services'))
+    elif request.method == 'GET':
+        form.title.data = service.title
+        form.description.data = service.description
+    return render_template('service_form.html', form=form)
+
+@app.route('/service/<int:service_id>/delete', methods=['POST'])
+def delete_service(service_id):
+    if 'user_role' not in session or session['user_role'] != 'admin':
+        return redirect(url_for('login'))
+    service = Service.query.get_or_404(service_id)
+    db.session.delete(service)
+    db.session.commit()
+    flash('Service deleted successfully!', 'success')
+    return redirect(url_for('services'))
+# @app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
+# def edit_service(service_id):
+#     if 'user_role' not in session or session['user_role'] != 'admin':
+#         return redirect(url_for('login'))
+#     service = Service.query.get_or_404(service_id)
+#     form = ServiceForm()
+#     if form.validate_on_submit():
+#         service.title = form.title.data
+#         service.description = form.description.data
+#         db.session.commit()
+#         flash('Service updated successfully!', 'success')
+#         return redirect(url_for('services'))
+#     elif request.method == 'GET':
+#         form.title.data = service.title
+#         form.description.data = service.description
+#     return render_template('service_form.html', form=form)
+
+# @app.route('/service/<int:service_id>/delete', methods=['POST'])
+# def delete_service(service_id):
+#     if 'user_role' not in session or session['user_role'] != 'admin':
+#         return redirect(url_for('login'))
+#     service = Service.query.get_or_404(service_id)
+#     db.session.delete(service)
+#     db.session.commit()
+#     flash('Service deleted successfully!', 'success')
+#     return redirect(url_for('services'))
+
+# *********** FIN SERVICES ***********
 
 @app.route('/habitats')
 def habitats():

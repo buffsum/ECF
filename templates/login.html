@@ -4,17 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/connexion.css" rel="stylesheet" />
     <title>Connexion</title>
+</head>
 <body>
-    <h1>Login</h1>
-    <form method="POST" action="{{ url_for('login') }}">
-        <label for="username">Nom d'utilisateur:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        <label for="password">Mot de passe:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <button type="submit">Se connecter</button>
-    </form>
-</body>
+    <div class="container" onclick="handleClick()">
+        <a href="{{ url_for('home') }}" class="back-arrow">&#8592; Retour</a>
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="center">
+        <form method="POST" action="{{ url_for('login') }}">
+            <h2>Connexion</h2>
+            <label for="username" class="white-text">Nom d'utilisateur:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password" class="white-text">Mot de passe:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <button type="submit" class="btn-center">Se connecter</button>
+            <h2>&nbsp;</h2>
+        </form>
+        </div>
+    </div>
 </html>

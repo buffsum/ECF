@@ -18,16 +18,27 @@
 <body>
     <header class="text-center">
         <a href="{{ url_for('home') }}">
-            <img class="img-logo center" src="{{ url_for('static', filename='assets/img/logo.png') }}" alt="logo Zoo Arcadia" />
+            <img class="img-logo center" src="/static/assets/img/logo.png" alt="logo Zoo Arcadia" />
         </a>
-        <a href="{{ url_for('register') }}" class="btn btn-primary btn-connexion">Connexion</a>
+        <ul class="nav-btn">
+            {% if 'user_id' in session %}
+                <li class="nav-item-btn">
+                    <a href="{{ url_for('logout') }}" class="btn btn-primary btn-connexion">Déconnexion</a>
+                </li>
+            {% else %}
+                <li class="nav-item-btn">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-connexion">Connexion</a>
+                </li>
+            {% endif %}
+        </ul>
+        <!-- <a href="{{ url_for('register') }}" class="btn btn-primary btn-connexion">Connexion</a> -->
     </header>
-
-    <!-- Navigation-->
+    
+    <!-- *********** Navigation ************ -->
+    <!-- ajouter connexion dans la navbar uniquement pour le format petit écran -->
     <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
         <div class="container">
-            <!-- quand écran petit -->
-            <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="{{ url_for('home') }}">ZOO ARCADIA</a>
+            <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">ZOO ARCADIA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto">
@@ -44,6 +55,15 @@
                     </li>
                     <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('home') }}#avis">Avis</a></li>
                     <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('contact') }}">Contact</a></li>
+                    {% if 'user_id' in session %}
+                        {% if session['user_role'] == 'admin' %}
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('admin') }}">Mon espace</a></li>
+                        {% elif session['user_role'] == 'employee' %}
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('employee') }}">Mon espace</a></li>
+                        {% elif session['user_role'] == 'veterinarian' %}
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('veterinarian') }}">Mon espace</a></li>
+                        {% endif %}
+                    {% endif %}
                 </ul>
             </div>
         </div>

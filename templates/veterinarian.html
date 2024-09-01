@@ -14,11 +14,22 @@
         <link href="../static/css/styles.css" rel="stylesheet" />
     </head>
     <body>
-        <header classe="text-center">
+        <header class="text-center">
             <a href="{{ url_for('home') }}">
                 <img class="img-logo center" src="/static/assets/img/logo.png" alt="logo Zoo Arcadia" />
             </a>
-            <a href="{{ url_for('register') }}" class="btn btn-primary btn-connexion">Connexion</a>
+            <ul class="nav-btn">
+                {% if 'user_id' in session %}
+                    <li class="nav-item-btn">
+                        <a href="{{ url_for('logout') }}" class="btn btn-primary btn-connexion">Déconnexion</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item-btn">
+                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-connexion">Connexion</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <!-- <a href="{{ url_for('register') }}" class="btn btn-primary btn-connexion">Connexion</a> -->
         </header>
         
         <!-- *********** Navigation ************ -->
@@ -42,13 +53,22 @@
                         </li>
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('home') }}#avis">Avis</a></li>
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('contact') }}">Contact</a></li>
+                        {% if 'user_id' in session %}
+                            {% if session['user_role'] == 'admin' %}
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('admin') }}">Mon espace</a></li>
+                            {% elif session['user_role'] == 'employee' %}
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('employee') }}">Mon espace</a></li>
+                            {% elif session['user_role'] == 'veterinarian' %}
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('veterinarian') }}">Mon espace</a></li>
+                            {% endif %}
+                        {% endif %}
                     </ul>
-                    
                 </div>
             </div>
         </nav>
 
         <!-- *********** Infos pratiques ************ -->
+         <p>test véto</p>
         <section class="page-section2 cta2">
             <div class="container">
                 <div class="row">

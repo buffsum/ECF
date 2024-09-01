@@ -120,6 +120,10 @@ def login():
             flash('Connexion réussie!', 'success')
             if user.role == 'admin':
                 return redirect(url_for('admin'))
+            elif user.role == 'employee':
+                return redirect(url_for('employee'))
+            elif user.role == 'veterinarian':
+                return redirect(url_for('veterinarian'))
             else:
                 return redirect(url_for('home'))
         else:
@@ -131,7 +135,7 @@ def logout():
     session.pop('user_id', None)
     session.pop('user_role', None)
     flash('Vous avez été déconnecté.', 'success')
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 @app.route('/register')
 def register():
@@ -261,12 +265,12 @@ def admin():
 
 @app.route('/employee')
 @role_required('employee')
-def employee_page():
+def employee():
     return render_template('employee.html')
 
 @app.route('/veterinarian')
 @role_required('veterinarian')
-def veterinarian_page():
+def veterinarian():
     return render_template('veterinarian.html')
 
 import commands

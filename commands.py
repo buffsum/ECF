@@ -74,7 +74,7 @@ def add_data():
     db.session.commit()
 
     # Créez un utilisateur admin avec un mot de passe haché
-    admin = User(username='admin', password=generate_password_hash('adminpassword'), role='admin')
+    admin = User(username='admin', password=generate_password_hash('admin'), role='admin')
     # à voir pour les autres du coup
     db.session.add(admin)
     db.session.commit()
@@ -82,10 +82,11 @@ def add_data():
     print("Admin user created with username 'admin' and password 'adminpassword'")
 
     # Ajoute des utilisateurs avec des rôles spécifiques
-    user1 = User(username="employee", password=generate_password_hash("employeepassword"), role="employee")
-    user2 = User(username="veterinarian", password=generate_password_hash("veterinarianpassword"), role="veterinarian")
+    user1 = User(username="employee", password=generate_password_hash("employee"), role="employee")
+    user2 = User(username="veterinarian", password=generate_password_hash("veterinarian"), role="veterinarian")
+    user3 = User(username="admin2", password=generate_password_hash("admin3"), role="admin")
 
-    db.session.add_all([user1, user2])
+    db.session.add_all([user1, user2, user3])
     db.session.commit()
 
     print("Données ajoutées avec succès!")

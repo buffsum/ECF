@@ -406,5 +406,13 @@
         "health_status": "bon",
         "details": "calme",
         "animal_id": 40
+    },
+    {
+        "date": "2024-08-31",
+        "food": "eee",
+        "weight": 50.0,
+        "health_status": "ee",
+        "details": "ee",
+        "animal_id": 4
     }
 ]

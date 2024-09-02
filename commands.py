@@ -1,4 +1,4 @@
-from app import app, db, Animal, Habitat, VetRecord, User, Avis
+from app import app, db, Animal, Habitat, VetRecord, User, Avis, Service
 from werkzeug.security import generate_password_hash
 from datetime import date
 import json
@@ -112,6 +112,33 @@ def save_vet_record_to_json(vet_record):
     with open('vet_records.json', 'w') as file:
         json.dump(vet_records, file, indent=4)
 
+# SERVICES
+def save_services_to_json(file_path='services.json'):
+    services = Service.query.all()
+    services_list = []
+    for service in services:
+        services_list.append({
+            'title': service.title,
+            'description': service.description,
+            'images_url': service.images_url
+        })
+    with open(file_path, 'w') as file:
+        json.dump(services_list, file, indent=4)
+    print("Services sauvegardés dans le fichier JSON.")
+
+def load_services_from_json(file_path='services.json'):
+    with open(file_path, 'r') as file:
+        services = json.load(file)
+        for service in services:
+            new_service = Service(
+                title=service['title'],
+                description=service['description'],
+                images_url=service.get('images_url', [])
+            )
+            db.session.add(new_service)
+        db.session.commit()
+        print("Services chargés depuis le fichier JSON.")
+
 @app.cli.command("restore-data")
 def restore_data():
     vet_records = load_vet_records_from_json()
@@ -163,6 +190,33 @@ def load_avis():
         print("Avis chargés depuis le fichier JSON.")
     except FileNotFoundError:
         print("Le fichier avis.json n'existe pas.")
+
+@app.cli.command("save-services")
+def save_services():
+    save_services_to_json()
+    print("Services sauvegardés dans le fichier JSON.")
+
+@app.cli.command("load-services")
+def load_services():
+    try:
+        services = load_services_from_json()
+        for service in services:
+            new_service = Service(
+                title=service['title'],
+                description=service['description'],
+                images_url=service.get('images_url', [])
+            )
+            db.session.add(new_service)
+        db.session.commit()
+        print("Services chargés depuis le fichier JSON.")
+    except FileNotFoundError:
+        print("Le fichier services.json n'existe pas.")
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
+# @app.cli.command("load-services")
+# def load_services():
+#     load_services_from_json()
+#     print("Services chargés depuis le fichier JSON.")
 
 @app.cli.command("add-vet-record")
 def add_vet_record():

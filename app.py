@@ -14,7 +14,6 @@ from datetime import date
 import json
 
 app = Flask(__name__)
-# app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
 # Assurez-vous que le dossier existe
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
@@ -72,15 +71,15 @@ class Avis(db.Model):
 
 # *********** SERVICES ***********
 class Service(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    images_url = db.Column(db.PickleType, nullable=True)  # Utilisation de PickleType pour stocker une liste d'images
+    images_url = db.Column(db.PickleType, nullable=True)
 
-    def __init__(self, title, description, images=None):
+    def __init__(self, title, description, images_url=None):
         self.title = title
         self.description = description
-        self.images_url = images if images is not None else []
+        self.images_url = images_url if images_url is not None else []
 
 class ServiceForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -101,6 +100,19 @@ def role_required(role):
         return decorated_function
     return decorator
 
+def load_services_from_json(file_path='services.json'):
+    with open(file_path, 'r') as file:
+        services = json.load(file)
+        for service in services:
+            new_service = Service(
+                title=service['title'],
+                description=service['description'],
+                images_url=service.get('images_url', [])
+            )
+            db.session.add(new_service)
+        db.session.commit()
+        print("Services chargés depuis le fichier JSON.")
+        
 # Fonction pour sauvegarder les avis dans un fichier JSON
 def save_avis_to_json():
     avis_list = Avis.query.all()
@@ -116,6 +128,20 @@ def save_avis_to_json():
     ]
     with open('avis.json', 'w') as f:
         json.dump(avis_data, f, indent=4)
+
+# Fonction pour charger les services depuis un fichier JSON
+def load_services_from_json(file_path='services.json'):
+    with open(file_path, 'r') as file:
+        services = json.load(file)
+        for service in services:
+            new_service = Service(
+                title=service['title'],
+                description=service['description'],
+                images_url=service.get('images_url', [])
+            )
+            db.session.add(new_service)
+        db.session.commit()
+        print("Services chargés depuis le fichier JSON.")
 
 @app.route('/submit_review', methods=['POST'])
 def submit_review():
@@ -267,6 +293,8 @@ def delete_service(service_id):
     db.session.commit()
     flash('Service deleted successfully!', 'success')
     return redirect(url_for('services'))
+
+
 # @app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
 # def edit_service(service_id):
 #     if 'user_role' not in session or session['user_role'] != 'admin':

@@ -11409,11 +11409,22 @@ fieldset {
   padding-bottom: 50px; /* Ajustez cette valeur si nécessaire */
 }
 
+/* pour nouveau services */
+.cta-inner4 p {
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* position: relative; */
+  /* padding-bottom: 50px; */
+}
+
 .admin-buttons {
-  position: absolute;
-  bottom: 10px; /* Ajustez cette valeur si nécessaire */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
+  position: relative;
+  /* position: absolute; */
+  /* bottom: 10px; Ajustez cette valeur si nécessaire */
+  margin-top: 20px;
+  /* left: 50%; */
+  /* transform: translateX(-50%); */
+  /* width: 100%; */
   text-align: center;
 }

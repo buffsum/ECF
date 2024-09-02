@@ -1,0 +1,16 @@
+[
+    {
+        "nom": "test1",
+        "pseudo": "test1",
+        "titre": "test1",
+        "message": "test1",
+        "approuve": false
+    },
+    {
+        "nom": "test2",
+        "pseudo": "test2",
+        "titre": "test2",
+        "message": "test2",
+        "approuve": false
+    }
+]

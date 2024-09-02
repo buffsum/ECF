@@ -100,6 +100,7 @@ def role_required(role):
             return f(*args, **kwargs)
         return decorated_function
     return decorator
+
 # Fonction pour sauvegarder les avis dans un fichier JSON
 def save_avis_to_json():
     avis_list = Avis.query.all()

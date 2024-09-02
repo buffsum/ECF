@@ -49,6 +49,7 @@ class Animal(db.Model):
     image = db.Column(db.String(200))
     habitat_id = db.Column(db.Integer, db.ForeignKey('habitat.id'), nullable=False)
     vet_records = db.relationship('VetRecord', back_populates='animal', lazy=True)
+    description = db.Column(db.Text, nullable=True)  # Nouveau champ de description
 
 class VetRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -85,6 +86,13 @@ class ServiceForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     images = MultipleFileField('Images')
+    submit = SubmitField('Submit')
+
+class AnimalForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    species = StringField('Species', validators=[DataRequired()])
+    image = StringField('Image URL')
+    description = TextAreaField('Description')  # Nouveau champ de description
     submit = SubmitField('Submit')
 
 def role_required(role):
@@ -128,6 +136,11 @@ def save_avis_to_json():
     ]
     with open('avis.json', 'w') as f:
         json.dump(avis_data, f, indent=4)
+
+def load_avis_from_json(file_path='avis.json'):
+    with open(file_path, 'r') as file:
+        avis = json.load(file)
+    return avis
 
 # Fonction pour charger les services depuis un fichier JSON
 def load_services_from_json(file_path='services.json'):
@@ -178,6 +191,7 @@ def approve_review(avis_id):
     avis = Avis.query.get_or_404(avis_id)
     avis.approuve = True
     db.session.commit()
+    save_avis_to_json()  # Sauvegarder les avis dans un fichier JSON
     flash('Avis approuvé.')
     return redirect(url_for('admin'))
 
@@ -188,6 +202,16 @@ def disapprove_review(avis_id):
     db.session.commit()
     flash('Avis supprimé.')
     return redirect(url_for('admin'))
+
+@app.route('/delete_review/<int:avis_id>', methods=['POST'])
+# @role_required('admin')
+def delete_review(avis_id):
+    avis = Avis.query.get_or_404(avis_id)
+    db.session.delete(avis)
+    db.session.commit()
+    save_avis_to_json()  # Sauvegarder les avis dans un fichier JSON
+    flash('Avis supprimé.')
+    return redirect(url_for('home'))
 
 # Routes pour les différentes pages
 
@@ -324,6 +348,7 @@ def delete_service(service_id):
 
 # *********** FIN SERVICES ***********
 
+# ********** HABITAT + ANIMAUX*********
 @app.route('/habitats')
 def habitats():
     habitats = Habitat.query.all()
@@ -346,6 +371,54 @@ def habitat(habitat_id):
 
     template_name = f'habitat{habitat_id}.html'
     return render_template(template_name, habitat=habitat, animals=animals, vet_records_by_animal=last_vet_records_by_animal)
+
+@app.route('/animal/new/<int:habitat_id>', methods=['GET', 'POST'])
+@role_required('admin')
+def add_animal(habitat_id):
+    form = AnimalForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        species = form.species.data
+        image = form.image.data
+        description = form.description.data  # Récupérer la description
+        new_animal = Animal(name=name, species=species, image=image, description=description, habitat_id=habitat_id)
+        db.session.add(new_animal)
+        db.session.commit()
+        flash('Animal ajouté avec succès!', 'success')
+        return redirect(url_for('habitat', habitat_id=habitat_id))
+    return render_template('animal_form.html', form=form)
+
+@app.route('/animal/<int:animal_id>/edit', methods=['GET', 'POST'])
+@role_required('admin')
+def edit_animal(animal_id):
+    animal = Animal.query.get_or_404(animal_id)
+    form = AnimalForm()
+    if form.validate_on_submit():
+        animal.name = form.name.data
+        animal.species = form.species.data
+        animal.image = form.image.data
+        animal.description = form.description.data  # Mettre à jour la description
+        db.session.commit()
+        flash('Animal modifié avec succès!', 'success')
+        return redirect(url_for('habitat', habitat_id=animal.habitat_id))
+    elif request.method == 'GET':
+        form.name.data = animal.name
+        form.species.data = animal.species
+        form.image.data = animal.image
+        form.description.data = animal.description  # Pré-remplir la description
+    return render_template('animal_form.html', form=form)
+
+@app.route('/animal/<int:animal_id>/delete', methods=['POST'])
+@role_required('admin')
+def delete_animal(animal_id):
+    animal = Animal.query.get_or_404(animal_id)
+    habitat_id = animal.habitat_id
+    db.session.delete(animal)
+    db.session.commit()
+    flash('Animal supprimé avec succès!', 'success')
+    return redirect(url_for('habitat', habitat_id=habitat_id))
+
+# ********** FIN HABITAT *********
 
 @app.route('/increment-consultation/<int:animal_id_here>', methods=['POST'])
 def increment_consultation(animal_id_here):

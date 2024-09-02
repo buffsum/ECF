@@ -66,7 +66,7 @@
         </nav>
         <!-- Bouton "Ajouter un service" visible uniquement pour les administrateurs -->
 {% if 'user_role' in session and session['user_role'] == 'admin' %}
-<a href="{{ url_for('new_service') }}" class="btn btn-success mb-4">Ajouter un service</a>
+<a href="{{ url_for('new_service') }}" class="btn btn-success float-right mt-4">Ajouter un service</a>
 {% endif %}
 
 <!-- Afficher les services pour tous les utilisateurs -->
@@ -87,12 +87,30 @@
                     <div class="col-md-6">
                         <div class="cta-inner4 bg-faded text-center rounded">
                             {% if service.images_url %}
-                            <img src="{{ url_for('static', filename='uploads/' ~ service.images_url[0]) }}" class="d-block w-100" alt="{{ service.title }}">
+                            <div id="carousel{{ service.id }}" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% for image in service.images_url %}
+                                    <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                                        <img src="{{ url_for('static', filename='uploads/' ~ image) }}" class="d-block w-100" alt="{{ service.title }}">
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- Boutons de navigation -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ service.id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ service.id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
                             {% else %}
                             <img src="{{ url_for('static', filename='default.jpg') }}" class="d-block w-100" alt="Default Image">
                             {% endif %}
                         </div>
                     </div>
+                </div>
                 </div>
                 <!-- Boutons "Modifier" et "Supprimer" visibles uniquement pour les administrateurs -->
                 {% if 'user_role' in session and session['user_role'] == 'admin' %}
@@ -108,156 +126,6 @@
     </div>
 </section>
 {% endfor %}
-        <!-- Visite guide -->
-        <section class="page-section cta">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-9 mx-auto">
-                        <h2 class="section-heading mb-4">
-                            <span class="section-heading-upper text-center">Visite des habitats avec un guide</span>
-                        </h2>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="cta-inner4 bg-faded text-center rounded">
-                                    <p class="mb-0">Plongez au cœur de la vie sauvage avec notre <b>Visite des Habitats avec un Guide</b>. 
-                                        Accompagné par un <b>expert passionné</b>, découvrez les secrets des animaux et de leurs environnements naturels. 
-                                        Apprenez des <b>anecdotes fascinantes</b> et bénéficiez de réponses à toutes vos questions pour <b>une expérience éducative et enrichissante</b>.<br></br></p>
-                                    {% if 'user_role' in session and session['user_role'] == 'admin' %}
-                                        <div class="admin-buttons">
-                                            <a href="{{ url_for('edit_service', service_id=1) }}" class="btn btn-warning mt-2">Modifier</a>
-                                            <form action="{{ url_for('delete_service', service_id=1) }}" method="POST" style="display:inline;">
-                                                <button type="submit" class="btn btn-danger mt-2">Supprimer</button>
-                                            </form>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cta-inner4 bg-faded text-center rounded">
-                                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner">
-                                            <div class="carousel-item active">
-                                                <img src="/static/assets/img/intro.jpg" class="d-block w-100" alt="tortue de mer">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="/static/assets/img/resto.jpg" class="d-block w-100" alt="mer">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="/static/assets/img/multiple.jpg" class="d-block w-100" alt="océan.">
-                                            </div>
-                                        </div>
-                                        <!-- Boutons de navigation -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Petit train -->
-        <section class="page-section cta">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-9 mx-auto">
-                        <h2 class="section-heading mb-4">
-                            <span class="section-heading-upper text-center">Visite du zoo en petit train</span>
-                        </h2>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="cta-inner4 bg-faded text-center rounded">
-                                    <p class="mb-0">Montez à bord de notre <b>Petit Train</b> pour une visite <b>confortable et amusante</b> du zoo. 
-                                        Idéal pour les familles avec enfants, ce tour panoramique vous permet de <b>découvrir tous les enclos</b> et attractions sans effort, 
-                                        tout en profitant des <b>commentaires informatifs</b> sur les animaux et leur habitat.<br></br></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cta-inner4 bg-faded text-center rounded">
-                                    <div id="carouselExampleAutoplaying2" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner">
-                                            <div class="carousel-item active">
-                                                <img src="/static/assets/img/intro.jpg" class="d-block w-100" alt="tortue de mer">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="/static/assets/img/multiple.jpg" class="d-block w-100" alt="mer">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="/static/assets/img/resto.jpg" class="d-block w-100" alt="océan.">
-                                            </div>
-                                        </div>
-                                        <!-- Boutons de navigation -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying2" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying2" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Restauration -->
-        <section class="page-section cta">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-9 mx-auto">
-                        <h2 class="section-heading mb-4">
-                            <span class="section-heading-upper text-center">Restauration</span>
-                        </h2>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="cta-inner4 bg-faded text-center rounded">
-                                    <p class="mb-0">Faites une pause gourmande dans notre <b>Restaurant, ouvert de 11h à 19h</b>. Nous vous proposons <b>une cuisine variée et savoureuse</b>. 
-                                        Profitez d'un <b>menu diversifié</b> avec des options pour tous les goûts, dont plusieurs plats <b>végétariens</b>, dans un cadre convivial et familial. 
-                                        Détendez-vous et régalez-vous après votre visite du zoo.<br></br></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cta-inner4 bg-faded text-center rounded">
-                                    <div id="carouselExampleAutoplaying3" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner">
-                                            <div class="carousel-item active">
-                                                <img src="/static/assets/img/intro.jpg" class="d-block w-100" alt="tortue de mer">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="/static/assets/img/multiple.jpg" class="d-block w-100" alt="mer">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="/static/assets/img/resto.jpg" class="d-block w-100" alt="océan.">
-                                            </div>
-                                        </div>
-                                        <!-- Boutons de navigation -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying3" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying3" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <footer class="footer text-faded text-center py-5">
             <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>

@@ -414,5 +414,13 @@
         "health_status": "ee",
         "details": "ee",
         "animal_id": 4
+    },
+    {
+        "date": "2024-09-02",
+        "food": "test",
+        "weight": 20.0,
+        "health_status": "test",
+        "details": "test",
+        "animal_id": 41
     }
 ]

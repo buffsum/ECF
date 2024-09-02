@@ -10913,6 +10913,7 @@ p {
 }
 
 .section-heading .section-heading-upper {
+  padding-top: 20px;
   display: block;
   font-size: 2rem;
   font-weight: 800;
@@ -11428,3 +11429,87 @@ fieldset {
   /* width: 100%; */
   text-align: center;
 }
+
+/* AVIS */
+
+/* Styles pour la section des avis */
+.list-group-avis {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item-avis {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.2s;
+}
+
+.list-group-item-avis:hover {
+  transform: translateY(-5px);
+}
+
+.list-group-item-avis h5 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: bold;
+}
+
+.list-group-item-avis p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.list-group-item-avis strong {
+  color: #000;
+}
+
+.list-group-item-avis .btn {
+  margin-top: 15px;
+}
+
+/* Styles pour le bouton Supprimer */
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Styles pour les séparateurs */
+.separator {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+/* Alignement du texte */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+/* bouton ajouter service */
+.float-right {
+  float: right;
+  margin-right: 10px;
+}
+

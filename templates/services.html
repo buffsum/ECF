@@ -64,7 +64,7 @@
                 </div>
             </div>
         </nav>
-        <section class="page-section cta">
+        <!-- <section class="page-section cta">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-9 mx-auto">
@@ -87,6 +87,47 @@
                                                     <button type="submit" class="btn btn-danger mt-2">Supprimer</button>
                                                 </form>
                                             </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section> -->
+        <section class="page-section cta">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <h2 class="section-heading mb-4">
+                            <span class="section-heading-upper text-center">Serviceees</span>
+                        </h2>
+                        {% if 'user_role' in session and session['user_role'] == 'admin' %}
+                            <a href="{{ url_for('new_service') }}" class="btn btn-success mb-4">Ajouter un service</a>
+                        {% endif %}
+                        {% for service in services %}
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="cta-inner5 bg-faded text-center rounded">
+                                        <h3>{{ service.title }}</h3>
+                                        <p class="mb-0">{{ service.description }}</p>
+                                        {% if 'user_role' in session and session['user_role'] == 'admin' %}
+                                            <div class="admin-buttons">
+                                                <a href="{{ url_for('edit_service', service_id=service.id) }}" class="btn btn-warning mt-2">Modifier</a>
+                                                <form action="{{ url_for('delete_service', service_id=service.id) }}" method="POST" style="display:inline;">
+                                                    <button type="submit" class="btn btn-danger mt-2">Supprimer</button>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="cta-inner4 bg-faded text-center rounded">
+                                        {% if service.images_url %}
+                                            <img src="{{ url_for('static', filename='uploads/' ~ service.images_url[0]) }}" class="d-block w-100" alt="{{ service.title }}">
+                                        {% else %}
+                                            <img src="{{ url_for('static', filename='default.jpg') }}" class="d-block w-100" alt="Default Image">
                                         {% endif %}
                                     </div>
                                 </div>

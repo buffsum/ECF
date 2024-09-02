@@ -75,12 +75,12 @@ class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    images = db.Column(db.PickleType, nullable=True)  # Utilisation de PickleType pour stocker une liste d'images
+    images_url = db.Column(db.PickleType, nullable=True)  # Utilisation de PickleType pour stocker une liste d'images
 
     def __init__(self, title, description, images=None):
         self.title = title
         self.description = description
-        self.images = images if images is not None else []
+        self.images_url = images if images is not None else []
 
 class ServiceForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])

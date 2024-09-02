@@ -259,7 +259,7 @@ def new_service():
             image_filenames.append(filename)
         
         # Ajout du service à la base de données
-        new_service = Service(title=title, description=description, images=image_filenames)
+        new_service = Service(title=title, description=description, images_url=image_filenames)
         db.session.add(new_service)
         db.session.commit()  # Assurez-vous que cette ligne est présente pour enregistrer les changements
         

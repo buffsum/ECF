@@ -54,8 +54,8 @@ class Animal(db.Model):
 class VetRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date = db.Column(db.Date, nullable=False)
-    food = db.Column(db.String(100), nullable=False)
-    weight = db.Column(db.Float, nullable=False)
+    # food = db.Column(db.String(100), nullable=False)
+    # weight = db.Column(db.Float, nullable=False)
     health_status = db.Column(db.String(200), nullable=False)
     details = db.Column(db.Text, nullable=True)
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
@@ -94,6 +94,14 @@ class AnimalForm(FlaskForm):
     image = StringField('Image URL')
     description = TextAreaField('Description')  # Nouveau champ de description
     submit = SubmitField('Submit')
+
+class DailyFoodRecord(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    food = db.Column(db.String(100), nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
+    animal = db.relationship('Animal', backref=db.backref('daily_food_records', lazy=True))
 
 def role_required(role):
     def decorator(f):
@@ -680,7 +688,10 @@ def admin():
     else:
         filtered_animals = all_animals if selected_animal_id == 'all' else []
 
-    return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id)
+
+    daily_food_records = DailyFoodRecord.query.all()
+
+    return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id, daily_food_records=daily_food_records,)
     # selected_animal_id = request.args.get('animal_id')
     # all_animals = Animal.query.all()
     
@@ -693,10 +704,33 @@ def admin():
 
     # return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
 
-@app.route('/employee')
+@app.route('/employee', methods=['GET', 'POST'])
 @role_required('employee')
 def employee():
-    return render_template('employee.html')
+    if request.method == 'POST':
+        try:
+            date_str = request.form['date']
+            food = request.form['food']
+            weight = float(request.form['weight'])
+            animal_id = int(request.form['animal_id'])
+
+            record_date = date.fromisoformat(date_str)
+
+            new_record = DailyFoodRecord(
+                date=record_date, food=food, weight=weight, animal_id=animal_id
+            )
+
+            db.session.add(new_record)
+            db.session.commit()
+
+            flash('Fiche d\'alimentation ajoutée avec succès!', 'success')
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+
+    animals = Animal.query.all()
+    return render_template('employee.html', animals=animals)
 
 @app.route('/veterinarian')
 @role_required('veterinarian')

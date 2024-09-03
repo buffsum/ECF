@@ -73,7 +73,7 @@
     <h2 class="section-heading3 mb-4">
         <span class="section-heading-upper text-center">{{ habitat.name }}</span>
     </h2>
-    
+
     <!-- Bouton Ajouter un animal -->
     {% if 'user_role' in session and session['user_role'] == 'admin' %}
     <div class="text-center mb-4">
@@ -140,8 +140,8 @@
                                         <p class="details">
                                             Date: {{ vet_records_by_animal[animal.id].date }}<br>
                                             État de l'animal: {{ vet_records_by_animal[animal.id].health_status }}<br>
-                                            Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
-                                            Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br>
+                                            <!-- Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
+                                            Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br> -->
                                             Détails: {{ vet_records_by_animal[animal.id].details }}<br>
                                             <!-- Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br> -->
                                         </p>

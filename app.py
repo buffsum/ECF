@@ -1,13 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session
 from functools import wraps
-
 from flask_wtf import FlaskForm
 from flask_migrate import Migrate
 from wtforms import StringField, TextAreaField, SubmitField, MultipleFileField
 from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 import os
-
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
@@ -15,16 +13,13 @@ import json
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
-# Assurez-vous que le dossier existe
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
-# Configuration de la base de données SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zoo.db'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialisation de l'extension SQLAlchemy
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -33,7 +28,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    role = db.Column(db.String(20), nullable=False)  # 'admin', 'employee', 'veterinarian'
+    role = db.Column(db.String(20), nullable=False)
 
 class Habitat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -49,18 +44,16 @@ class Animal(db.Model):
     image = db.Column(db.String(200))
     habitat_id = db.Column(db.Integer, db.ForeignKey('habitat.id'), nullable=False)
     vet_records = db.relationship('VetRecord', back_populates='animal', lazy=True)
-    description = db.Column(db.Text, nullable=True)  # Nouveau champ de description
+    description = db.Column(db.Text, nullable=True)
 
 class VetRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date = db.Column(db.Date, nullable=False)
-    # food = db.Column(db.String(100), nullable=False)
-    # weight = db.Column(db.Float, nullable=False)
     health_status = db.Column(db.String(200), nullable=False)
     details = db.Column(db.Text, nullable=True)
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
     animal = db.relationship('Animal', back_populates='vet_records')
-    consultation_count = db.Column(db.Integer, default=0)  # Nouveau champ pour le compteur de consultations
+    consultation_count = db.Column(db.Integer, default=0)
 
 class Avis(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -70,7 +63,6 @@ class Avis(db.Model):
     message = db.Column(db.Text, nullable=False)
     approuve = db.Column(db.Boolean, default=False)
 
-# *********** SERVICES ***********
 class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False)
@@ -92,7 +84,7 @@ class AnimalForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     species = StringField('Species', validators=[DataRequired()])
     image = StringField('Image URL')
-    description = TextAreaField('Description')  # Nouveau champ de description
+    description = TextAreaField('Description')
     submit = SubmitField('Submit')
 
 class DailyFoodRecord(db.Model):
@@ -108,28 +100,14 @@ def role_required(role):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if 'user_id' not in session:
-                abort(403)  # Forbidden
+                abort(403)
             user = User.query.get(session['user_id'])
             if user.role != role:
-                abort(403)  # Forbidden
+                abort(403)
             return f(*args, **kwargs)
         return decorated_function
     return decorator
 
-def load_services_from_json(file_path='services.json'):
-    with open(file_path, 'r') as file:
-        services = json.load(file)
-        for service in services:
-            new_service = Service(
-                title=service['title'],
-                description=service['description'],
-                images_url=service.get('images_url', [])
-            )
-            db.session.add(new_service)
-        db.session.commit()
-        print("Services chargés depuis le fichier JSON.")
-        
-# Fonction pour sauvegarder les avis dans un fichier JSON
 def save_avis_to_json():
     avis_list = Avis.query.all()
     avis_data = [
@@ -150,7 +128,6 @@ def load_avis_from_json(file_path='avis.json'):
         avis = json.load(file)
     return avis
 
-# Fonction pour charger les services depuis un fichier JSON
 def load_services_from_json(file_path='services.json'):
     with open(file_path, 'r') as file:
         services = json.load(file)
@@ -175,31 +152,17 @@ def submit_review():
     db.session.add(nouvel_avis)
     db.session.commit()
     
-    save_avis_to_json()  # Sauvegarder les avis dans un fichier JSON
+    save_avis_to_json()
     
     flash('Votre avis a été soumis et est en attente de validation.')
     return redirect(url_for('home'))
-
-# @app.route('/submit_review', methods=['POST'])
-# def submit_review():
-#     nom = request.form['nom']
-#     pseudo = request.form['pseudo']
-#     titre = request.form['title']
-#     message = request.form['message']
-    
-#     nouvel_avis = Avis(nom=nom, pseudo=pseudo, titre=titre, message=message)
-#     db.session.add(nouvel_avis)
-#     db.session.commit()
-    
-#     flash('Votre avis a été soumis et est en attente de validation.')
-#     return redirect(url_for('home'))
 
 @app.route('/approve_review/<int:avis_id>')
 def approve_review(avis_id):
     avis = Avis.query.get_or_404(avis_id)
     avis.approuve = True
     db.session.commit()
-    save_avis_to_json()  # Sauvegarder les avis dans un fichier JSON
+    save_avis_to_json()
     flash('Avis approuvé.')
     return redirect(url_for('admin'))
 
@@ -212,26 +175,21 @@ def disapprove_review(avis_id):
     return redirect(url_for('admin'))
 
 @app.route('/delete_review/<int:avis_id>', methods=['POST'])
-# @role_required('admin')
 def delete_review(avis_id):
     avis = Avis.query.get_or_404(avis_id)
     db.session.delete(avis)
     db.session.commit()
-    save_avis_to_json()  # Sauvegarder les avis dans un fichier JSON
+    save_avis_to_json()
     flash('Avis supprimé.')
     return redirect(url_for('home'))
 
-# Routes pour les différentes pages
-
 @app.route('/')
 def home():
-    # Récupérer les avis validés (approuvés)
     avis_valides = Avis.query.filter_by(approuve=True).all()
     return render_template('index.html', avis_valides=avis_valides)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print("TEST")
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -249,7 +207,7 @@ def login():
             else:
                 return redirect(url_for('home'))
         else:
-            flash('Nom d\'utilisateuuuuur ou mot de passe incorrect', 'danger')
+            flash('Nom d\'utilisateur ou mot de passe incorrect', 'danger')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -267,11 +225,9 @@ def register():
 def contact():
     return render_template('contact.html')
 
-# *********** ROUTES SERVICES ***********
 @app.route('/services')
 def services():
     services = Service.query.all()
-    # print(testservices)  # Ajoutez cette ligne pour vérifier les services récupérés
     return render_template('services.html', services=services)
 
 @app.route('/service/new', methods=['GET', 'POST'])
@@ -290,12 +246,11 @@ def new_service():
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image_filenames.append(filename)
         
-        # Ajout du service à la base de données
         new_service = Service(title=title, description=description, images_url=image_filenames)
         db.session.add(new_service)
-        db.session.commit()  # Assurez-vous que cette ligne est présente pour enregistrer les changements
+        db.session.commit()
         
-        flash('Service added successfully!', 'success')
+        flash('Service ajouté avec succès!', 'success')
         return redirect(url_for('services'))
     return render_template('service_form.html', form=form)
 
@@ -309,7 +264,7 @@ def edit_service(service_id):
         service.title = form.title.data
         service.description = form.description.data
         db.session.commit()
-        flash('Service updated successfully!', 'success')
+        flash('Service modifié avec succès!', 'success')
         return redirect(url_for('services'))
     elif request.method == 'GET':
         form.title.data = service.title
@@ -323,40 +278,9 @@ def delete_service(service_id):
     service = Service.query.get_or_404(service_id)
     db.session.delete(service)
     db.session.commit()
-    flash('Service deleted successfully!', 'success')
+    flash('Service supprimé avec succès!', 'success')
     return redirect(url_for('services'))
 
-
-# @app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
-# def edit_service(service_id):
-#     if 'user_role' not in session or session['user_role'] != 'admin':
-#         return redirect(url_for('login'))
-#     service = Service.query.get_or_404(service_id)
-#     form = ServiceForm()
-#     if form.validate_on_submit():
-#         service.title = form.title.data
-#         service.description = form.description.data
-#         db.session.commit()
-#         flash('Service updated successfully!', 'success')
-#         return redirect(url_for('services'))
-#     elif request.method == 'GET':
-#         form.title.data = service.title
-#         form.description.data = service.description
-#     return render_template('service_form.html', form=form)
-
-# @app.route('/service/<int:service_id>/delete', methods=['POST'])
-# def delete_service(service_id):
-#     if 'user_role' not in session or session['user_role'] != 'admin':
-#         return redirect(url_for('login'))
-#     service = Service.query.get_or_404(service_id)
-#     db.session.delete(service)
-#     db.session.commit()
-#     flash('Service deleted successfully!', 'success')
-#     return redirect(url_for('services'))
-
-# *********** FIN SERVICES ***********
-
-# ********** HABITAT + ANIMAUX*********
 @app.route('/habitats')
 def habitats():
     habitats = Habitat.query.all()
@@ -365,18 +289,11 @@ def habitats():
 @app.route('/habitat/<int:habitat_id>')
 def habitat(habitat_id):
     habitat = Habitat.query.get_or_404(habitat_id)
-    
-    db.session.commit()
-    
     animals = Animal.query.filter_by(habitat_id=habitat_id).all()
-
-    # Récupère le dernier enregistrement vétérinaire pour chaque animal de l'habitat
     last_vet_records_by_animal = {}
     for animal in animals:
         last_vet_record = VetRecord.query.filter_by(animal_id=animal.id).order_by(VetRecord.date.desc()).first()
         last_vet_records_by_animal[animal.id] = last_vet_record
-        print(f"Animal ID: {animal.id}, Consultation Count: {last_vet_record.consultation_count if last_vet_record else 'No records'}")
-
     template_name = f'habitat{habitat_id}.html'
     return render_template(template_name, habitat=habitat, animals=animals, vet_records_by_animal=last_vet_records_by_animal)
 
@@ -388,7 +305,7 @@ def add_animal(habitat_id):
         name = form.name.data
         species = form.species.data
         image = form.image.data
-        description = form.description.data  # Récupérer la description
+        description = form.description.data
         new_animal = Animal(name=name, species=species, image=image, description=description, habitat_id=habitat_id)
         db.session.add(new_animal)
         db.session.commit()
@@ -405,7 +322,7 @@ def edit_animal(animal_id):
         animal.name = form.name.data
         animal.species = form.species.data
         animal.image = form.image.data
-        animal.description = form.description.data  # Mettre à jour la description
+        animal.description = form.description.data
         db.session.commit()
         flash('Animal modifié avec succès!', 'success')
         return redirect(url_for('habitat', habitat_id=animal.habitat_id))
@@ -413,7 +330,7 @@ def edit_animal(animal_id):
         form.name.data = animal.name
         form.species.data = animal.species
         form.image.data = animal.image
-        form.description.data = animal.description  # Pré-remplir la description
+        form.description.data = animal.description
     return render_template('animal_form.html', form=form)
 
 @app.route('/animal/<int:animal_id>/delete', methods=['POST'])
@@ -426,188 +343,15 @@ def delete_animal(animal_id):
     flash('Animal supprimé avec succès!', 'success')
     return redirect(url_for('habitat', habitat_id=habitat_id))
 
-# ********** FIN HABITAT *********
-
 @app.route('/increment-consultation/<int:animal_id_here>', methods=['POST'])
 def increment_consultation(animal_id_here):
     animal_in_question = Animal.query.get_or_404(animal_id_here)
-    
-    animals = Animal.query.filter_by(habitat_id=animal_in_question.habitat_id).all()
-
-    last_vet_records_by_animal = {}
-    for animal in animals:
-        last_vet_record = VetRecord.query.filter_by(animal_id=animal.id).order_by(VetRecord.date.desc()).first()
-        last_vet_records_by_animal[animal.id] = last_vet_record
-    last_vet_record = last_vet_records_by_animal.get(animal_id_here)
-
+    last_vet_record = VetRecord.query.filter_by(animal_id=animal_in_question.id).order_by(VetRecord.date.desc()).first()
     if last_vet_record:
-        print(f"TEST animal id: {animal_id_here}, vet record id : {last_vet_record.id}")
         last_vet_record.consultation_count += 1
-    else:
-        print(f"TEST animal id: {animal_id_here}, no vet records found")
-
     db.session.commit()
     return redirect(request.referrer)
 
-# @app.route('/admin', methods=['GET', 'POST'])
-# @role_required('admin')
-# def admin():
-#     if request.method == 'POST':
-#         try:
-#             date_str = request.form['date']
-#             food = request.form['food']
-#             weight = float(request.form['weight'])
-#             health_status = request.form['health_status']
-#             details = request.form['details']
-#             animal_id = int(request.form['animal_id'])
-
-#             record_date = date.fromisoformat(date_str)
-
-#             new_record = VetRecord(
-#                 date=record_date, food=food, weight=weight,
-#                 health_status=health_status, details=details,
-#                 animal_id=animal_id
-#             )
-
-#             db.session.add(new_record)
-#             db.session.commit()
-
-#             try:
-#                 with open('vet_records.json', 'r') as f:
-#                     vet_records = json.load(f)
-#             except (FileNotFoundError, json.JSONDecodeError):
-#                 vet_records = []
-
-#             vet_records.append({
-#                 'date': date_str,
-#                 'food': food,
-#                 'weight': weight,
-#                 'health_status': health_status,
-#                 'details': details,
-#                 'animal_id': animal_id
-#             })
-
-#             with open('vet_records.json', 'w') as f:
-#                 json.dump(vet_records, f, indent=4)
-
-#             flash('Fiche vétérinaire ajoutée avec succès!', 'success')
-
-#         except Exception as e:
-#             db.session.rollback()
-#             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
-
-#     filter_date = request.args.get('date')
-#     filter_animal_id = request.args.get('animal_id')
-
-#     query = VetRecord.query
-
-#     if filter_date:
-#         query = query.filter(VetRecord.date == date.fromisoformat(filter_date))
-
-#     if filter_animal_id:
-#         query = query.filter(VetRecord.animal_id == filter_animal_id)
-
-#     animals = Animal.query.all()
-#     vet_records = query.all()
-#     habitats = Habitat.query.all()
-    
-#     consultation_counts = {animal.id: 0 for animal in animals}
-#     for record in vet_records:
-#         consultation_counts[record.animal_id] += record.consultation_count
-
-#     avis_a_valider = Avis.query.filter_by(approuve=False).all()
-
-#     return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
-
-# @app.route('/admin', methods=['GET', 'POST'])
-# @role_required('admin')
-# def admin():
-#     if request.method == 'POST':
-#         try:
-#             date_str = request.form['date']
-#             food = request.form['food']
-#             weight = float(request.form['weight'])
-#             health_status = request.form['health_status']
-#             details = request.form['details']
-#             animal_id = int(request.form['animal_id'])
-
-#             record_date = date.fromisoformat(date_str)
-
-#             new_record = VetRecord(
-#                 date=record_date, food=food, weight=weight,
-#                 health_status=health_status, details=details,
-#                 animal_id=animal_id
-#             )
-
-#             db.session.add(new_record)
-#             db.session.commit()
-
-#             try:
-#                 with open('vet_records.json', 'r') as f:
-#                     vet_records = json.load(f)
-#             except (FileNotFoundError, json.JSONDecodeError):
-#                 vet_records = []
-
-#             vet_records.append({
-#                 'date': date_str,
-#                 'food': food,
-#                 'weight': weight,
-#                 'health_status': health_status,
-#                 'details': details,
-#                 'animal_id': animal_id
-#             })
-
-#             with open('vet_records.json', 'w') as f:
-#                 json.dump(vet_records, f, indent=4)
-
-#             flash('Fiche vétérinaire ajoutée avec succès!', 'success')
-
-#         except Exception as e:
-#             db.session.rollback()
-#             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
-
-#     filter_avis_date = request.args.get('date')
-#     filter_avis_animal_id = request.args.get('animal_id')
-
-#     query = VetRecord.query
-
-#     if filter_avis_date:
-#         query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
-
-#     if filter_avis_animal_id:
-#         query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
-
-#     animals = Animal.query.all()
-#     vet_records = query.all()
-#     # vet_records = query.all() if filter_avis_date or filter_avis_animal_id else []
-#     habitats = Habitat.query.all()
-    
-#     # consultation_counts = {animal.id: 0 for animal in animals}
-#     for record in vet_records:
-#         if record.animal_id in consultation_counts:
-#             consultation_counts[record.animal_id] += record.consultation_count
-#         else:
-#             consultation_counts[record.animal_id] = record.consultation_count
-
-#     # Calculer les compteurs de consultations
-#     # consultation_counts = {animal.id: 0 for animal in animals}
-#     # for record in vet_records:
-#     #     if record.animal_id in consultation_counts:
-#     #         consultation_counts[record.animal_id] += 1
-
-#     avis_a_valider = Avis.query.filter_by(approuve=False).all()
-
-#     selected_animal_id = request.args.get('filter_animal_id')
-#     all_animals = Animal.query.all()
-    
-#     if selected_animal_id and selected_animal_id != 'all':
-#         filtered_animals = Animal.query.filter_by(id=selected_animal_id).all()
-#     else:
-#         filtered_animals = all_animals if selected_animal_id == 'all' else []
-
-#     # return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals)
-#     return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id)
-    
 @app.route('/admin', methods=['GET', 'POST'])
 @role_required('admin')
 def admin():
@@ -670,7 +414,6 @@ def admin():
     vet_records = query.all()
     habitats = Habitat.query.all()
     
-    # Calculer les compteurs de consultations
     consultation_counts = {animal.id: 0 for animal in animals}
     for record in vet_records:
         if record.animal_id in consultation_counts:
@@ -688,21 +431,20 @@ def admin():
     else:
         filtered_animals = all_animals if selected_animal_id == 'all' else []
 
+    filter_food_date = request.args.get('food_date')
+    filter_food_animal_id = request.args.get('food_animal_id')
 
-    daily_food_records = DailyFoodRecord.query.all()
+    food_query = DailyFoodRecord.query
 
-    return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id, daily_food_records=daily_food_records,)
-    # selected_animal_id = request.args.get('animal_id')
-    # all_animals = Animal.query.all()
-    
-    # if selected_animal_id and selected_animal_id != 'all':
-    #     animals = Animal.query.filter_by(id=selected_animal_id).all()
-    # else:
-    #     animals = all_animals if selected_animal_id == 'all' else []
-    
-    # avis_a_valider = Avis.query.filter_by(approuve=False).all()
+    if filter_food_date:
+        food_query = food_query.filter(DailyFoodRecord.date == date.fromisoformat(filter_food_date))
 
-    # return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
+    if filter_food_animal_id:
+        food_query = food_query.filter(DailyFoodRecord.animal_id == filter_food_animal_id)
+
+    daily_food_records = food_query.all()
+
+    return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, daily_food_records=daily_food_records, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
 
 @app.route('/employee', methods=['GET', 'POST'])
 @role_required('employee')

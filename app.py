@@ -441,6 +441,165 @@ def increment_consultation(animal_id_here):
     db.session.commit()
     return redirect(request.referrer)
 
+# @app.route('/admin', methods=['GET', 'POST'])
+# @role_required('admin')
+# def admin():
+#     if request.method == 'POST':
+#         try:
+#             date_str = request.form['date']
+#             food = request.form['food']
+#             weight = float(request.form['weight'])
+#             health_status = request.form['health_status']
+#             details = request.form['details']
+#             animal_id = int(request.form['animal_id'])
+
+#             record_date = date.fromisoformat(date_str)
+
+#             new_record = VetRecord(
+#                 date=record_date, food=food, weight=weight,
+#                 health_status=health_status, details=details,
+#                 animal_id=animal_id
+#             )
+
+#             db.session.add(new_record)
+#             db.session.commit()
+
+#             try:
+#                 with open('vet_records.json', 'r') as f:
+#                     vet_records = json.load(f)
+#             except (FileNotFoundError, json.JSONDecodeError):
+#                 vet_records = []
+
+#             vet_records.append({
+#                 'date': date_str,
+#                 'food': food,
+#                 'weight': weight,
+#                 'health_status': health_status,
+#                 'details': details,
+#                 'animal_id': animal_id
+#             })
+
+#             with open('vet_records.json', 'w') as f:
+#                 json.dump(vet_records, f, indent=4)
+
+#             flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+#         except Exception as e:
+#             db.session.rollback()
+#             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+
+#     filter_date = request.args.get('date')
+#     filter_animal_id = request.args.get('animal_id')
+
+#     query = VetRecord.query
+
+#     if filter_date:
+#         query = query.filter(VetRecord.date == date.fromisoformat(filter_date))
+
+#     if filter_animal_id:
+#         query = query.filter(VetRecord.animal_id == filter_animal_id)
+
+#     animals = Animal.query.all()
+#     vet_records = query.all()
+#     habitats = Habitat.query.all()
+    
+#     consultation_counts = {animal.id: 0 for animal in animals}
+#     for record in vet_records:
+#         consultation_counts[record.animal_id] += record.consultation_count
+
+#     avis_a_valider = Avis.query.filter_by(approuve=False).all()
+
+#     return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
+
+# @app.route('/admin', methods=['GET', 'POST'])
+# @role_required('admin')
+# def admin():
+#     if request.method == 'POST':
+#         try:
+#             date_str = request.form['date']
+#             food = request.form['food']
+#             weight = float(request.form['weight'])
+#             health_status = request.form['health_status']
+#             details = request.form['details']
+#             animal_id = int(request.form['animal_id'])
+
+#             record_date = date.fromisoformat(date_str)
+
+#             new_record = VetRecord(
+#                 date=record_date, food=food, weight=weight,
+#                 health_status=health_status, details=details,
+#                 animal_id=animal_id
+#             )
+
+#             db.session.add(new_record)
+#             db.session.commit()
+
+#             try:
+#                 with open('vet_records.json', 'r') as f:
+#                     vet_records = json.load(f)
+#             except (FileNotFoundError, json.JSONDecodeError):
+#                 vet_records = []
+
+#             vet_records.append({
+#                 'date': date_str,
+#                 'food': food,
+#                 'weight': weight,
+#                 'health_status': health_status,
+#                 'details': details,
+#                 'animal_id': animal_id
+#             })
+
+#             with open('vet_records.json', 'w') as f:
+#                 json.dump(vet_records, f, indent=4)
+
+#             flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+#         except Exception as e:
+#             db.session.rollback()
+#             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+
+#     filter_avis_date = request.args.get('date')
+#     filter_avis_animal_id = request.args.get('animal_id')
+
+#     query = VetRecord.query
+
+#     if filter_avis_date:
+#         query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
+
+#     if filter_avis_animal_id:
+#         query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
+
+#     animals = Animal.query.all()
+#     vet_records = query.all()
+#     # vet_records = query.all() if filter_avis_date or filter_avis_animal_id else []
+#     habitats = Habitat.query.all()
+    
+#     # consultation_counts = {animal.id: 0 for animal in animals}
+#     for record in vet_records:
+#         if record.animal_id in consultation_counts:
+#             consultation_counts[record.animal_id] += record.consultation_count
+#         else:
+#             consultation_counts[record.animal_id] = record.consultation_count
+
+#     # Calculer les compteurs de consultations
+#     # consultation_counts = {animal.id: 0 for animal in animals}
+#     # for record in vet_records:
+#     #     if record.animal_id in consultation_counts:
+#     #         consultation_counts[record.animal_id] += 1
+
+#     avis_a_valider = Avis.query.filter_by(approuve=False).all()
+
+#     selected_animal_id = request.args.get('filter_animal_id')
+#     all_animals = Animal.query.all()
+    
+#     if selected_animal_id and selected_animal_id != 'all':
+#         filtered_animals = Animal.query.filter_by(id=selected_animal_id).all()
+#     else:
+#         filtered_animals = all_animals if selected_animal_id == 'all' else []
+
+#     # return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals)
+#     return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id)
+    
 @app.route('/admin', methods=['GET', 'POST'])
 @role_required('admin')
 def admin():
@@ -488,28 +647,51 @@ def admin():
             db.session.rollback()
             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
 
-    filter_date = request.args.get('date')
-    filter_animal_id = request.args.get('animal_id')
+    filter_avis_date = request.args.get('date')
+    filter_avis_animal_id = request.args.get('animal_id')
 
     query = VetRecord.query
 
-    if filter_date:
-        query = query.filter(VetRecord.date == date.fromisoformat(filter_date))
+    if filter_avis_date:
+        query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
 
-    if filter_animal_id:
-        query = query.filter(VetRecord.animal_id == filter_animal_id)
+    if filter_avis_animal_id:
+        query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
 
     animals = Animal.query.all()
     vet_records = query.all()
     habitats = Habitat.query.all()
     
+    # Calculer les compteurs de consultations
     consultation_counts = {animal.id: 0 for animal in animals}
     for record in vet_records:
-        consultation_counts[record.animal_id] += record.consultation_count
+        if record.animal_id in consultation_counts:
+            consultation_counts[record.animal_id] += record.consultation_count
+        else:
+            consultation_counts[record.animal_id] = record.consultation_count
 
     avis_a_valider = Avis.query.filter_by(approuve=False).all()
 
-    return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
+    selected_animal_id = request.args.get('filter_animal_id')
+    all_animals = Animal.query.all()
+    
+    if selected_animal_id and selected_animal_id != 'all':
+        filtered_animals = Animal.query.filter_by(id=selected_animal_id).all()
+    else:
+        filtered_animals = all_animals if selected_animal_id == 'all' else []
+
+    return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id)
+    # selected_animal_id = request.args.get('animal_id')
+    # all_animals = Animal.query.all()
+    
+    # if selected_animal_id and selected_animal_id != 'all':
+    #     animals = Animal.query.filter_by(id=selected_animal_id).all()
+    # else:
+    #     animals = all_animals if selected_animal_id == 'all' else []
+    
+    # avis_a_valider = Avis.query.filter_by(approuve=False).all()
+
+    # return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts)
 
 @app.route('/employee')
 @role_required('employee')

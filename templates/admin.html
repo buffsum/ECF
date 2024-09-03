@@ -117,8 +117,104 @@
                                     </form>
                                 </div>
                             </div>
+                            <!-- Consulter un avis vétérinaire -->
+<div class="col-md-8">
+    <div class="inner5 bg-faded text-center rounded">
+        <h2 class="section-heading mb-4">
+            <span class="section-heading-lower2">- Consulter un avis vétérinaire -</span>
+        </h2>
+        <form method="GET" action="{{ url_for('admin') }}">
+            <label for="date">Date:</label><br>
+            <input type="date" id="date" name="date"><br><br>
 
-                            <div class="col-md-8">
+            <label for="animal_id">Animal:</label><br>
+            <select id="animal_id" name="animal_id">
+                <option value="">Tous</option>
+                {% for animal in animals %}
+                    <option value="{{ animal.id }}">{{ animal.name }} ({{ animal.species }})</option>
+                {% endfor %}
+            </select><br><br>
+
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </form>
+        {% if filter_avis_date or filter_avis_animal_id %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Animal</th>
+                    <th>Nourriture</th>
+                    <th>Grammage</th>
+                    <th>État de santé</th>
+                    <th>Détails</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in vet_records %}
+                    <tr>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.animal.name }} ({{ record.animal.species }})</td>
+                        <td>{{ record.food }}</td>
+                        <td>{{ record.weight }}</td>
+                        <td>{{ record.health_status }}</td>
+                        <td>{{ record.details }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+                            <!-- <div class="col-md-8">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2">- Consulter un avis vétérinaire -</span>
+                                    </h2>
+                                    <form method="GET" action="{{ url_for('admin') }}">
+                                        <label for="date">Date:</label><br>
+                                        <input type="date" id="date" name="date"><br><br>
+        
+                                        <label for="animal_id">Animal:</label><br>
+                                        <select id="animal_id" name="animal_id">
+                                            <option value="">Tous</option>
+                                            {% for animal in animals %}
+                                                <option value="{{ animal.id }}">{{ animal.name }} ({{ animal.species }})</option>
+                                            {% endfor %}
+                                        </select><br><br>
+        
+                                        <button type="submit" class="btn btn-primary">Filtrer</button>
+                                    </form>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Animal</th>
+                                                <th>Nourriture</th>
+                                                <th>Grammage</th>
+                                                <th>État de santé</th>
+                                                <th>Détails</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for record in vet_records %}
+                                                <tr>
+                                                    <td>{{ record.date }}</td>
+                                                    <td>{{ record.animal.name }} ({{ record.animal.species }})</td>
+                                                    <td>{{ record.food }}</td>
+                                                    <td>{{ record.weight }}</td>
+                                                    <td>{{ record.health_status }}</td>
+                                                    <td>{{ record.details }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="col-md-8">
                                 <div class="inner5 bg-faded text-center rounded">
                                     <h2 class="section-heading mb-4">
                                         <span class="section-heading-lower2">- Consulter un avis vétérinaire -</span>
@@ -167,8 +263,8 @@
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- Statistiques des consultations -->
+        </section> -->
+        <!-- Statistiques des consultations
         <section class="page-section2 cta2">
             <div class="container">
                 <div class="row">
@@ -201,7 +297,55 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
+        <!-- Statistiques des consultations -->
+<section class="page-section2 cta2">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-14 mx-auto">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="inner5 bg-faded text-center rounded">
+                            <h2 class="section-heading mb-4">
+                                <span class="section-heading-lower2">- statistiques de consultations -</span>
+                            </h2>
+                            <form method="GET" action="{{ url_for('admin') }}">
+                                <div class="form-group">
+                                    <label for="animalFilter">Filtrer par animal:</label>
+                                    <select class="form-control" id="animalFilter" name="filter_animal_id">
+                                        <option value="all">Tous</option>
+                                        {% for animal in all_animals %}
+                                        <option value="{{ animal.id }}" {% if animal.id == selected_animal_id %}selected{% endif %}>{{ animal.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Filtrer</button>
+                            </form>
+                            {% if filtered_animals %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Animal</th>
+                                        <th>Nombre de Consultations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for animal in filtered_animals %}
+                                    <tr>
+                                        <td>{{ animal.name }} {{ animal.id }}</td>
+                                        <td>{{ consultation_counts[animal.id] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- Avis -->
          <!-- Section pour la modération des avis -->

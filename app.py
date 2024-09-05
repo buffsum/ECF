@@ -439,8 +439,6 @@ def admin():
 
             vet_records.append({
                 'date': date_str,
-                'food': food,
-                'weight': weight,
                 'health_status': health_status,
                 'details': details,
                 'animal_id': animal_id

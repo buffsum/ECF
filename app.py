@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from wtforms import StringField, TextAreaField, SubmitField, MultipleFileField
 from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
+# from flask_mail import Mail, Message
 import os
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -19,6 +20,19 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zoo.db'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Configuration de Flask-Mail
+# app.config['MAIL_SERVER'] = 'smtp.example.com'
+# app.config['MAIL_PORT'] = 587
+# app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_USERNAME'] = 'laurane-c@hotmail.fr'
+# app.config['MAIL_PASSWORD'] = 'laurane-c@hotmail.fr'
+# app.config['MAIL_DEFAULT_SENDER'] = 'laurane-c@hotmail.fr'
+
+# mail = Mail(app)
+
+# db = SQLAlchemy(app)
+# migrate = Migrate(app, db)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -225,8 +239,21 @@ def logout():
 def register():
     return render_template('register.html')
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        nom = request.form['nom']
+        email = request.form['email']
+        objet = request.form['objet']
+        message = request.form['message']
+
+        msg = Message(subject=objet,
+                      sender=email,
+                      recipients=['laurane-cl@hotmail.fr'],
+                      body=f"Nom: {nom}\nEmail: {email}\n\nMessage:\n{message}")
+        mail.send(msg)
+        flash('Votre message a été envoyé avec succès!', 'success')
+        return redirect(url_for('contact'))
     return render_template('contact.html')
 
 @app.route('/services')

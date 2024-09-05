@@ -416,8 +416,6 @@ def admin():
     if request.method == 'POST':
         try:
             date_str = request.form['date']
-            food = request.form['food']
-            weight = float(request.form['weight'])
             health_status = request.form['health_status']
             details = request.form['details']
             animal_id = int(request.form['animal_id'])
@@ -425,7 +423,7 @@ def admin():
             record_date = date.fromisoformat(date_str)
 
             new_record = VetRecord(
-                date=record_date, food=food, weight=weight,
+                date=record_date,
                 health_status=health_status, details=details,
                 animal_id=animal_id
             )

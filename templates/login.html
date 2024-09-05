@@ -21,6 +21,15 @@
             <label for="password" class="white-text">Mot de passe:</label>
             <input type="password" id="password" name="password" required>
             <br>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-messages">
+                            {% for category, message in messages %}
+                                <div class="error-text alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
             <button type="submit" class="btn-center">Se connecter</button>
             <h2>&nbsp;</h2>
         </form>

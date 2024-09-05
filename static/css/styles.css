@@ -11513,3 +11513,8 @@ fieldset {
   margin-right: 10px;
 }
 
+.error-text {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 12px;
+}

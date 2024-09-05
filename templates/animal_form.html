@@ -9,7 +9,7 @@
 <body>
     <div class="container white-text">
         <h2>{{ form.name.label }}</h2>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{ form.name.label }}<br>
@@ -20,12 +20,12 @@
                 {{ form.species(size=32, class_="form-control") }}
             </div>
             <div class="form-group">
-                {{ form.image.label }}<br>
-                {{ form.image(size=32, class_="form-control") }}
-            </div>
-            <div class="form-group">
                 {{ form.description.label }}<br>
                 {{ form.description(class_="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.images.label }}<br>
+                {{ form.images(class_="form-control", multiple=True) }}
             </div>
             <div class="form-group">
                 {{ form.submit(class_="btn btn-primary") }}

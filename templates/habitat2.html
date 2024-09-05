@@ -69,10 +69,17 @@
             </div>
         </nav>
 
-        <!-- Habitat 1 -->
+         <!-- Habitat 2 -->
         <h2 class="section-heading3 mb-4">
             <span class="section-heading-upper text-center">{{ habitat.name }}</span>
         </h2>
+
+        <!-- Bouton Ajouter un animal -->
+        {% if 'user_role' in session and session['user_role'] == 'admin' %}
+        <div class="text-center mb-4">
+            <a href="{{ url_for('add_animal', habitat_id=habitat.id) }}" class="btn btn-success">Ajouter un animal</a>
+        </div>
+        {% endif %}
 
         <!-- ***** 2 nouveaux blocks **** -->
         <section class="page-section2 cta2">
@@ -116,29 +123,38 @@
                                         <img class="intro2-img img-fluid2 mb-3 mb-lg-0 rounded" src="{{ url_for('static', filename='assets/img/' ~ animal.image) }}" alt="{{ animal.name }}" />
                                     </div>
                                     <!-- Avis du vétérinaire - à voir si je supprime _H1 ou que je change pour les autres habitats -->
-                                    <div class="encadrement2" id="avis{{ animal.id }}_H1"> 
-                                        <p class="title">Avis du vétérinaire</p>
-                                        {% if vet_records_by_animal[animal.id] %}
-                                            <p class="details">
-                                                Date: {{ vet_records_by_animal[animal.id].date }}<br>
-                                                État de l'animal: {{ vet_records_by_animal[animal.id].health_status }}<br>
-                                                Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
-                                                Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br>
-                                                Détails: {{ vet_records_by_animal[animal.id].details }}<br>
-                                                <!-- Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br> -->
-                                            </p>
-                                        {% else %}
-                                            <p class="details">Aucun enregistrement vétérinaire disponible.</p>
-                                        {% endif %}
-                                    </div>
+                                <div class="encadrement2" id="avis{{ animal.id }}_H1"> 
+                                    <p class="title">Avis du vétérinaire</p>
+                                    {% if vet_records_by_animal[animal.id] %}
+                                        <p class="details">
+                                            Date: {{ vet_records_by_animal[animal.id].date }}<br>
+                                            État de l'animal: {{ vet_records_by_animal[animal.id].health_status }}<br>
+                                            <!-- Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
+                                            Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br> -->
+                                            Détails: {{ vet_records_by_animal[animal.id].details }}<br>
+                                            <!-- Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br> -->
+                                        </p>
+                                    {% else %}
+                                        <p class="details">Aucun enregistrement vétérinaire disponible.</p>
+                                    {% endif %}
                                 </div>
+                                <!-- Boutons Modifier et Supprimer -->
+                                {% if 'user_role' in session and session['user_role'] == 'admin' %}
+                                <div class="text-center mt-3">
+                                    <a href="{{ url_for('edit_animal', animal_id=animal.id) }}" class="btn btn-warning">Modifier</a>
+                                    <form method="POST" action="{{ url_for('delete_animal', animal_id=animal.id) }}" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
+                                </div>
+                                {% endif %}     
                             </div>
-                            {% endfor %}
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
        
         <footer class="footer text-faded text-center py-5">
             <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>

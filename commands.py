@@ -65,8 +65,8 @@ def add_data():
 
     # Ajoute des fiches vétérinaires pour les animaux
     vet_records = [
-        VetRecord(date=date(2024, 1, 1), food="Herbes", weight=300, health_status="Bonne santé", details="Aucun problème détecté", animal_id=1),
-        VetRecord(date=date(2024, 1, 10), food="Herbes", weight=305, health_status="Excellente santé", details="Contrôle de routine", animal_id=2),
+        VetRecord(date=date(2024, 1, 1), health_status="Bonne santé", details="Aucun problème détecté", animal_id=1),
+        VetRecord(date=date(2024, 1, 10), health_status="Excellente santé", details="Contrôle de routine", animal_id=2),
         # Ajoutez d'autres fiches vétérinaires ici si nécessaire...
     ]
 
@@ -145,8 +145,6 @@ def restore_data():
     for record in vet_records:
         vet_record = VetRecord(
             date=date.fromisoformat(record['date']),
-            food=record['food'],
-            weight=record['weight'],
             health_status=record['health_status'],
             details=record['details'],
             animal_id=record['animal_id']
@@ -162,8 +160,6 @@ def load_vet_records():
     for record in vet_records:
         new_record = VetRecord(
             date=date.fromisoformat(record['date']),
-            food=record['food'],
-            weight=record['weight'],
             health_status=record['health_status'],
             details=record['details'],
             animal_id=record['animal_id']
@@ -222,8 +218,6 @@ def load_services():
 def add_vet_record():
     record = {
         'date': '2024-08-21',
-        'food': 'Herbes',
-        'weight': 300.0,
         'health_status': 'Bonne santé',
         'details': 'Aucun problème détecté',
         'animal_id': 5

@@ -69,10 +69,18 @@
             </div>
         </nav>
 
-        <!-- Habitat 1 -->
-        <h2 class="section-heading3 mb-4">
+         <!-- Habitat 2 -->
+         <h2 class="section-heading3 mb-4">
             <span class="section-heading-upper text-center">{{ habitat.name }}</span>
         </h2>
+
+        <!-- Bouton Ajouter un animal -->
+        {% if 'user_role' in session and session['user_role'] == 'admin' %}
+        <div class="text-center mb-4">
+            <a href="{{ url_for('add_animal', habitat_id=habitat.id) }}" class="btn btn-success">Ajouter un animal</a>
+        </div>
+        {% endif %}
+
 
         <!-- ***** 2 nouveaux blocks **** -->
         <section class="page-section2 cta2">
@@ -122,8 +130,8 @@
                                             <p class="details">
                                                 Date: {{ vet_records_by_animal[animal.id].date }}<br>
                                                 État de l'animal: {{ vet_records_by_animal[animal.id].health_status }}<br>
-                                                Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
-                                                Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br>
+                                                <!-- Nourriture proposée: {{ vet_records_by_animal[animal.id].food }}<br>
+                                                Grammage de la nourriture: {{ vet_records_by_animal[animal.id].weight }}<br> -->
                                                 Détails: {{ vet_records_by_animal[animal.id].details }}<br>
                                                 <!-- Nombre de consultations: {{ vet_records_by_animal[animal.id].consultation_count }}<br> -->
                                             </p>
@@ -131,6 +139,15 @@
                                             <p class="details">Aucun enregistrement vétérinaire disponible.</p>
                                         {% endif %}
                                     </div>
+                                    <!-- Boutons Modifier et Supprimer -->
+                                    {% if 'user_role' in session and session['user_role'] == 'admin' %}
+                                    <div class="text-center mt-3">
+                                        <a href="{{ url_for('edit_animal', animal_id=animal.id) }}" class="btn btn-warning">Modifier</a>
+                                        <form method="POST" action="{{ url_for('delete_animal', animal_id=animal.id) }}" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                        </form>
+                                    </div>
+                                    {% endif %}     
                                 </div>
                             </div>
                             {% endfor %}

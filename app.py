@@ -83,7 +83,7 @@ class ServiceForm(FlaskForm):
 class AnimalForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     species = StringField('Species', validators=[DataRequired()])
-    image = StringField('Image URL')
+    images = MultipleFileField('Images')
     description = TextAreaField('Description')
     submit = SubmitField('Submit')
 
@@ -140,6 +140,10 @@ def load_services_from_json(file_path='services.json'):
             db.session.add(new_service)
         db.session.commit()
         print("Services chargés depuis le fichier JSON.")
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/submit_review', methods=['POST'])
 def submit_review():
@@ -297,6 +301,26 @@ def habitat(habitat_id):
     template_name = f'habitat{habitat_id}.html'
     return render_template(template_name, habitat=habitat, animals=animals, vet_records_by_animal=last_vet_records_by_animal)
 
+# @app.route('/animal/new/<int:habitat_id>', methods=['GET', 'POST'])
+# @role_required('admin')
+# def add_animal(habitat_id):
+#     form = AnimalForm()
+#     if form.validate_on_submit():
+#         name = form.name.data
+#         species = form.species.data
+#         images = form.images.data
+#         image_filenames = []
+#         for image in images:
+#             filename = secure_filename(image.filename)
+#             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#             image_filenames.append(filename)
+#         description = form.description.data
+#         new_animal = Animal(name=name, species=species, image=image, description=description, habitat_id=habitat_id)
+#         db.session.add(new_animal)
+#         db.session.commit()
+#         flash('Animal ajouté avec succès!', 'success')
+#         return redirect(url_for('habitat', habitat_id=habitat_id))
+#     return render_template('animal_form.html', form=form)
 @app.route('/animal/new/<int:habitat_id>', methods=['GET', 'POST'])
 @role_required('admin')
 def add_animal(habitat_id):
@@ -304,14 +328,40 @@ def add_animal(habitat_id):
     if form.validate_on_submit():
         name = form.name.data
         species = form.species.data
-        image = form.image.data
+        images = form.images.data
+        image_filenames = []
+        for image in images:
+            if image and allowed_file(image.filename):
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                image_filenames.append(filename)
         description = form.description.data
-        new_animal = Animal(name=name, species=species, image=image, description=description, habitat_id=habitat_id)
+        new_animal = Animal(name=name, species=species, image=','.join(image_filenames), description=description, habitat_id=habitat_id)
         db.session.add(new_animal)
         db.session.commit()
         flash('Animal ajouté avec succès!', 'success')
         return redirect(url_for('habitat', habitat_id=habitat_id))
-    return render_template('animal_form.html', form=form)
+    return render_template('animal_form.html', form=form, habitat=habitat)
+
+# @app.route('/animal/<int:animal_id>/edit', methods=['GET', 'POST'])
+# @role_required('admin')
+# def edit_animal(animal_id):
+#     animal = Animal.query.get_or_404(animal_id)
+#     form = AnimalForm()
+#     if form.validate_on_submit():
+#         animal.name = form.name.data
+#         animal.species = form.species.data
+#         animal.image = form.images.data
+#         animal.description = form.description.data
+#         db.session.commit()
+#         flash('Animal modifié avec succès!', 'success')
+#         return redirect(url_for('habitat', habitat_id=animal.habitat_id))
+#     elif request.method == 'GET':
+#         form.name.data = animal.name
+#         form.species.data = animal.species
+#         form.images.data = animal.image
+#         form.description.data = animal.description
+#     return render_template('animal_form.html', form=form)
 
 @app.route('/animal/<int:animal_id>/edit', methods=['GET', 'POST'])
 @role_required('admin')
@@ -321,7 +371,15 @@ def edit_animal(animal_id):
     if form.validate_on_submit():
         animal.name = form.name.data
         animal.species = form.species.data
-        animal.image = form.image.data
+        images = form.images.data
+        image_filenames = []
+        for image in images:
+            if image and allowed_file(image.filename):
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                image_filenames.append(filename)
+        if image_filenames:
+            animal.image = ','.join(image_filenames)
         animal.description = form.description.data
         db.session.commit()
         flash('Animal modifié avec succès!', 'success')
@@ -329,7 +387,6 @@ def edit_animal(animal_id):
     elif request.method == 'GET':
         form.name.data = animal.name
         form.species.data = animal.species
-        form.image.data = animal.image
         form.description.data = animal.description
     return render_template('animal_form.html', form=form)
 
@@ -337,7 +394,8 @@ def edit_animal(animal_id):
 @role_required('admin')
 def delete_animal(animal_id):
     animal = Animal.query.get_or_404(animal_id)
-    habitat_id = animal.habitat_id
+    VetRecord.query.filter_by(animal_id=animal_id).delete()
+    # habitat_id = animal.habitat_id
     db.session.delete(animal)
     db.session.commit()
     flash('Animal supprimé avec succès!', 'success')

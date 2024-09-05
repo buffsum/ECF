@@ -399,7 +399,7 @@ def delete_animal(animal_id):
     db.session.delete(animal)
     db.session.commit()
     flash('Animal supprimé avec succès!', 'success')
-    return redirect(url_for('habitat', habitat_id=habitat_id))
+    return redirect(url_for('habitat', habitat_id=animal.habitat_id))
 
 @app.route('/increment-consultation/<int:animal_id_here>', methods=['POST'])
 def increment_consultation(animal_id_here):

@@ -322,5 +322,17 @@
         "health_status": "autre test pour chien",
         "details": "autre test pour chien",
         "animal_id": 41
+    },
+    {
+        "date": "2024-09-05",
+        "health_status": "test canard",
+        "details": "test canard",
+        "animal_id": 41
+    },
+    {
+        "date": "2024-09-05",
+        "health_status": "stable",
+        "details": "sucre test",
+        "animal_id": 41
     }
 ]

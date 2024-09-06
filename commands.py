@@ -73,18 +73,29 @@ def add_data():
     db.session.add_all(vet_records)
     db.session.commit()
 
+    # # Créez un utilisateur admin avec un mot de passe haché
+    # admin = User(username='admin', password=generate_password_hash('admin'), role='admin')
+    # # à voir pour les autres du coup
+    # db.session.add(admin)
+    # db.session.commit()
     # Créez un utilisateur admin avec un mot de passe haché
-    admin = User(username='admin', password=generate_password_hash('admin'), role='admin')
-    # à voir pour les autres du coup
+    admin = User(username='admin@admin.fr', email='admin@admin.fr', password=generate_password_hash('admin'), role='admin')
     db.session.add(admin)
     db.session.commit()
 
-    print("Admin user created with username 'admin' and password 'adminpassword'")
+    print("Admin user created with username 'admin@admin.fr' and password 'admin'")
 
     # Ajoute des utilisateurs avec des rôles spécifiques
-    user1 = User(username="employee", password=generate_password_hash("employee"), role="employee")
-    user2 = User(username="veterinarian", password=generate_password_hash("veterinarian"), role="veterinarian")
-    user3 = User(username="admin2", password=generate_password_hash("admin3"), role="admin")
+    user1 = User(username="employee@company.com", email="employee@company.com", password=generate_password_hash("employee"), role="employee")
+    user2 = User(username="veterinarian@clinic.com", email="veterinarian@clinic.com", password=generate_password_hash("veterinarian"), role="veterinarian")
+    user3 = User(username="admin2@admin.fr", email="admin2@admin.fr", password=generate_password_hash("admin3"), role="admin")
+
+    # print("Admin user created with username 'admin' and password 'adminpassword'")
+
+    # # Ajoute des utilisateurs avec des rôles spécifiques
+    # user1 = User(username="employee", password=generate_password_hash("employee"), role="employee")
+    # user2 = User(username="veterinarian", password=generate_password_hash("veterinarian"), role="veterinarian")
+    # user3 = User(username="admin2", password=generate_password_hash("admin3"), role="admin")
 
     db.session.add_all([user1, user2, user3])
     db.session.commit()
@@ -95,7 +106,7 @@ def load_vet_records_from_json():
     try:
         with open('vet_records.json', 'r') as file:
             vet_records = json.load(file)
-            print(f"Loaded vet records: {vet_records}")  # Ajoutez cette ligne pour déboguer
+            # print(f"Loaded vet records: {vet_records}")  # Ajoutez cette ligne pour déboguer
             return vet_records
     except FileNotFoundError:
         return []
@@ -196,6 +207,10 @@ def save_services():
 def load_services():
     try:
         services = load_services_from_json()
+        if not services:
+            print("Aucun service à charger.")
+            return
+        
         for service in services:
             new_service = Service(
                 title=service['title'],

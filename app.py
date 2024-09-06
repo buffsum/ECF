@@ -2,10 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 from functools import wraps
 from flask_wtf import FlaskForm
 from flask_migrate import Migrate
-from wtforms import StringField, TextAreaField, SubmitField, MultipleFileField
-from wtforms.validators import DataRequired
+from wtforms import StringField, TextAreaField, SubmitField, MultipleFileField, PasswordField, SelectField
+from wtforms.validators import DataRequired, Email
 from werkzeug.utils import secure_filename
-# from flask_mail import Mail, Message
+from flask_mail import Mail, Message
 import os
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -20,6 +20,14 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zoo.db'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config['MAIL_SERVER'] = 'smtp.example.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'laurane-c@hotmail.fr'
+app.config['MAIL_PASSWORD'] = 'your-email-password'
+app.config['MAIL_DEFAULT_SENDER'] = 'laurane-c@hotmail.fr'
+mail = Mail(app)
 
 # Configuration de Flask-Mail
 # app.config['MAIL_SERVER'] = 'smtp.example.com'
@@ -41,6 +49,7 @@ migrate = Migrate(app, db)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     role = db.Column(db.String(20), nullable=False)
 
@@ -108,6 +117,12 @@ class DailyFoodRecord(db.Model):
     weight = db.Column(db.Float, nullable=False)
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
     animal = db.relationship('Animal', backref=db.backref('daily_food_records', lazy=True))
+
+class CreateUserForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Mot de passe', validators=[DataRequired()])
+    role = SelectField('Rôle', choices=[('employee', 'Employé'), ('veterinarian', 'Vétérinaire')], validators=[DataRequired()])
+    submit = SubmitField('Créer un compte')
 
 def role_required(role):
     def decorator(f):
@@ -440,6 +455,31 @@ def increment_consultation(animal_id_here):
 @app.route('/admin', methods=['GET', 'POST'])
 @role_required('admin')
 def admin():
+    form = CreateUserForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        role = form.role.data
+
+        # Vérifier si l'utilisateur existe déjà
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Un utilisateur avec cet email existe déjà.', 'danger')
+            return redirect(url_for('admin'))
+
+        # Créer un nouvel utilisateur
+        new_user = User(
+            username=email,
+            email=email,
+            password=generate_password_hash(password),
+            role=role
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Le compte a été créé avec succès.', 'success')
+        return redirect(url_for('admin'))
+    
     if request.method == 'POST':
         try:
             date_str = request.form['date']
@@ -525,7 +565,7 @@ def admin():
 
     daily_food_records = food_query.all()
 
-    return render_template('admin.html', avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, daily_food_records=daily_food_records, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
+    return render_template('admin.html', form=form, avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, daily_food_records=daily_food_records, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
 
 @app.route('/employee', methods=['GET', 'POST'])
 @role_required('employee')
@@ -559,6 +599,48 @@ def employee():
 @role_required('veterinarian')
 def veterinarian():
     return render_template('veterinarian.html')
+
+# @app.route('/admin/create_user', methods=['GET', 'POST'])
+# def create_user():
+#     form = CreateUserForm()
+#     if form.validate_on_submit():
+#         email = form.email.data
+#         password = form.password.data
+#         role = form.role.data
+
+#         # Vérifier si l'utilisateur existe déjà
+#         existing_user = User.query.filter_by(email=email).first()
+#         if existing_user:
+#             flash('Un utilisateur avec cet email existe déjà.', 'danger')
+#             return redirect(url_for('create_user'))
+
+#         # Créer un nouvel utilisateur
+#         new_user = User(
+#             username=email,
+#             email=email,
+#             password=generate_password_hash(password),
+#             role=role
+#         )
+#         db.session.add(new_user)
+#         db.session.commit()
+#         # Envoyer un email de notification avec une adresse d'expéditeur dynamique
+#         # msg = Message(
+#         #     'Votre compte a été créé',
+#         #     recipients=[email],
+#         #     sender='fake-email@example.com'  # Adresse d'expéditeur dynamique
+#         # )
+#         # msg.body = f"Bonjour,\n\nVotre compte a été créé avec succès. Votre nom d'utilisateur est {email}.\n\nMerci."
+#         # mail.send(msg)
+
+#         # Envoyer un email de notification
+#         # msg = Message('Votre compte a été créé', recipients=[email])
+#         # msg.body = f"Bonjour,\n\nVotre compte a été créé avec succès. Votre nom d'utilisateur est {email}.\n\nMerci."
+#         # mail.send(msg)
+
+#         flash('Le compte a été créé avec succès et un email a été envoyé à l\'utilisateur.', 'success')
+#         return redirect(url_for('admin_dashboard'))
+
+#     return render_template('create_user.html', form=form)
 
 import commands
 

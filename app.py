@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session
 from functools import wraps
 from flask_wtf import FlaskForm
+from forms import ServiceForm, AnimalForm, CreateUserForm  # Importer les formulaires
 from flask_migrate import Migrate
 from wtforms import StringField, TextAreaField, SubmitField, MultipleFileField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Email
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
+from models import db, User, Habitat, Animal, VetRecord, Avis, Service, DailyFoodRecord
 import os
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -42,87 +44,96 @@ mail = Mail(app)
 # db = SQLAlchemy(app)
 # migrate = Migrate(app, db)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+# Initialiser l'instance de SQLAlchemy avec l'application
+db.init_app(app)
 
-# Modèles
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
-    role = db.Column(db.String(20), nullable=False)
+# Créer toutes les tables si elles n'existent pas déjà
+with app.app_context():
+    db.create_all()
 
-class Habitat(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text)
-    image = db.Column(db.String(200))
-    animals = db.relationship('Animal', backref='habitat', lazy=True)
+# Importer et enregistrer les commandes CLI
+import commands
+commands.register_commands(app)
 
-class Animal(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    species = db.Column(db.String(100), nullable=False)
-    image = db.Column(db.String(200))
-    habitat_id = db.Column(db.Integer, db.ForeignKey('habitat.id'), nullable=False)
-    vet_records = db.relationship('VetRecord', back_populates='animal', lazy=True)
-    description = db.Column(db.Text, nullable=True)
+# # Modèles
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(120), unique=True, nullable=False)
+#     email = db.Column(db.String(120), unique=True, nullable=False)
+#     password = db.Column(db.String(120), nullable=False)
+#     role = db.Column(db.String(20), nullable=False)
 
-class VetRecord(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    date = db.Column(db.Date, nullable=False)
-    health_status = db.Column(db.String(200), nullable=False)
-    details = db.Column(db.Text, nullable=True)
-    animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
-    animal = db.relationship('Animal', back_populates='vet_records')
-    consultation_count = db.Column(db.Integer, default=0)
+# class Habitat(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100), nullable=False)
+#     description = db.Column(db.Text)
+#     image = db.Column(db.String(200))
+#     animals = db.relationship('Animal', backref='habitat', lazy=True)
 
-class Avis(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nom = db.Column(db.String(100), nullable=False)
-    pseudo = db.Column(db.String(100), nullable=False)
-    titre = db.Column(db.String(100), nullable=False)
-    message = db.Column(db.Text, nullable=False)
-    approuve = db.Column(db.Boolean, default=False)
+# class Animal(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100), nullable=False)
+#     species = db.Column(db.String(100), nullable=False)
+#     image = db.Column(db.String(200))
+#     habitat_id = db.Column(db.Integer, db.ForeignKey('habitat.id'), nullable=False)
+#     vet_records = db.relationship('VetRecord', back_populates='animal', lazy=True)
+#     description = db.Column(db.Text, nullable=True)
 
-class Service(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    images_url = db.Column(db.PickleType, nullable=True)
+# class VetRecord(db.Model):
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     date = db.Column(db.Date, nullable=False)
+#     health_status = db.Column(db.String(200), nullable=False)
+#     details = db.Column(db.Text, nullable=True)
+#     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
+#     animal = db.relationship('Animal', back_populates='vet_records')
+#     consultation_count = db.Column(db.Integer, default=0)
 
-    def __init__(self, title, description, images_url=None):
-        self.title = title
-        self.description = description
-        self.images_url = images_url if images_url is not None else []
+# class Avis(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     nom = db.Column(db.String(100), nullable=False)
+#     pseudo = db.Column(db.String(100), nullable=False)
+#     titre = db.Column(db.String(100), nullable=False)
+#     message = db.Column(db.Text, nullable=False)
+#     approuve = db.Column(db.Boolean, default=False)
 
-class ServiceForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    images = MultipleFileField('Images')
-    submit = SubmitField('Submit')
+# class Service(db.Model):
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     title = db.Column(db.String(100), nullable=False)
+#     description = db.Column(db.Text, nullable=False)
+#     images_url = db.Column(db.PickleType, nullable=True)
 
-class AnimalForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    species = StringField('Species', validators=[DataRequired()])
-    images = MultipleFileField('Images')
-    description = TextAreaField('Description')
-    submit = SubmitField('Submit')
+#     def __init__(self, title, description, images_url=None):
+#         self.title = title
+#         self.description = description
+#         self.images_url = images_url if images_url is not None else []
 
-class DailyFoodRecord(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date, nullable=False)
-    food = db.Column(db.String(100), nullable=False)
-    weight = db.Column(db.Float, nullable=False)
-    animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
-    animal = db.relationship('Animal', backref=db.backref('daily_food_records', lazy=True))
+# class ServiceForm(FlaskForm):
+#     title = StringField('Title', validators=[DataRequired()])
+#     description = TextAreaField('Description', validators=[DataRequired()])
+#     images = MultipleFileField('Images')
+#     submit = SubmitField('Submit')
 
-class CreateUserForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Mot de passe', validators=[DataRequired()])
-    role = SelectField('Rôle', choices=[('employee', 'Employé'), ('veterinarian', 'Vétérinaire')], validators=[DataRequired()])
-    submit = SubmitField('Créer un compte')
+# class AnimalForm(FlaskForm):
+#     name = StringField('Name', validators=[DataRequired()])
+#     species = StringField('Species', validators=[DataRequired()])
+#     images = MultipleFileField('Images')
+#     description = TextAreaField('Description')
+#     submit = SubmitField('Submit')
+
+# class DailyFoodRecord(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     date = db.Column(db.Date, nullable=False)
+#     food = db.Column(db.String(100), nullable=False)
+#     weight = db.Column(db.Float, nullable=False)
+#     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
+#     animal = db.relationship('Animal', backref=db.backref('daily_food_records', lazy=True))
+
+# class CreateUserForm(FlaskForm):
+#     email = StringField('Email', validators=[DataRequired(), Email()])
+#     password = PasswordField('Mot de passe', validators=[DataRequired()])
+#     # password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+#     role = SelectField('Rôle', choices=[('employee', 'Employé'), ('veterinarian', 'Vétérinaire')], validators=[DataRequired()])
+#     submit = SubmitField('Créer un compte')
 
 def role_required(role):
     def decorator(f):
@@ -366,6 +377,8 @@ def habitat(habitat_id):
 @app.route('/animal/new/<int:habitat_id>', methods=['GET', 'POST'])
 @role_required('admin')
 def add_animal(habitat_id):
+    # Importer les fonctions de gestion des animaux JSON
+    from commands import load_animals_from_json, save_animal_to_json
     form = AnimalForm()
     if form.validate_on_submit():
         name = form.name.data
@@ -381,6 +394,17 @@ def add_animal(habitat_id):
         new_animal = Animal(name=name, species=species, image=','.join(image_filenames), description=description, habitat_id=habitat_id)
         db.session.add(new_animal)
         db.session.commit()
+        
+         # Sauvegarder l'animal dans le fichier JSON
+        animal_data = {
+            'name': name,
+            'species': species,
+            'image': ','.join(image_filenames),
+            'description': description,
+            'habitat_id': habitat_id
+        }
+        save_animal_to_json(animal_data)
+
         flash('Animal ajouté avec succès!', 'success')
         return redirect(url_for('habitat', habitat_id=habitat_id))
     return render_template('animal_form.html', form=form, habitat=habitat)
@@ -455,6 +479,9 @@ def increment_consultation(animal_id_here):
 @app.route('/admin', methods=['GET', 'POST'])
 @role_required('admin')
 def admin():
+    # Importer les fonctions de gestion des utilisateurs JSON
+    from commands import load_users_from_json, save_user_to_json
+
     form = CreateUserForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -476,6 +503,29 @@ def admin():
         )
         db.session.add(new_user)
         db.session.commit()
+
+        # Sauvegarder l'utilisateur dans le fichier JSON
+        user_data = {
+            'username': email,
+            'email': email,
+            'password': generate_password_hash(password),
+            'role': role
+        }
+        save_user_to_json(user_data)
+        # Envoyer un email de notification avec une adresse d'expéditeur dynamique
+#         # msg = Message(
+#         #     'Votre compte a été créé',
+#         #     recipients=[email],
+#         #     sender='fake-email@example.com'  # Adresse d'expéditeur dynamique
+#         # )
+#         # msg.body = f"Bonjour,\n\nVotre compte a été créé avec succès. Votre nom d'utilisateur est {email}.\n\nMerci."
+#         # mail.send(msg)
+
+#         # Envoyer un email de notification
+#         # msg = Message('Votre compte a été créé', recipients=[email])
+#         # msg.body = f"Bonjour,\n\nVotre compte a été créé avec succès. Votre nom d'utilisateur est {email}.\n\nMerci."
+#         # mail.send(msg)
+
 
         flash('Le compte a été créé avec succès.', 'success')
         return redirect(url_for('admin'))
@@ -600,53 +650,7 @@ def employee():
 def veterinarian():
     return render_template('veterinarian.html')
 
-# @app.route('/admin/create_user', methods=['GET', 'POST'])
-# def create_user():
-#     form = CreateUserForm()
-#     if form.validate_on_submit():
-#         email = form.email.data
-#         password = form.password.data
-#         role = form.role.data
-
-#         # Vérifier si l'utilisateur existe déjà
-#         existing_user = User.query.filter_by(email=email).first()
-#         if existing_user:
-#             flash('Un utilisateur avec cet email existe déjà.', 'danger')
-#             return redirect(url_for('create_user'))
-
-#         # Créer un nouvel utilisateur
-#         new_user = User(
-#             username=email,
-#             email=email,
-#             password=generate_password_hash(password),
-#             role=role
-#         )
-#         db.session.add(new_user)
-#         db.session.commit()
-#         # Envoyer un email de notification avec une adresse d'expéditeur dynamique
-#         # msg = Message(
-#         #     'Votre compte a été créé',
-#         #     recipients=[email],
-#         #     sender='fake-email@example.com'  # Adresse d'expéditeur dynamique
-#         # )
-#         # msg.body = f"Bonjour,\n\nVotre compte a été créé avec succès. Votre nom d'utilisateur est {email}.\n\nMerci."
-#         # mail.send(msg)
-
-#         # Envoyer un email de notification
-#         # msg = Message('Votre compte a été créé', recipients=[email])
-#         # msg.body = f"Bonjour,\n\nVotre compte a été créé avec succès. Votre nom d'utilisateur est {email}.\n\nMerci."
-#         # mail.send(msg)
-
-#         flash('Le compte a été créé avec succès et un email a été envoyé à l\'utilisateur.', 'success')
-#         return redirect(url_for('admin_dashboard'))
-
-#     return render_template('create_user.html', form=form)
-
-import commands
-
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
 
 # if __name__ == '__main__':

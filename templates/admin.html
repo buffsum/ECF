@@ -260,7 +260,7 @@
         <div class="row">
             <div class="col-xl-14 mx-auto">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="inner5 bg-faded text-center rounded">
                             <h2 class="section-heading mb-4">
                                 <span class="section-heading-lower2">- Fiches d'alimentation quotidiennes -</span>
@@ -303,38 +303,43 @@
                             {% endif %}
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="inner5 bg-faded text-center rounded">
+                            <h2 class="section-heading mb-4">
+                                <span class="section-heading-lower2">- Créer un compte -</span>
+                            </h2>
+                            <form method="POST" action="{{ url_for('admin') }}" class="white-text">
+                                {{ form.hidden_tag() }}
+                                <p>
+                                    {{ form.email.label }}<br>
+                                    {{ form.email(size=32) }}<br>
+                                    {% for error in form.email.errors %}
+                                        <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
+                                <p>
+                                    {{ form.password.label }}<br>
+                                    {{ form.password(size=32) }}<br>
+                                    {% for error in form.password.errors %}
+                                        <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
+                                <p>
+                                    {{ form.role.label }}<br>
+                                    {{ form.role() }}<br>
+                                    {% for error in form.role.errors %}
+                                        <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
+                                <p>{{ form.submit() }}</p>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<h1>Créer un compte</h1>
-<form method="POST" action="{{ url_for('admin') }}" class="white-text">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.email.label }}<br>
-        {{ form.email(size=32) }}<br>
-        {% for error in form.email.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}<br>
-        {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.role.label }}<br>
-        {{ form.role() }}<br>
-        {% for error in form.role.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
-
         <!-- *********** Footer ************ -->
         <footer class="footer text-faded text-center py-5">
             <div class="container">

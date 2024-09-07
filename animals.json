@@ -1,0 +1,16 @@
+[
+    {
+        "name": "un animal",
+        "species": "singe",
+        "image": "cerf1.jpg",
+        "description": "ezee",
+        "habitat_id": 1
+    },
+    {
+        "name": "animal2",
+        "species": "souris",
+        "image": "cerf2.jpg",
+        "description": "eeee",
+        "habitat_id": 1
+    }
+]

@@ -1,0 +1,8 @@
+[
+    {
+        "username": "test@test.fr",
+        "email": "test@test.fr",
+        "password": "scrypt:32768:8:1$skveKvbQumnwuldh$d943e5772c11f5ea303a32ec94acb48f125a26dfa937ad98039f01e1f354dd969257386ba7783fbd97d4d12c4020a872a8142edae296230ab74f5963a0b25a4e",
+        "role": "employee"
+    }
+]

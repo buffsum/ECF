@@ -1,73 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>{{ habitat.name }}</title>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" />
-    
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
-    
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
-</head>
-<body>
-    <header class="text-center">
-        <a href="{{ url_for('home') }}">
-            <img class="img-logo center" src="/static/assets/img/logo.png" alt="logo Zoo Arcadia" />
-        </a>
-        <ul class="nav-btn">
-            {% if 'user_id' in session %}
-                <li class="nav-item-btn">
-                    <a href="{{ url_for('logout') }}" class="btn btn-primary btn-connexion">Déconnexion</a>
-                </li>
-            {% else %}
-                <li class="nav-item-btn">
-                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-connexion">Connexion</a>
-                </li>
-            {% endif %}
-        </ul>
-        <!-- <a href="{{ url_for('register') }}" class="btn btn-primary btn-connexion">Connexion</a> -->
-    </header>
-    
-    <!-- *********** Navigation ************ -->
-    <!-- ajouter connexion dans la navbar uniquement pour le format petit écran -->
-    <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">ZOO ARCADIA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('services') }}">Services</a></li>
-                    <li class="nav-item px-lg-4 dropdown">
-                        <a class="nav-link text-uppercase dropdown-toggle" href="{{ url_for('habitats') }}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Habitats</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ url_for('habitats') }}">Voir tous les habitats</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=1) }}">Habitat 1 - Savane Africaine</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=2) }}">Habitat 2 - Forêt d'eucalyptus</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=3) }}">Habitat 3 - Forêt Tempérée</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=4) }}">Habitat 4 - Jungle Tropicale</a></li>
-                        </ul>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Zoo Arcadia</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="../static/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="text-center">
+            <a href="{{ url_for('home') }}">
+                <img class="img-logo center" src="/static/assets/img/logo.png" alt="logo Zoo Arcadia" />
+            </a>
+            <ul class="nav-btn d-none d-lg-flex">
+                {% if 'user_id' in session %}
+                    <li class="nav-item-btn">
+                        <a href="{{ url_for('logout') }}" class="btn btn-primary btn-connexion">Déconnexion</a>
                     </li>
-                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('home') }}#avis">Avis</a></li>
-                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('contact') }}">Contact</a></li>
-                    {% if 'user_id' in session %}
-                        {% if session['user_role'] == 'admin' %}
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('admin') }}">Mon espace</a></li>
-                        {% elif session['user_role'] == 'employee' %}
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('employee') }}">Mon espace</a></li>
-                        {% elif session['user_role'] == 'veterinarian' %}
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('veterinarian') }}">Mon espace</a></li>
+                {% else %}
+                    <li class="nav-item-btn">
+                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-connexion">Connexion</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </header>
+        
+
+        <!-- *********** Navigation ************ -->
+        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="{{ url_for('home') }}">ZOO ARCADIA</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('services') }}">Services</a></li>
+                        <li class="nav-item px-lg-4 dropdown">
+                            <a class="nav-link text-uppercase dropdown-toggle" href="{{ url_for('habitats') }}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Habitats</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('habitats') }}">Voir tous les habitats</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=1) }}">Habitat 1 - Savane Africaine</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=2) }}">Habitat 2 - Forêt d'eucalyptus</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=3) }}">Habitat 3 - Forêt Tempérée</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('habitat', habitat_id=4) }}">Habitat 4 - Jungle Tropicale</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('home') }}#avis">Avis</a></li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{{ url_for('contact') }}">Contact</a></li>
+                        {% if 'user_id' in session %}
+                            {% if session['user_role'] == 'admin' %}
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('admin') }}">Mon espace</a></li>
+                            {% elif session['user_role'] == 'employee' %}
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('employee') }}">Mon espace</a></li>
+                            {% elif session['user_role'] == 'veterinarian' %}
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase underline" href="{{ url_for('veterinarian') }}">Mon espace</a></li>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </ul>
+                        <!-- Ajoutez le bouton Connexion/Déconnexion dans le menu burger -->
+                        {% if 'user_id' in session %}
+                            <li class="nav-item d-lg-none">
+                                <a href="{{ url_for('logout') }}" class="nav-link text-uppercase">Déconnexion</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item d-lg-none">
+                                <a href="{{ url_for('login') }}" class="nav-link text-uppercase">Connexion</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
     <!-- Habitat 1 -->
     <h2 class="section-heading3 mb-4">

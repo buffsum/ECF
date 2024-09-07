@@ -4,5 +4,11 @@
         "email": "test@test.fr",
         "password": "scrypt:32768:8:1$skveKvbQumnwuldh$d943e5772c11f5ea303a32ec94acb48f125a26dfa937ad98039f01e1f354dd969257386ba7783fbd97d4d12c4020a872a8142edae296230ab74f5963a0b25a4e",
         "role": "employee"
+    },
+    {
+        "username": "veto@veto.fr",
+        "email": "veto@veto.fr",
+        "password": "scrypt:32768:8:1$rDDBaui7DE6D12KJ$1a0d57c374c1917ea1c6dd4f2cd966a84efc4ae323c161c712cdfac261364c450442cd32c6d1c8ff6671125ee933e7b22740fc108bd9a7ba1651705f6ba32585",
+        "role": "veterinarian"
     }
 ]

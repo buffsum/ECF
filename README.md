@@ -54,6 +54,25 @@ Initialisez la base de données en exécutant les commandes suivantes dans le te
 >flask load-services
 >flask load-daily-food
 
+// nouveau linux
+python3 -m pip install -r requirements.txt
+./start_linux.sh
+
+
+# flask add-data
+# flask load-users
+# flask load-animals
+# flask load-vet-records
+# flask load-avis
+# flask load-services
+# flask load-daily-food
+# flask run
+
+// nouveau mac
+pip install -r requirements.txt
+
+./start_mac.sh
+
 Étape 6 - Lancer l'application
 >flask run
 

@@ -1,0 +1,44 @@
+[
+    {
+        "date": "2024-09-08",
+        "food": "chou",
+        "weight": 20.0,
+        "animal_id": 1
+    },
+    {
+        "date": "2024-09-08",
+        "food": "carotte",
+        "weight": 40.0,
+        "animal_id": 2
+    },
+    {
+        "date": "2024-09-08",
+        "food": "courgette",
+        "weight": 30.0,
+        "animal_id": 3
+    },
+    {
+        "date": "2024-09-08",
+        "food": "chou",
+        "weight": 20.0,
+        "animal_id": 1
+    },
+    {
+        "date": "2024-09-08",
+        "food": "chou test",
+        "weight": 20.0,
+        "animal_id": 1
+    },
+    {
+        "date": "2024-09-08",
+        "food": "carotte test",
+        "weight": 30.0,
+        "animal_id": 2
+    },
+    {
+        "date": "2024-09-08",
+        "food": "courgette test",
+        "weight": 40.0,
+        "animal_id": 3
+    }
+]

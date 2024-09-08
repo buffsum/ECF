@@ -6,9 +6,15 @@
         "role": "employee"
     },
     {
+        "username": "employee@employee.fr",
+        "email": "employee@employee.fr",
+        "password": "scrypt:32768:8:1$oBCAPMeaxxIpQxsB$fbe742df3294de5f6459fee6d2f40d9465cbe51468122d7ebf845102933e60f9d56a01c69a90cea19b32e85b33bf339865370ea4672d7eff07f2735032f0b7e2",
+        "role": "employee"
+    },
+    {
         "username": "veto@veto.fr",
         "email": "veto@veto.fr",
-        "password": "scrypt:32768:8:1$rDDBaui7DE6D12KJ$1a0d57c374c1917ea1c6dd4f2cd966a84efc4ae323c161c712cdfac261364c450442cd32c6d1c8ff6671125ee933e7b22740fc108bd9a7ba1651705f6ba32585",
+        "password": "scrypt:32768:8:1$2cQf3Cb4GBfSPV5y$79d426a79458dcf54e71ed375eba7f5261b45c15f4671c3be41342900ba65d8ac98c432b57db284a69a9d4975627f00b374a8d97fccf84223a98709b7a3e5ad3",
         "role": "veterinarian"
     }
 ]

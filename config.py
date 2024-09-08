@@ -95,21 +95,6 @@ def load_avis_from_json(file_path='avis.json'):
         avis = json.load(file)
     return avis
 
-# def load_services_from_json(file_path='services.json'):
-#     # from models import Service, db
-#     with open(file_path, 'r') as file:
-#         services = json.load(file)
-#         for service in services:
-#             new_service = Service(
-#                 title=service['title'],
-#                 description=service['description'],
-#                 images_url=service.get('images_url', [])
-#             )
-#             db.session.add(new_service)
-#         db.session.commit()
-#         print("Services chargés depuis le fichier JSON.")
-
-# Correction de la fonction load_services_from_json
 def load_services_from_json(file_path='services.json'):
     with open(file_path, 'r') as file:
         services = json.load(file)

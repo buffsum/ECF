@@ -89,41 +89,7 @@
 
         <!-- Afficher les messages de confirmation -->
          
-                                    {% with messages = get_flashed_messages(with_categories=true) %}
-                                        {% if messages %}
-                                            <ul>
-                                            {% for category, message in messages %}
-                                                <li class="{{ category }}">{{ message }}</li>
-                                            {% endfor %}
-                                            </ul>
-                                        {% endif %}
-                                    {% endwith %}
-
-                                    <form method="POST" action="{{ url_for('admin') }}">
-                                        <label for="date">Date:</label><br>
-                                        <input type="date" id="date" name="date" required><br><br>
-
-                                        <!-- <label for="food">Nourriture:</label><br>
-                                        <input type="text" id="food" name="food" required><br><br>
-
-                                        <label for="weight">Grammage de la nourriture (grammes):</label><br>
-                                        <input type="number" step="0.1" id="weight" name="weight" required><br><br> -->
-
-                                        <label for="health_status">État de santé:</label><br>
-                                        <input type="text" id="health_status" name="health_status" required><br><br>
-
-                                        <label for="details">Détails:</label><br>
-                                        <textarea id="details" name="details" required></textarea><br><br>
-
-                                        <label for="animal_id">Animal:</label><br>
-                                        <select id="animal_id" name="animal_id" required>
-                                            {% for animal in animals %}
-                                                <option value="{{ animal.id }}">{{ animal.name }} ({{ animal.species }})</option>
-                                            {% endfor %}
-                                        </select><br><br>
-
-                                        <button type="submit" class="btn btn-primary">Ajouter la fiche</button>
-                                    </form>
+                
                                 </div>
                             </div>
                             <!-- Consulter un avis vétérinaire -->

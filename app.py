@@ -8,6 +8,7 @@ from wtforms.validators import DataRequired, Email
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
 from models import db, User, Habitat, Animal, VetRecord, Avis, Service, DailyFoodRecord
+from commands import save_avis_to_json, load_avis_from_json, load_services_from_json, load_animals_from_json, save_animal_to_json, load_users_from_json, save_user_to_json, save_daily_food_to_json
 import os
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -23,6 +24,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///zoo.db'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Configuration de Flask-Mail
 app.config['MAIL_SERVER'] = 'smtp.example.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -30,19 +32,6 @@ app.config['MAIL_USERNAME'] = 'laurane-c@hotmail.fr'
 app.config['MAIL_PASSWORD'] = 'your-email-password'
 app.config['MAIL_DEFAULT_SENDER'] = 'laurane-c@hotmail.fr'
 mail = Mail(app)
-
-# Configuration de Flask-Mail
-# app.config['MAIL_SERVER'] = 'smtp.example.com'
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USERNAME'] = 'laurane-c@hotmail.fr'
-# app.config['MAIL_PASSWORD'] = 'laurane-c@hotmail.fr'
-# app.config['MAIL_DEFAULT_SENDER'] = 'laurane-c@hotmail.fr'
-
-# mail = Mail(app)
-
-# db = SQLAlchemy(app)
-# migrate = Migrate(app, db)
 
 # Initialiser l'instance de SQLAlchemy avec l'application
 db.init_app(app)
@@ -68,38 +57,38 @@ def role_required(role):
         return decorated_function
     return decorator
 
-def save_avis_to_json():
-    avis_list = Avis.query.all()
-    avis_data = [
-        {
-            'nom': avis.nom,
-            'pseudo': avis.pseudo,
-            'titre': avis.titre,
-            'message': avis.message,
-            'approuve': avis.approuve
-        }
-        for avis in avis_list
-    ]
-    with open('avis.json', 'w') as f:
-        json.dump(avis_data, f, indent=4)
+# def save_avis_to_json():
+#     avis_list = Avis.query.all()
+#     avis_data = [
+#         {
+#             'nom': avis.nom,
+#             'pseudo': avis.pseudo,
+#             'titre': avis.titre,
+#             'message': avis.message,
+#             'approuve': avis.approuve
+#         }
+#         for avis in avis_list
+#     ]
+#     with open('avis.json', 'w') as f:
+#         json.dump(avis_data, f, indent=4)
 
-def load_avis_from_json(file_path='avis.json'):
-    with open(file_path, 'r') as file:
-        avis = json.load(file)
-    return avis
+# def load_avis_from_json(file_path='avis.json'):
+#     with open(file_path, 'r') as file:
+#         avis = json.load(file)
+#     return avis
 
-def load_services_from_json(file_path='services.json'):
-    with open(file_path, 'r') as file:
-        services = json.load(file)
-        for service in services:
-            new_service = Service(
-                title=service['title'],
-                description=service['description'],
-                images_url=service.get('images_url', [])
-            )
-            db.session.add(new_service)
-        db.session.commit()
-        print("Services chargés depuis le fichier JSON.")
+# def load_services_from_json(file_path='services.json'):
+#     with open(file_path, 'r') as file:
+#         services = json.load(file)
+#         for service in services:
+#             new_service = Service(
+#                 title=service['title'],
+#                 description=service['description'],
+#                 images_url=service.get('images_url', [])
+#             )
+#             db.session.add(new_service)
+#         db.session.commit()
+#         print("Services chargés depuis le fichier JSON.")
 
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -278,7 +267,7 @@ def habitat(habitat_id):
 @role_required('admin')
 def add_animal(habitat_id):
     # Importer les fonctions de gestion des animaux JSON
-    from commands import load_animals_from_json, save_animal_to_json
+    # from commands import load_animals_from_json, save_animal_to_json
     form = AnimalForm()
     if form.validate_on_submit():
         name = form.name.data
@@ -360,7 +349,7 @@ def increment_consultation(animal_id_here):
 @role_required('admin')
 def admin():
     # Importer les fonctions de gestion des utilisateurs JSON
-    from commands import load_users_from_json, save_user_to_json
+    # from commands import load_users_from_json, save_user_to_json
 
     form = CreateUserForm()
     if form.validate_on_submit():
@@ -410,55 +399,61 @@ def admin():
         flash('Le compte a été créé avec succès.', 'success')
         return redirect(url_for('admin'))
     
-    if request.method == 'POST':
-        try:
-            date_str = request.form['date']
-            health_status = request.form['health_status']
-            details = request.form['details']
-            animal_id = int(request.form['animal_id'])
+    # if request.method == 'POST':
+    #     try:
+    #         date_str = request.form['date']
+    #         health_status = request.form['health_status']
+    #         details = request.form['details']
+    #         animal_id = int(request.form['animal_id'])
 
-            record_date = date.fromisoformat(date_str)
+    #         record_date = date.fromisoformat(date_str)
 
-            new_record = VetRecord(
-                date=record_date,
-                health_status=health_status, details=details,
-                animal_id=animal_id
-            )
+    #         new_record = VetRecord(
+    #             date=record_date,
+    #             health_status=health_status, details=details,
+    #             animal_id=animal_id
+    #         )
 
-            db.session.add(new_record)
-            db.session.commit()
+    #         db.session.add(new_record)
+    #         db.session.commit()
 
-            try:
-                with open('vet_records.json', 'r') as f:
-                    vet_records = json.load(f)
-            except (FileNotFoundError, json.JSONDecodeError):
-                vet_records = []
+    #         try:
+    #             with open('vet_records.json', 'r') as f:
+    #                 vet_records = json.load(f)
+    #         except (FileNotFoundError, json.JSONDecodeError):
+    #             vet_records = []
 
-            vet_records.append({
-                'date': date_str,
-                'health_status': health_status,
-                'details': details,
-                'animal_id': animal_id
-            })
+    #         vet_records.append({
+    #             'date': date_str,
+    #             'health_status': health_status,
+    #             'details': details,
+    #             'animal_id': animal_id
+    #         })
 
-            with open('vet_records.json', 'w') as f:
-                json.dump(vet_records, f, indent=4)
+    #         with open('vet_records.json', 'w') as f:
+    #             json.dump(vet_records, f, indent=4)
 
-            flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+    #         flash('Fiche vétérinaire ajoutée avec succès!', 'success')
 
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+    #     except Exception as e:
+    #         db.session.rollback()
+    #         flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
 
     filter_avis_date = request.args.get('date')
     filter_avis_animal_id = request.args.get('animal_id')
 
     query = VetRecord.query
 
-    if filter_avis_date:
+    # Appliquer le filtre par animal_id si filter_avis_animal_id est défini et non vide
+    if filter_avis_animal_id and filter_avis_animal_id != '':
+        query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
+
+# Appliquer le filtre par date si filter_avis_date est défini et non vide
+    if filter_avis_date and filter_avis_date != '':
         query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
 
-    if filter_avis_animal_id:
+# Appliquer le filtre par animal_id si filter_avis_animal_id est défini et non vide, et que filter_avis_date est défini et non vide
+    if filter_avis_animal_id and filter_avis_animal_id != '' and filter_avis_date and filter_avis_date != '':
         query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
 
     animals = Animal.query.all()
@@ -487,19 +482,45 @@ def admin():
 
     food_query = DailyFoodRecord.query
 
-    if filter_food_date:
-        food_query = food_query.filter(DailyFoodRecord.date == date.fromisoformat(filter_food_date))
+    # Appliquer le filtre par animal_id si filter_avis_animal_id est défini et non vide 
+    if filter_avis_animal_id and filter_avis_animal_id != '':
+        query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
 
-    if filter_food_animal_id:
-        food_query = food_query.filter(DailyFoodRecord.animal_id == filter_food_animal_id)
+    # Appliquer le filtre par date si filter_avis_date est défini et non vide
+    if filter_avis_date and filter_avis_date != '':
+        query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
+
+    # Appliquer le filtre par animal_id si filter_avis_animal_id est défini et non vide, et que filter_avis_date est défini et non vide
+    if filter_avis_animal_id and filter_avis_animal_id != '' and filter_avis_date and filter_avis_date != '':
+        query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
 
     daily_food_records = food_query.all()
 
     return render_template('admin.html', form=form, avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, daily_food_records=daily_food_records, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
 
+@app.route('/admin/vet_records', methods=['GET'])
+@role_required('admin')
+def view_vet_records_admin():
+    filter_avis_date = request.args.get('date')
+    filter_avis_animal_id = request.args.get('animal_id')
+
+    query = VetRecord.query
+
+    if filter_avis_date:
+        query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
+
+    if filter_avis_animal_id:
+        query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
+
+    vet_records = query.all()
+    animals = Animal.query.all()
+
+    return render_template('admin_vet_records.html', vet_records=vet_records, animals=animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id)
+
 @app.route('/employee', methods=['GET', 'POST'])
 @role_required('employee')
 def employee():
+    # from commands import save_daily_food_to_json
     if request.method == 'POST':
         try:
             date_str = request.form['date']
@@ -509,12 +530,21 @@ def employee():
 
             record_date = date.fromisoformat(date_str)
 
+            # new_record = DailyFoodRecord(
+            #     date=record_date, food=food, weight=weight, animal_id=animal_id
+            # )
             new_record = DailyFoodRecord(
-                date=record_date, food=food, weight=weight, animal_id=animal_id
+                date=date.fromisoformat(date_str),
+                food=food,
+                weight=weight,
+                animal_id=animal_id
             )
 
             db.session.add(new_record)
             db.session.commit()
+
+            # Sauvegarder les enregistrements dans le fichier dailyfood.json
+            save_daily_food_to_json()
 
             flash('Fiche d\'alimentation ajoutée avec succès!', 'success')
 
@@ -525,77 +555,313 @@ def employee():
     animals = Animal.query.all()
     return render_template('employee.html', animals=animals)
 
-@app.route('/veterinarian')
+@app.route('/veterinarian', methods=['GET', 'POST'])
 @role_required('veterinarian')
 def veterinarian():
-    return render_template('veterinarian.html')
+    vet_records = []
+    daily_food_records = []
+    filter_avis_date = None
+    filter_avis_animal_id = None
+    filter_food_date = None
+    filter_food_animal_id = None
 
+    if request.method == 'POST':
+        try:
+            animal_id = int(request.form['animal_id'])
+            date_str = request.form['date']
+            record_date = date.fromisoformat(date_str)
+
+            # Filtrer les enregistrements vétérinaires
+            vet_records = VetRecord.query.filter_by(animal_id=animal_id, date=record_date).all()
+
+            if not vet_records:
+                flash('Aucune fiche vétérinaire trouvée pour cet animal et cette date.', 'warning')
+            else:
+                flash('Fiches vétérinaires trouvées avec succès!', 'success')
+
+            # Filtrer les enregistrements alimentaires
+            daily_food_records = DailyFoodRecord.query.filter_by(animal_id=animal_id, date=record_date).all()
+
+            if not daily_food_records:
+                flash('Aucune fiche alimentaire trouvée pour cet animal et cette date.', 'warning')
+            else:
+                flash('Fiches alimentaires trouvées avec succès!', 'success')
+
+        except Exception as e:
+            flash(f"Erreur lors de la récupération des fiches: {str(e)}", 'danger')
+
+    animals = Animal.query.all()
+    return render_template('veterinarian.html', animals=animals, vet_records=vet_records, daily_food_records=daily_food_records, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
+
+# @app.route('/veterinarian/add', methods=['POST'])
+# @role_required('veterinarian')
+# def add_vet_record():
+#     try:
+#         date_str = request.form['date']
+#         health_status = request.form['health_status']
+#         details = request.form['details']
+#         animal_id = int(request.form['animal_id'])
+
+#         record_date = date.fromisoformat(date_str)
+
+#         new_record = VetRecord(
+#             date=record_date,
+#             health_status=health_status,
+#             details=details,
+#             animal_id=animal_id
+#         )
+
+#         db.session.add(new_record)
+#         db.session.commit()
+
+#         flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+#     except Exception as e:
+#         db.session.rollback()
+#         flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+
+#     return redirect(url_for('veterinarian'))
+
+# @app.route('/veterinarian/add', methods=['POST'])
+# @role_required('veterinarian')
+# def add_vet_record():
+#     if request.method == 'POST':
+#         try:
+#             date_str = request.form['date']
+#             health_status = request.form['health_status']
+#             details = request.form['details']
+#             animal_id = int(request.form['animal_id'])
+
+#             record_date = date.fromisoformat(date_str)
+
+#             new_record = VetRecord(
+#                 date=record_date,
+#                 health_status=health_status, details=details,
+#                 animal_id=animal_id
+#             )
+
+#             db.session.add(new_record)
+#             db.session.commit()
+
+#             try:
+#                 with open('vet_records.json', 'r') as f:
+#                     vet_records = json.load(f)
+#             except (FileNotFoundError, json.JSONDecodeError):
+#                 vet_records = []
+
+#             vet_records.append({
+#                 'date': date_str,
+#                 'health_status': health_status,
+#                 'details': details,
+#                 'animal_id': animal_id
+#             })
+
+#             with open('vet_records.json', 'w') as f:
+#                 json.dump(vet_records, f, indent=4)
+
+#             flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+#         except Exception as e:
+#             db.session.rollback()
+#             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
 @app.route('/veterinarian/add', methods=['POST'])
 @role_required('veterinarian')
 def add_vet_record():
- try:
-     date_str = request.form['date']
-     health_status = request.form['health_status']
-     details = request.form['details']
-     animal_id = int(request.form['animal_id'])
+    if request.method == 'POST':
+        try:
+            date_str = request.form['date']
+            health_status = request.form['health_status']
+            details = request.form['details']
+            animal_id = int(request.form['animal_id'])
 
-     record_date = date.fromisoformat(date_str)
+            record_date = date.fromisoformat(date_str)
 
-     new_record = VetRecord(
-         date=record_date,
-         health_status=health_status,
-         details=details,
-         animal_id=animal_id
-     )
+            new_record = VetRecord(
+                date=record_date,
+                health_status=health_status,
+                details=details,
+                animal_id=animal_id
+            )
 
-     db.session.add(new_record)
-     db.session.commit()
+            db.session.add(new_record)
+            db.session.commit()
 
-     flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+            try:
+                with open('vet_records.json', 'r') as f:
+                    vet_records = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                vet_records = []
 
- except Exception as e:
-     db.session.rollback()
-     flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+            vet_records.append({
+                'date': date_str,
+                'health_status': health_status,
+                'details': details,
+                'animal_id': animal_id
+            })
 
- return redirect(url_for('veterinarian'))
+            with open('vet_records.json', 'w') as f:
+                json.dump(vet_records, f, indent=4)
+
+            flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+
+    return redirect(url_for('veterinarian'))
+
+    # try:
+    #     date_str = request.form['date']
+    #     health_status = request.form['health_status']
+    #     details = request.form['details']
+    #     animal_id = int(request.form['animal_id'])
+
+    #     record_date = date.fromisoformat(date_str)
+
+    #     new_record = VetRecord(
+    #         date=record_date,
+    #         health_status=health_status,
+    #         details=details,
+    #         animal_id=animal_id
+    #     )
+
+    #     db.session.add(new_record)
+    #     db.session.commit()
+
+    #     # Enregistrer dans vet_records.json
+    #     vet_records = []
+    #     try:
+    #         with open('vet_records.json', 'r') as f:
+    #             vet_records = json.load(f)
+    #     except FileNotFoundError:
+    #         pass
+
+    #     vet_records.append({
+    #         'date': date_str,
+    #         'health_status': health_status,
+    #         'details': details,
+    #         'animal_id': animal_id
+    #     })
+
+    #     with open('vet_records.json', 'w') as f:
+    #         json.dump(vet_records, f, indent=4)
+
+    #     flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+    # except Exception as e:
+    #     db.session.rollback()
+    #     flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+
+    # return redirect(url_for('veterinarian'))
 
 @app.route('/veterinarian/view', methods=['GET'])
 @role_required('veterinarian')
 def view_vet_records():
- filter_avis_date = request.args.get('date')
- filter_avis_animal_id = request.args.get('animal_id')
+    filter_avis_date = request.args.get('date')
+    filter_avis_animal_id = request.args.get('animal_id')
 
- query = VetRecord.query
+    query = VetRecord.query
 
- if filter_avis_date:
-     query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
+    if filter_avis_date:
+        query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
 
- if filter_avis_animal_id:
-     query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
+    if filter_avis_animal_id:
+        query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
 
- vet_records = query.all()
- animals = Animal.query.all()
+    vet_records = query.all()
+    animals = Animal.query.all()
 
- return render_template('veterinarian.html', vet_records=vet_records, animals=animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id)
+    return render_template('veterinarian.html', vet_records=vet_records, animals=animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id)
 
 @app.route('/veterinarian/food_records', methods=['GET'])
 @role_required('veterinarian')
 def view_food_records():
- filter_food_date = request.args.get('food_date')
- filter_food_animal_id = request.args.get('food_animal_id')
+    filter_food_date = request.args.get('food_date')
+    filter_food_animal_id = request.args.get('food_animal_id')
 
- food_query = DailyFoodRecord.query
+    food_query = DailyFoodRecord.query
 
- if filter_food_date:
-     food_query = food_query.filter(DailyFoodRecord.date == date.fromisoformat(filter_food_date))
+    if filter_food_date:
+        food_query = food_query.filter(DailyFoodRecord.date == date.fromisoformat(filter_food_date))
 
- if filter_food_animal_id:
-     food_query = food_query.filter(DailyFoodRecord.animal_id == filter_food_animal_id)
+    if filter_food_animal_id:
+        food_query = food_query.filter(DailyFoodRecord.animal_id == filter_food_animal_id)
 
- daily_food_records = food_query.all()
- animals = Animal.query.all()
+    daily_food_records = food_query.all()
+    animals = Animal.query.all()
 
- return render_template('veterinarian.html', daily_food_records=daily_food_records, animals=animals, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
+    return render_template('veterinarian.html', daily_food_records=daily_food_records, animals=animals, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
+# @app.route('/veterinarian')
+# @role_required('veterinarian')
+# def veterinarian():
+#     return render_template('veterinarian.html')
+
+# @app.route('/veterinarian/add', methods=['POST'])
+# @role_required('veterinarian')
+# def add_vet_record():
+#  try:
+#      date_str = request.form['date']
+#      health_status = request.form['health_status']
+#      details = request.form['details']
+#      animal_id = int(request.form['animal_id'])
+
+#      record_date = date.fromisoformat(date_str)
+
+#      new_record = VetRecord(
+#          date=record_date,
+#          health_status=health_status,
+#          details=details,
+#          animal_id=animal_id
+#      )
+
+#      db.session.add(new_record)
+#      db.session.commit()
+
+#      flash('Fiche vétérinaire ajoutée avec succès!', 'success')
+
+#  except Exception as e:
+#      db.session.rollback()
+#      flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
+
+#  return redirect(url_for('veterinarian'))
+
+# @app.route('/veterinarian/view', methods=['GET'])
+# @role_required('veterinarian')
+# def view_vet_records():
+#  filter_avis_date = request.args.get('date')
+#  filter_avis_animal_id = request.args.get('animal_id')
+
+#  query = VetRecord.query
+
+#  if filter_avis_date:
+#      query = query.filter(VetRecord.date == date.fromisoformat(filter_avis_date))
+
+#  if filter_avis_animal_id:
+#      query = query.filter(VetRecord.animal_id == filter_avis_animal_id)
+
+#  vet_records = query.all()
+#  animals = Animal.query.all()
+
+#  return render_template('veterinarian.html', vet_records=vet_records, animals=animals, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id)
+
+# @app.route('/veterinarian/food_records', methods=['GET'])
+# @role_required('veterinarian')
+# def view_food_records():
+#  filter_food_date = request.args.get('food_date')
+#  filter_food_animal_id = request.args.get('food_animal_id')
+
+#  food_query = DailyFoodRecord.query
+
+#  if filter_food_date:
+#      food_query = food_query.filter(DailyFoodRecord.date == date.fromisoformat(filter_food_date))
+
+#  if filter_food_animal_id:
+#      food_query = food_query.filter(DailyFoodRecord.animal_id == filter_food_animal_id)
+
+#  daily_food_records = food_query.all()
+#  animals = Animal.query.all()
+
+#  return render_template('veterinarian.html', daily_food_records=daily_food_records, animals=animals, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
 
 
 if __name__ == '__main__':

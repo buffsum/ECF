@@ -340,5 +340,29 @@
         "health_status": "Bon",
         "details": "Tout va bien",
         "animal_id": 34
+    },
+    {
+        "date": "2024-09-08",
+        "health_status": "test",
+        "details": "ceci est un test",
+        "animal_id": 1
+    },
+    {
+        "date": "2024-09-08",
+        "health_status": "test2",
+        "details": "ceci est un autre test",
+        "animal_id": 1
+    },
+    {
+        "date": "2024-09-08",
+        "health_status": "test2",
+        "details": "ceci est un autre test",
+        "animal_id": 1
+    },
+    {
+        "date": "2024-09-08",
+        "health_status": "test3",
+        "details": "AUTRES TEST",
+        "animal_id": 1
     }
 ]

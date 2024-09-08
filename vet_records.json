@@ -364,5 +364,23 @@
         "health_status": "test3",
         "details": "AUTRES TEST",
         "animal_id": 1
+    },
+    {
+        "date": "2024-09-08",
+        "health_status": "test pour Zara",
+        "details": "test pour Zara",
+        "animal_id": 2
+    },
+    {
+        "date": "2024-09-08",
+        "health_status": "test pour kibo",
+        "details": "test pour kibo",
+        "animal_id": 1
+    },
+    {
+        "date": "2024-09-08",
+        "health_status": "test 2 pour zara",
+        "details": "test 2 pour zara",
+        "animal_id": 2
     }
 ]

@@ -184,7 +184,7 @@
                                     <p class="mb-1 text-left">Pseudo : {{ avis.pseudo }}</p>
                                     <hr class="separator">
                                     <p class="mb-1 text-left">Message : <br> {{ avis.message }}</p>
-                                    {% if 'user_id' in session and session['user_role'] == 'admin' %}
+                                    {% if 'user_id' in session and session['user_role'] == 'employee' %}
                                     <form method="POST" action="{{ url_for('delete_review', avis_id=avis.id) }}" style="display:inline;">
                                         <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
                                     </form>

@@ -6,6 +6,7 @@ from datetime import date
 import json
 import click
 
+# ***** Commandes CLI pour la gestion de la base de données *****
 @click.command('reset-db')
 @with_appcontext
 def reset_db():
@@ -101,6 +102,83 @@ def add_data():
 
     print("Données ajoutées avec succès!")
 
+# **** Fonctions utilitaires pour la gestion des utilisateurs ****
+def save_user_to_json(user):
+    users = load_users_from_json()
+    users.append(user)
+    with open('users.json', 'w') as file:
+        json.dump(users, file, indent=4)
+
+def load_users_from_json():
+    try:
+        with open('users.json', 'r') as file:
+            users = json.load(file)
+            return users
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError as e:
+        print(f"Erreur de décodage JSON: {e}")
+        with open('users.json', 'w') as file:
+            json.dump([], file, indent=4)
+        return []
+
+@click.command('load-users')
+@with_appcontext
+def load_users():
+    users = load_users_from_json()
+    for user in users:
+        new_user = User(
+            username=user['username'],
+            email=user['email'],
+            password=user['password'],
+            role=user['role']
+        )
+        db.session.add(new_user)
+    db.session.commit()
+    print("Utilisateurs chargés depuis le fichier JSON.")
+# *******************************************
+# ***** Fonctions utilitaires pour la gestion des animaux *****
+def save_animal_to_json(animal):
+    animals = load_animals_from_json()
+    animals.append(animal)
+    with open('animals.json', 'w') as file:
+        json.dump(animals, file, indent=4)
+
+def load_animals_from_json():
+    try:
+        with open('animals.json', 'r') as file:
+            animals = json.load(file)
+            return animals
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError as e:
+        print(f"Erreur de décodage JSON: {e}")
+        with open('animals.json', 'w') as file:
+            json.dump([], file, indent=4)
+        return []
+
+@click.command('load-animals')
+@with_appcontext
+def load_animals():
+    animals = load_animals_from_json()
+    for animal in animals:
+        new_animal = Animal(
+            name=animal['name'],
+            species=animal['species'],
+            image=animal['image'],
+            habitat_id=animal['habitat_id']
+        )
+        db.session.add(new_animal)
+    db.session.commit()
+    print("Animaux chargés depuis le fichier JSON.")
+# *******************************************
+# ***** Fonctions utilitaires pour la gestion des fiches vétérinaires *****
+def save_vet_record_to_json(vet_record):
+    vet_records = load_vet_records_from_json()
+    vet_records.append(vet_record)
+    with open('vet_records.json', 'w') as file:
+        json.dump(vet_records, file, indent=4)
+
 def load_vet_records_from_json():
     try:
         with open('vet_records.json', 'r') as file:
@@ -114,12 +192,34 @@ def load_vet_records_from_json():
             json.dump([], file, indent=4)
         return []
 
-def save_vet_record_to_json(vet_record):
+@click.command('load-vet-records')
+@with_appcontext
+def load_vet_records():
     vet_records = load_vet_records_from_json()
-    vet_records.append(vet_record)
-    with open('vet_records.json', 'w') as file:
-        json.dump(vet_records, file, indent=4)
+    for record in vet_records:
+        new_record = VetRecord(
+            date=date.fromisoformat(record['date']),
+            health_status=record['health_status'],
+            details=record['details'],
+            animal_id=record['animal_id']
+        )
+        db.session.add(new_record)
+    db.session.commit()
+    print("Fiches vétérinaires chargées depuis le fichier JSON.")
 
+@click.command('add-vet-record')
+@with_appcontext
+def add_vet_record():
+    record = {
+        'date': '2024-08-21',
+        'health_status': 'Bonne santé',
+        'details': 'Aucun problème détecté',
+        'animal_id': 5
+    }
+    save_vet_record_to_json(record)
+    print("Fiche vétérinaire ajoutée au fichier JSON.")
+# *******************************************
+# ***** Fonctions utilitaires pour la gestion des services *****
 def save_services_to_json(file_path='services.json'):
     services = Service.query.all()
     services_list = []
@@ -146,48 +246,21 @@ def load_services_from_json(file_path='services.json'):
         db.session.commit()
         print("Services chargés depuis le fichier JSON.")
 
-def load_users_from_json():
+@click.command('save-services')
+@with_appcontext
+def save_services():
+    save_services_to_json()
+    print("Services sauvegardés dans le fichier JSON.")
+
+@click.command('load-services')
+@with_appcontext
+def load_services():
     try:
-        with open('users.json', 'r') as file:
-            users = json.load(file)
-            return users
-    except FileNotFoundError:
-        return []
-    except json.JSONDecodeError as e:
-        print(f"Erreur de décodage JSON: {e}")
-        with open('users.json', 'w') as file:
-            json.dump([], file, indent=4)
-        return []
-
-def save_user_to_json(user):
-    users = load_users_from_json()
-    users.append(user)
-    with open('users.json', 'w') as file:
-        json.dump(users, file, indent=4)
-
-def save_avis_to_json():
-    avis_list = Avis.query.all()
-    avis_data = [
-        {
-            'nom': avis.nom,
-            'pseudo': avis.pseudo,
-            'titre': avis.titre,
-            'message': avis.message,
-            'approuve': avis.approuve
-        }
-        for avis in avis_list
-    ]
-    with open('avis.json', 'w') as f:
-        json.dump(avis_data, f, indent=4)
-
-def load_avis_from_json(file_path='avis.json'):
-    with open(file_path, 'r') as file:
-        avis = json.load(file)
-    return avis
-
-def load_services_from_json(file_path='services.json'):
-    with open(file_path, 'r') as file:
-        services = json.load(file)
+        services = load_services_from_json()
+        if not services:
+            print("Aucun service à charger.")
+            return
+        
         for service in services:
             new_service = Service(
                 title=service['title'],
@@ -197,41 +270,13 @@ def load_services_from_json(file_path='services.json'):
             db.session.add(new_service)
         db.session.commit()
         print("Services chargés depuis le fichier JSON.")
-
-@click.command('load-users')
-@with_appcontext
-def load_users():
-    users = load_users_from_json()
-    for user in users:
-        new_user = User(
-            username=user['username'],
-            email=user['email'],
-            password=user['password'],
-            role=user['role']
-        )
-        db.session.add(new_user)
-    db.session.commit()
-    print("Utilisateurs chargés depuis le fichier JSON.")
-
-def load_animals_from_json():
-    try:
-        with open('animals.json', 'r') as file:
-            animals = json.load(file)
-            return animals
     except FileNotFoundError:
-        return []
-    except json.JSONDecodeError as e:
-        print(f"Erreur de décodage JSON: {e}")
-        with open('animals.json', 'w') as file:
-            json.dump([], file, indent=4)
-        return []
+        print("Le fichier services.json n'existe pas.")
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
 
-def save_animal_to_json(animal):
-    animals = load_animals_from_json()
-    animals.append(animal)
-    with open('animals.json', 'w') as file:
-        json.dump(animals, file, indent=4)
-
+# *************************************************
+# ***** Fonctions utilitaires pour la gestion des fiches alimentaires quotidiennes *****
 def save_daily_food_to_json(file_path='dailyfood.json'):
     daily_food_records = DailyFoodRecord.query.all()
     daily_food_list = []
@@ -265,56 +310,31 @@ def load_daily_food_from_json(file_path='dailyfood.json'):
     except json.JSONDecodeError as e:
         print(f"Erreur de décodage JSON: {e}")
 
-@click.command('load-animals')
-@with_appcontext
-def load_animals():
-    animals = load_animals_from_json()
-    for animal in animals:
-        new_animal = Animal(
-            name=animal['name'],
-            species=animal['species'],
-            image=animal['image'],
-            habitat_id=animal['habitat_id']
-        )
-        db.session.add(new_animal)
-    db.session.commit()
-    print("Animaux chargés depuis le fichier JSON.")
-
-@click.command('restore-data')
-@with_appcontext
-def restore_data():
-    vet_records = load_vet_records_from_json()
-    for record in vet_records:
-        vet_record = VetRecord(
-            date=date.fromisoformat(record['date']),
-            health_status=record['health_status'],
-            details=record['details'],
-            animal_id=record['animal_id']
-        )
-        db.session.add(vet_record)
-    db.session.commit()
-
-    print("Données restaurées avec succès!")
-
 @click.command('load-daily-food')
 @with_appcontext
 def load_daily_food():
     load_daily_food_from_json()
+# *******************************************
+# ***** Fonctions utilitaires pour la gestion des avis *****
+def save_avis_to_json():
+    avis_list = Avis.query.all()
+    avis_data = [
+        {
+            'nom': avis.nom,
+            'pseudo': avis.pseudo,
+            'titre': avis.titre,
+            'message': avis.message,
+            'approuve': avis.approuve
+        }
+        for avis in avis_list
+    ]
+    with open('avis.json', 'w') as f:
+        json.dump(avis_data, f, indent=4)
 
-@click.command('load-vet-records')
-@with_appcontext
-def load_vet_records():
-    vet_records = load_vet_records_from_json()
-    for record in vet_records:
-        new_record = VetRecord(
-            date=date.fromisoformat(record['date']),
-            health_status=record['health_status'],
-            details=record['details'],
-            animal_id=record['animal_id']
-        )
-        db.session.add(new_record)
-    db.session.commit()
-    print("Fiches vétérinaires chargées depuis le fichier JSON.")
+def load_avis_from_json(file_path='avis.json'):
+    with open(file_path, 'r') as file:
+        avis = json.load(file)
+    return avis
 
 @click.command('load-avis')
 @with_appcontext
@@ -335,48 +355,25 @@ def load_avis():
         print("Avis chargés depuis le fichier JSON.")
     except FileNotFoundError:
         print("Le fichier avis.json n'existe pas.")
+# *******************************************
 
-@click.command('save-services')
+@click.command('restore-data')
 @with_appcontext
-def save_services():
-    save_services_to_json()
-    print("Services sauvegardés dans le fichier JSON.")
+def restore_data():
+    vet_records = load_vet_records_from_json()
+    for record in vet_records:
+        vet_record = VetRecord(
+            date=date.fromisoformat(record['date']),
+            health_status=record['health_status'],
+            details=record['details'],
+            animal_id=record['animal_id']
+        )
+        db.session.add(vet_record)
+    db.session.commit()
 
-@click.command('load-services')
-@with_appcontext
-def load_services():
-    try:
-        services = load_services_from_json()
-        if not services:
-            print("Aucun service à charger.")
-            return
-        
-        for service in services:
-            new_service = Service(
-                title=service['title'],
-                description=service['description'],
-                images_url=service.get('images_url', [])
-            )
-            db.session.add(new_service)
-        db.session.commit()
-        print("Services chargés depuis le fichier JSON.")
-    except FileNotFoundError:
-        print("Le fichier services.json n'existe pas.")
-    except Exception as e:
-        print(f"Une erreur s'est produite : {e}")
-
-@click.command('add-vet-record')
-@with_appcontext
-def add_vet_record():
-    record = {
-        'date': '2024-08-21',
-        'health_status': 'Bonne santé',
-        'details': 'Aucun problème détecté',
-        'animal_id': 5
-    }
-    save_vet_record_to_json(record)
-    print("Fiche vétérinaire ajoutée au fichier JSON.")
-
+    print("Données restaurées avec succès!")
+# *******************************************
+# ***** Commande CLI pour charger toutes les données *****
 @click.command('load-all')
 @with_appcontext
 def load_all():

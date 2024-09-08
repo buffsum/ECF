@@ -81,8 +81,40 @@
                 <div class="row">
                     <div class="col-xl-14 mx-auto">
                         <div class="row">
+                            <div class="col-md-6">
+                                <div class="inner5 bg-faded text-center rounded">
+                                    <h2 class="section-heading mb-4">
+                                        <span class="section-heading-lower2">- Créer un compte -</span>
+                                    </h2>
+                                    <form method="POST" action="{{ url_for('admin') }}" class="white-text">
+                                        {{ form.hidden_tag() }}
+                                        <p>
+                                            {{ form.email.label }}<br>
+                                            {{ form.email(size=32) }}<br>
+                                            {% for error in form.email.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>
+                                            {{ form.password.label }}<br>
+                                            {{ form.password(size=32) }}<br>
+                                            {% for error in form.password.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>
+                                            {{ form.role.label }}<br>
+                                            {{ form.role() }}<br>
+                                            {% for error in form.role.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                            {% endfor %}
+                                        </p>
+                                        <p>{{ form.submit() }}</p>
+                                    </form>
+                                </div>
+                            </div>
                             <!-- Consulter un avis vétérinaire -->
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <div class="inner5 bg-faded text-center rounded">
                                     <h2 class="section-heading mb-4">
                                         <span class="section-heading-lower2">- Consulter un avis vétérinaire -</span>
@@ -118,8 +150,8 @@
                                                 <tr>
                                                     <td>{{ record.date }}</td>
                                                     <td>{{ record.animal.name }} ({{ record.animal.species }})</td>
-                                                    <!-- <td>{{ record.food }}</td>
-                                                    <td>{{ record.weight }}</td> -->
+                                                    <td>{{ record.food }}</td>
+                                                    <td>{{ record.weight }}</td>
                                                     <td>{{ record.health_status }}</td>
                                                     <td>{{ record.details }}</td>
                                                 </tr>
@@ -183,94 +215,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Fiches d'alimentation quotidiennes -->
-<!-- Fiches d'alimentation quotidiennes -->
-<section class="page-section2 cta2">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-14 mx-auto">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="inner5 bg-faded text-center rounded">
-                            <h2 class="section-heading mb-4">
-                                <span class="section-heading-lower2">- Fiches d'alimentation quotidiennes -</span>
-                            </h2>
-                            <form method="GET" action="{{ url_for('admin') }}">
-                                <label for="food_date">Date:</label><br>
-                                <input type="date" id="food_date" name="food_date"><br><br>
-
-                                <label for="food_animal_id">Animal:</label><br>
-                                <select id="food_animal_id" name="food_animal_id">
-                                    <option value="">Tous</option>
-                                    {% for animal in animals %}
-                                        <option value="{{ animal.id }}">{{ animal.name }} ({{ animal.species }})</option>
-                                    {% endfor %}
-                                </select><br><br>
-
-                                <button type="submit" class="btn btn-primary">Filtrer</button>
-                            </form>
-                            {% if filter_food_date or filter_food_animal_id %}
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Animal</th>
-                                        <th>Nourriture</th>
-                                        <th>Grammage</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for record in daily_food_records %}
-                                        <tr>
-                                            <td>{{ record.date }}</td>
-                                            <td>{{ record.animal.name }} ({{ record.animal.species }})</td>
-                                            <td>{{ record.food }}</td>
-                                            <td>{{ record.weight }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="inner5 bg-faded text-center rounded">
-                            <h2 class="section-heading mb-4">
-                                <span class="section-heading-lower2">- Créer un compte -</span>
-                            </h2>
-                            <form method="POST" action="{{ url_for('admin') }}" class="white-text">
-                                {{ form.hidden_tag() }}
-                                <p>
-                                    {{ form.email.label }}<br>
-                                    {{ form.email(size=32) }}<br>
-                                    {% for error in form.email.errors %}
-                                        <span style="color: red;">[{{ error }}]</span>
-                                    {% endfor %}
-                                </p>
-                                <p>
-                                    {{ form.password.label }}<br>
-                                    {{ form.password(size=32) }}<br>
-                                    {% for error in form.password.errors %}
-                                        <span style="color: red;">[{{ error }}]</span>
-                                    {% endfor %}
-                                </p>
-                                <p>
-                                    {{ form.role.label }}<br>
-                                    {{ form.role() }}<br>
-                                    {% for error in form.role.errors %}
-                                        <span style="color: red;">[{{ error }}]</span>
-                                    {% endfor %}
-                                </p>
-                                <p>{{ form.submit() }}</p>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
         <!-- *********** Footer ************ -->
         <footer class="footer text-faded text-center py-5">
             <div class="container">

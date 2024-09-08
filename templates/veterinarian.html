@@ -104,11 +104,11 @@
                                         <label for="date">Date:</label><br>
                                         <input type="date" id="date" name="date" required><br><br>
 
-                                        <!-- <label for="food">Nourriture:</label><br>
+                                        <label for="food">Nourriture:</label><br>
                                         <input type="text" id="food" name="food" required><br><br>
 
                                         <label for="weight">Grammage de la nourriture (grammes):</label><br>
-                                        <input type="number" step="0.1" id="weight" name="weight" required><br><br> -->
+                                        <input type="number" step="0.1" id="weight" name="weight" required><br><br>
 
                                         <label for="health_status">État de santé:</label><br>
                                         <input type="text" id="health_status" name="health_status" required><br><br>
@@ -153,8 +153,8 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Animal</th>
-                                                <!-- <th>Nourriture</th>
-                                                <th>Grammage</th> -->
+                                                <th>Nourriture</th>
+                                                <th>Grammage</th>
                                                 <th>État de santé</th>
                                                 <th>Détails</th>
                                             </tr>
@@ -164,8 +164,8 @@
                                                 <tr>
                                                     <td>{{ record.date }}</td>
                                                     <td>{{ record.animal.name }} ({{ record.animal.species }})</td>
-                                                    <!-- <td>{{ record.food }}</td>
-                                                    <td>{{ record.weight }}</td> -->
+                                                    <td>{{ record.food }}</td>
+                                                    <td>{{ record.weight }}</td>
                                                     <td>{{ record.health_status }}</td>
                                                     <td>{{ record.details }}</td>
                                                 </tr>

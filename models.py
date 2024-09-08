@@ -30,6 +30,8 @@ class VetRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date = db.Column(db.Date, nullable=False)
     health_status = db.Column(db.String(200), nullable=False)
+    food = db.Column(db.String(200), nullable=True)
+    weight = db.Column(db.Float, nullable=True)
     details = db.Column(db.Text, nullable=True)
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'), nullable=False)
     animal = db.relationship('Animal', back_populates='vet_records')

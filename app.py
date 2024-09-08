@@ -194,6 +194,21 @@ def admin():
 
     return render_template('admin.html', form=form, avis_a_valider=avis_a_valider, animals=animals, vet_records=vet_records, habitats=habitats, consultation_counts=consultation_counts, all_animals=all_animals, selected_animal_id=selected_animal_id, filtered_animals=filtered_animals, daily_food_records=daily_food_records, filter_avis_date=filter_avis_date, filter_avis_animal_id=filter_avis_animal_id, filter_food_date=filter_food_date, filter_food_animal_id=filter_food_animal_id)
 
+# Route pour modifier les informations pratiques
+@app.route('/edit_info_pratique', methods=['GET', 'POST'])
+@role_required('admin')
+def edit_info_pratique():
+    if request.method == 'POST':
+        # Logique pour mettre à jour les informations pratiques
+        new_info = request.form['info']
+        # Mettez à jour les informations dans la base de données ou le fichier
+        flash('Informations pratiques mises à jour avec succès.', 'success')
+        return redirect(url_for('home'))
+    
+    # Récupérez les informations actuelles pour les afficher dans le formulaire
+    current_info = "Retrouvez nous tous les jours de 10h à 20h au 1 place du roi Saint-Judicaël 35380 Paimpont Bretagne"
+    return render_template('edit_info_pratique.html', current_info=current_info)
+
 # Route pour afficher les avis vétérinaires ?
 @app.route('/admin/vet_records', methods=['GET'])
 @role_required('admin')
@@ -404,6 +419,8 @@ def add_vet_record():
         try:
             date_str = request.form['date']
             health_status = request.form['health_status']
+            food = request.form['food']
+            weight = request.form['weight']
             details = request.form['details']
             animal_id = int(request.form['animal_id'])
 
@@ -412,6 +429,8 @@ def add_vet_record():
             new_record = VetRecord(
                 date=record_date,
                 health_status=health_status,
+                food=food,
+                weight=weight,
                 details=details,
                 animal_id=animal_id
             )
@@ -428,6 +447,8 @@ def add_vet_record():
             vet_records.append({
                 'date': date_str,
                 'health_status': health_status,
+                'food': food,
+                'weight': weight,
                 'details': details,
                 'animal_id': animal_id
             })

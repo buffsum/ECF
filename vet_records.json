@@ -2,384 +2,512 @@
     {
         "date": "2024-08-24",
         "health_status": "test14",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test14 mara",
         "animal_id": 5
     },
     {
         "date": "2024-08-24",
         "health_status": "test16",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test16 pour mara",
         "animal_id": 5
     },
     {
         "date": "2024-08-24",
         "health_status": "Tout va bien",
+        "food": "test16",
+        "weight": 20.0,
         "details": "j'aimerai pouvoir ajouter plus de texte, comment faire ? ",
         "animal_id": 5
     },
     {
         "date": "2024-08-25",
         "health_status": "test17",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test17 voir doublon\r\n",
         "animal_id": 5
     },
     {
         "date": "2024-08-27",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "ceci est un test",
         "animal_id": 3
     },
     {
         "date": "2024-08-27",
         "health_status": "test",
+        "food": "test16",
+        "weight": 20.0,
         "details": "eeee",
         "animal_id": 8
     },
     {
         "date": "2024-08-28",
         "health_status": "bon ",
+        "food": "test16",
+        "weight": 20.0,
         "details": "rien \u00e0 dire",
         "animal_id": 3
     },
     {
         "date": "2024-08-28",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "rien \u00e0 signaler",
         "animal_id": 4
     },
     {
         "date": "2024-08-28",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "mise \u00e0 jour Jengo",
         "animal_id": 6
     },
     {
         "date": "2024-08-28",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "avis pour Togo",
         "animal_id": 10
     },
     {
         "date": "2024-08-28",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "avis pour Olga",
         "animal_id": 7
     },
     {
         "date": "2024-08-28",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "Avis pour Rico",
         "animal_id": 9
     },
     {
         "date": "2024-08-30",
         "health_status": "test 11",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test 11 eucalyptus",
         "animal_id": 11
     },
     {
         "date": "2024-08-30",
         "health_status": "test 12",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test 12 bambou",
         "animal_id": 12
     },
     {
         "date": "2024-08-30",
         "health_status": "test 13",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test walt",
         "animal_id": 13
     },
     {
         "date": "2024-08-30",
         "health_status": "test 21",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test grizz",
         "animal_id": 21
     },
     {
         "date": "2024-08-30",
         "health_status": "test 22",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test willow",
         "animal_id": 22
     },
     {
         "date": "2024-08-30",
         "health_status": "22",
+        "food": "test16",
+        "weight": 20.0,
         "details": "22",
         "animal_id": 1
     },
     {
         "date": "2024-08-30",
         "health_status": "22",
+        "food": "test16",
+        "weight": 20.0,
         "details": "22",
         "animal_id": 1
     },
     {
         "date": "2024-08-31",
         "health_status": "Bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "Riley va bien",
         "animal_id": 14
     },
     {
         "date": "2024-08-31",
         "health_status": "tout va bien",
+        "food": "test16",
+        "weight": 20.0,
         "details": "Pip est fatigu\u00e9",
         "animal_id": 15
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "cl\u00e9s est en forme",
         "animal_id": 16
     },
     {
         "date": "2024-08-31",
         "health_status": "R.A.S",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.AS",
         "animal_id": 17
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "tr\u00e8s dynamique",
         "animal_id": 18
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "tr\u00e8s sociable",
         "animal_id": 19
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "casanier",
         "animal_id": 20
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "Joueur",
         "animal_id": 21
     },
     {
         "date": "2024-08-31",
         "health_status": "stable",
+        "food": "test16",
+        "weight": 20.0,
         "details": "s'est bien remis de sa chute",
         "animal_id": 22
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.A.S",
         "animal_id": 23
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.A.S",
         "animal_id": 24
     },
     {
         "date": "2024-08-31",
         "health_status": "Bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "sociable",
         "animal_id": 25
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "en forme",
         "animal_id": 26
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "tout va bien",
         "animal_id": 27
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.A.S",
         "animal_id": 28
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "son aile va mieux",
         "animal_id": 29
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.A.S",
         "animal_id": 30
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.A.S",
         "animal_id": 30
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "tr\u00e8s joueur",
         "animal_id": 31
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "tr\u00e8s sociable",
         "animal_id": 32
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "casanier",
         "animal_id": 33
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.A.S",
         "animal_id": 34
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "bavard",
         "animal_id": 35
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "d\u00e9tendu",
         "animal_id": 36
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.A.S",
         "animal_id": 37
     },
     {
         "date": "2024-08-31",
         "health_status": "stable",
+        "food": "test16",
+        "weight": 20.0,
         "details": "gambade",
         "animal_id": 1
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "gambade",
         "animal_id": 38
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "R.A.S",
         "animal_id": 39
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "calme",
         "animal_id": 40
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "calme",
         "animal_id": 40
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "calme",
         "animal_id": 40
     },
     {
         "date": "2024-08-31",
         "health_status": "bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "calme",
         "animal_id": 40
     },
     {
         "date": "2024-08-31",
         "health_status": "ee",
+        "food": "test16",
+        "weight": 20.0,
         "details": "ee",
         "animal_id": 4
     },
     {
         "date": "2024-09-02",
         "health_status": "test",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test",
         "animal_id": 41
     },
     {
         "date": "2024-09-05",
         "health_status": "autre test pour chien",
+        "food": "test16",
+        "weight": 20.0,
         "details": "autre test pour chien",
         "animal_id": 41
     },
     {
         "date": "2024-09-05",
         "health_status": "test canard",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test canard",
         "animal_id": 41
     },
     {
         "date": "2024-09-05",
         "health_status": "stable",
+        "food": "test16",
+        "weight": 20.0,
         "details": "sucre test",
         "animal_id": 41
     },
     {
         "date": "2024-09-05",
         "health_status": "Bon",
+        "food": "test16",
+        "weight": 20.0,
         "details": "Tout va bien",
         "animal_id": 34
     },
     {
         "date": "2024-09-08",
         "health_status": "test",
+        "food": "test16",
+        "weight": 20.0,
         "details": "ceci est un test",
         "animal_id": 1
     },
     {
         "date": "2024-09-08",
         "health_status": "test2",
+        "food": "test16",
+        "weight": 20.0,
         "details": "ceci est un autre test",
         "animal_id": 1
     },
     {
         "date": "2024-09-08",
         "health_status": "test2",
+        "food": "test16",
+        "weight": 20.0,
         "details": "ceci est un autre test",
         "animal_id": 1
     },
     {
         "date": "2024-09-08",
         "health_status": "test3",
+        "food": "test16",
+        "weight": 20.0,
         "details": "AUTRES TEST",
         "animal_id": 1
     },
     {
         "date": "2024-09-08",
         "health_status": "test pour Zara",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test pour Zara",
         "animal_id": 2
     },
     {
         "date": "2024-09-08",
         "health_status": "test pour kibo",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test pour kibo",
         "animal_id": 1
     },
     {
         "date": "2024-09-08",
         "health_status": "test 2 pour zara",
+        "food": "test16",
+        "weight": 20.0,
         "details": "test 2 pour zara",
         "animal_id": 2
     }

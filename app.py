@@ -71,18 +71,28 @@ import commands
 commands.register_commands(app)
 
 # Définition d'un décorateur pour vérifier le rôle de l'utilisateur
-def role_required(role):
-    def decorator(f):
+# def role_required(role):
+#     def decorator(f):
+#         @wraps(f)
+#         def decorated_function(*args, **kwargs):
+#             if 'user_id' not in session:
+#                 abort(403)
+#             user = User.query.get(session['user_id'])
+#             if user.role != role:
+#                 abort(403)
+#             return f(*args, **kwargs)
+#         return decorated_function
+#     return decorator
+def role_required(*roles):
+    def wrapper(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            if 'user_id' not in session:
-                abort(403)
-            user = User.query.get(session['user_id'])
-            if user.role != role:
-                abort(403)
+            if 'user_id' not in session or session.get('user_role') not in roles:
+                flash("Vous n'avez pas la permission d'accéder à cette page.", "danger")
+                return redirect(url_for('login'))
             return f(*args, **kwargs)
         return decorated_function
-    return decorator
+    return wrapper
 
 # **** Gestion des routes pour les visiteurs ****
 @app.route('/')
@@ -562,33 +572,24 @@ def services():
     return render_template('services.html', services=services)
 
 @app.route('/service/new', methods=['GET', 'POST'])
+@role_required('admin', 'employee')
 def new_service():
-    if 'user_role' not in session or session['user_role'] != 'admin':
-        return redirect(url_for('login'))
-    
     form = ServiceForm()
     if form.validate_on_submit():
-        title = form.title.data
-        description = form.description.data
-        images = form.images.data
-        image_filenames = []
-        for image in images:
-            filename = secure_filename(image.filename)
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image_filenames.append(filename)
-        
-        new_service = Service(title=title, description=description, images_url=image_filenames)
+        new_service = Service(
+            title=form.title.data,
+            description=form.description.data,
+            images_url=form.images_url.data
+        )
         db.session.add(new_service)
         db.session.commit()
-        
         flash('Service ajouté avec succès!', 'success')
         return redirect(url_for('services'))
     return render_template('service_form.html', form=form)
 
 @app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
+@role_required('admin', 'employee')
 def edit_service(service_id):
-    if 'user_role' not in session or session['user_role'] != 'admin':
-        return redirect(url_for('login'))
     service = Service.query.get_or_404(service_id)
     form = ServiceForm()
     if form.validate_on_submit():
@@ -603,15 +604,13 @@ def edit_service(service_id):
     return render_template('service_form.html', form=form)
 
 @app.route('/service/<int:service_id>/delete', methods=['POST'])
+@role_required('admin', 'employee')
 def delete_service(service_id):
-    if 'user_role' not in session or session['user_role'] != 'admin':
-        return redirect(url_for('login'))
     service = Service.query.get_or_404(service_id)
     db.session.delete(service)
     db.session.commit()
     flash('Service supprimé avec succès!', 'success')
     return redirect(url_for('services'))
-# **** Fin de la gestion des routes pour les services ****
 
 # **** Gestion des routes pour les animaux et les habitats ****
 @app.route('/habitats')

@@ -31,7 +31,6 @@
             </ul>
         </header>
         
-
         <!-- *********** Navigation ************ -->
         <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
             <div class="container">
@@ -75,68 +74,68 @@
                 </div>
             </div>
         </nav>
-        <!-- Bouton "Ajouter un service" visible uniquement pour les administrateurs -->
+        
+        <!-- Bouton "Ajouter un service" visible uniquement pour les administrateurs et employés -->
         {% if 'user_role' in session and (session['user_role'] == 'admin' or session['user_role'] == 'employee') %}
-<a href="{{ url_for('new_service') }}" class="btn btn-success float-right mt-4">Ajouter un service</a>
-{% endif %}
+        <a href="{{ url_for('new_service') }}" class="btn btn-success float-right mt-4">Ajouter un service</a>
+        {% endif %}
 
-<!-- Afficher les services pour tous les utilisateurs -->
-{% for service in services %}
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <h2 class="section-heading mb-4">
-                    <span class="section-heading-upper text-center">{{ service.title }}</span>
-                </h2>
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="cta-inner4 bg-faded text-center rounded">
-                            <p class="mb-0">{{ service.description }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="cta-inner4 bg-faded text-center rounded">
-                            {% if service.images_url %}
-                            <div id="carousel{{ service.id }}" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    {% for image in service.images_url %}
-                                    <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
-                                        <img src="{{ url_for('static', filename='uploads/' ~ image) }}" class="d-block w-100" alt="{{ service.title }}">
-                                    </div>
-                                    {% endfor %}
+        <!-- Afficher les services pour tous les utilisateurs -->
+        {% for service in services %}
+        <section class="page-section cta">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <h2 class="section-heading mb-4">
+                            <span class="section-heading-upper text-center">{{ service.title }}</span>
+                        </h2>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="cta-inner4 bg-faded text-center rounded">
+                                    <p class="mb-0">{{ service.description }}</p>
                                 </div>
-                                <!-- Boutons de navigation -->
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ service.id }}" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ service.id }}" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
                             </div>
-                            {% else %}
-                            <img src="{{ url_for('static', filename='default.jpg') }}" class="d-block w-100" alt="Default Image">
-                            {% endif %}
+                            <div class="col-md-6">
+                                <div class="cta-inner4 bg-faded text-center rounded">
+                                    {% if service.images_url %}
+                                    <div id="carousel{{ service.id }}" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            {% for image in service.images_url %}
+                                            <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                                                <img src="{{ url_for('static', filename='uploads/' ~ image) }}" class="d-block w-100" alt="{{ service.title }}">
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <!-- Boutons de navigation -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ service.id }}" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ service.id }}" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='default.jpg') }}" class="d-block w-100" alt="Default Image">
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- Boutons "Modifier" et "Supprimer" visibles uniquement pour les administrateurs et employés -->
+                    {% if 'user_id' in session and session['user_role'] in ['admin', 'employee'] %}
+                    <div class="admin-buttons text-center mb-4">
+                        <a href="{{ url_for('edit_service', service_id=service.id) }}" class="btn btn-warning mt-2">Modifier</a>
+                        <form action="{{ url_for('delete_service', service_id=service.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger mt-2">Supprimer</button>
+                        </form>
+                    </div>
+                    {% endif %}
                 </div>
-                </div>
-                <!-- Boutons "Modifier" et "Supprimer" visibles uniquement pour les administrateurs -->
-                {% if 'user_role' in session and (session['user_role'] == 'admin' or session['user_role'] == 'employee') %}
-                <div class="admin-buttons text-center mb-4">
-                    <a href="{{ url_for('edit_service', service_id=service.id) }}" class="btn btn-warning mt-2">Modifier</a>
-                    <form action="{{ url_for('delete_service', service_id=service.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-danger mt-2">Supprimer</button>
-                    </form>
-                </div>
-                {% endif %}
             </div>
-        </div>
-    </div>
-</section>
-{% endfor %}
+        </section>
+        {% endfor %}
 
         <footer class="footer text-faded text-center py-5">
             <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>

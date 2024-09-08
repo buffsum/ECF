@@ -5,4 +5,3 @@ flask load-vet-records
 flask load-avis
 flask load-services
 flask load-daily-food
-flask run

@@ -45,35 +45,16 @@ Linux :
 
 Étape 5 - Configurer la base de données
 Initialisez la base de données en exécutant les commandes suivantes dans le terminal :
+
+Linux
 >flask reset-db
->flask add-data
->flask load-users
->flask load-animals
->flask load-vet-records
->flask load-avis
->flask load-services
->flask load-daily-food
+>./start_linux.sh
 
-// nouveau linux
-python3 -m pip install -r requirements.txt
-./start_linux.sh
+Mac
+>flask reset-db
+>./start_mac.sh
 
-
-# flask add-data
-# flask load-users
-# flask load-animals
-# flask load-vet-records
-# flask load-avis
-# flask load-services
-# flask load-daily-food
-# flask run
-
-// nouveau mac
-pip install -r requirements.txt
-
-./start_mac.sh
-
-Étape 6 - Lancer l'application
+Étape 6 - Lancer l'application (dans un autre terminal)
 >flask run
 
 L'application sera accessible à l'adresse suivante : http://127.0.0.1:5000

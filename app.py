@@ -573,6 +573,8 @@ def contact():
 @app.route('/services')
 def services():
     services = Service.query.all()
+    for service in services:
+        service.images_url = service.images_url.split(",") if service.images_url else []
     return render_template('services.html', services=services)
 
 # @app.route('/service/new', methods=['GET', 'POST'])

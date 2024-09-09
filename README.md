@@ -3,6 +3,19 @@
 - **Python** : Assurez-vous d'avoir Python installé sur votre machine. Suivez les instructions ci-dessous pour installer Python si nécessaire.
 - **Git** : Assurez-vous d'avoir Git installé pour cloner le repository. Vous pouvez télécharger Git depuis [git-scm.com](https://git-scm.com/downloads).
 
+**Dossier Docs_ECF**
+Tout ce qui concerne les documents annexes sont à retrouver dans le dossier "Docs_ECF". Il comporte les documents suivants :
+- La charte graphique
+- La copie du TP
+- L'énnoncé du projet
+- Un documet "Gestion de projet" avec le lien vers mon Notion
+- Le manuel d'utilisation
+
+**Accés direct**
+Vous pourrez accéder au site en ligne via ce lien : https://shielded-citadel-17199-a7b955f75ade.herokuapp.com 
+
+### Étapes pour déployer l'application en local
+
 ### Étape 1 - Cloner le repository GitHub
 
 Ouvrez un terminal et exécutez la commande suivante pour cloner le repository :
@@ -55,3 +68,5 @@ Initialisez la base de données en exécutant les commandes suivantes dans le te
 >flask run
 
 L'application sera accessible à l'adresse suivante : http://127.0.0.1:5000
+
+

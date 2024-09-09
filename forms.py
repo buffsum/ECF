@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, Email
 class ServiceForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    images = MultipleFileField('Images')
+    images_url = MultipleFileField('Images')
     submit = SubmitField('Submit')
 
 class AnimalForm(FlaskForm):

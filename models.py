@@ -45,16 +45,26 @@ class Avis(db.Model):
     message = db.Column(db.Text, nullable=False)
     approuve = db.Column(db.Boolean, default=False)
 
+# class Service(db.Model):
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     title = db.Column(db.String(100), nullable=False)
+#     description = db.Column(db.Text, nullable=False)
+#     images_url = db.Column(db.PickleType, nullable=True)
+
+#     def __init__(self, title, description, images_url=None):
+#         self.title = title
+#         self.description = description
+#         self.images_url = images_url if images_url is not None else []
 class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    images_url = db.Column(db.PickleType, nullable=True)
+    images_url = db.Column(db.Text, nullable=True)  # Changer en db.Text
 
     def __init__(self, title, description, images_url=None):
         self.title = title
         self.description = description
-        self.images_url = images_url if images_url is not None else []
+        self.images_url = ",".join(images_url) if images_url else ""
 
 class DailyFoodRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)

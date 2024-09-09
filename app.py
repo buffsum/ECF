@@ -566,20 +566,46 @@ def contact():
 # **** Fin de la gestion des routes pour contact ****
 
 # **** Gestion des routes pour les services ****
+# @app.route('/services')
+# def services():
+#     services = Service.query.all()
+#     return render_template('services.html', services=services)
 @app.route('/services')
 def services():
     services = Service.query.all()
     return render_template('services.html', services=services)
 
+# @app.route('/service/new', methods=['GET', 'POST'])
+# @role_required('admin', 'employee')
+# def new_service():
+#     form = ServiceForm()
+#     if form.validate_on_submit():
+#         new_service = Service(
+#             title=form.title.data,
+#             description=form.description.data,
+#             images_url=form.images_url.data
+#         )
+#         db.session.add(new_service)
+#         db.session.commit()
+#         flash('Service ajouté avec succès!', 'success')
+#         return redirect(url_for('services'))
+#     return render_template('service_form.html', form=form)
 @app.route('/service/new', methods=['GET', 'POST'])
 @role_required('admin', 'employee')
 def new_service():
     form = ServiceForm()
     if form.validate_on_submit():
+        images_urls = []
+        for file in form.images_url.data:
+            if file:
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                images_urls.append(url_for('static', filename=os.path.join('uploads', filename)))
+        
         new_service = Service(
             title=form.title.data,
             description=form.description.data,
-            images_url=form.images_url.data
+            images_url=images_urls  # Passer la liste directement
         )
         db.session.add(new_service)
         db.session.commit()
@@ -587,6 +613,21 @@ def new_service():
         return redirect(url_for('services'))
     return render_template('service_form.html', form=form)
 
+# @app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
+# @role_required('admin', 'employee')
+# def edit_service(service_id):
+#     service = Service.query.get_or_404(service_id)
+#     form = ServiceForm()
+#     if form.validate_on_submit():
+#         service.title = form.title.data
+#         service.description = form.description.data
+#         db.session.commit()
+#         flash('Service modifié avec succès!', 'success')
+#         return redirect(url_for('services'))
+#     elif request.method == 'GET':
+#         form.title.data = service.title
+#         form.description.data = service.description
+#     return render_template('service_form.html', form=form)
 @app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
 @role_required('admin', 'employee')
 def edit_service(service_id):
@@ -603,6 +644,14 @@ def edit_service(service_id):
         form.description.data = service.description
     return render_template('service_form.html', form=form)
 
+# @app.route('/service/<int:service_id>/delete', methods=['POST'])
+# @role_required('admin', 'employee')
+# def delete_service(service_id):
+#     service = Service.query.get_or_404(service_id)
+#     db.session.delete(service)
+#     db.session.commit()
+#     flash('Service supprimé avec succès!', 'success')
+#     return redirect(url_for('services'))
 @app.route('/service/<int:service_id>/delete', methods=['POST'])
 @role_required('admin', 'employee')
 def delete_service(service_id):

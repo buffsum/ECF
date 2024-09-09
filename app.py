@@ -71,18 +71,6 @@ import commands
 commands.register_commands(app)
 
 # Définition d'un décorateur pour vérifier le rôle de l'utilisateur
-# def role_required(role):
-#     def decorator(f):
-#         @wraps(f)
-#         def decorated_function(*args, **kwargs):
-#             if 'user_id' not in session:
-#                 abort(403)
-#             user = User.query.get(session['user_id'])
-#             if user.role != role:
-#                 abort(403)
-#             return f(*args, **kwargs)
-#         return decorated_function
-#     return decorator
 def role_required(*roles):
     def wrapper(f):
         @wraps(f)
@@ -242,7 +230,6 @@ def view_vet_records_admin():
 # **** Fin de la gestion des routes pour ADMIN ****
 
 # **** Gestion des routes pour EMPLOYEE ****
-# **** Gestion des routes pour EMPLOYEE ****
 # Route pour ajouter une fiche d'alimentation et afficher les avis à valider
 @app.route('/employee', methods=['GET', 'POST'])
 @role_required('employee')
@@ -308,77 +295,6 @@ def delete_review(avis_id):
     save_avis_to_json()
     flash('Avis supprimé.')
     return redirect(url_for('home'))
-# **** Fin de la gestion des routes pour EMPLOYEE ****
-
-# Route pour ajouter une fiche d'alimentation
-# @app.route('/employee', methods=['GET', 'POST'])
-# @role_required('employee')
-# def employee():
-#     # from commands import save_daily_food_to_json
-#     if request.method == 'POST':
-#         try:
-#             date_str = request.form['date']
-#             food = request.form['food']
-#             weight = float(request.form['weight'])
-#             animal_id = int(request.form['animal_id'])
-
-#             record_date = date.fromisoformat(date_str)
-
-#             # new_record = DailyFoodRecord(
-#             #     date=record_date, food=food, weight=weight, animal_id=animal_id
-#             # )
-#             new_record = DailyFoodRecord(
-#                 date=date.fromisoformat(date_str),
-#                 food=food,
-#                 weight=weight,
-#                 animal_id=animal_id
-#             )
-
-#             db.session.add(new_record)
-#             db.session.commit()
-
-#             # Sauvegarder les enregistrements dans le fichier dailyfood.json
-#             save_daily_food_to_json()
-
-#             flash('Fiche d\'alimentation ajoutée avec succès!', 'success')
-
-#         except Exception as e:
-#             db.session.rollback()
-#             flash(f"Erreur lors de l'ajout de la fiche: {str(e)}", 'danger')
-
-#     animals = Animal.query.all()
-#     return render_template('employee.html', animals=animals)
-
-# # Route pour approuver ou supprimer un avis
-# @app.route('/employee/approve_review/<int:avis_id>')
-# @role_required('employee')
-# def approve_review(avis_id):
-#     avis = Avis.query.get_or_404(avis_id)
-#     avis.approuve = True
-#     db.session.commit()
-#     save_avis_to_json()
-#     flash('Avis approuvé.')
-#     return redirect(url_for('employee'))
-
-# @app.route('/employee/disapprove_review/<int:avis_id>')
-# @role_required('employee')
-# def disapprove_review(avis_id):
-#     avis = Avis.query.get_or_404(avis_id)
-#     db.session.delete(avis)
-#     db.session.commit()
-#     flash('Avis supprimé.')
-#     return redirect(url_for('employee'))
-
-# # Route pour supprimer un avis (après publication)
-# @app.route('/employee/delete_review/<int:avis_id>', methods=['POST'])
-# @role_required('employee')
-# def delete_review(avis_id):
-#     avis = Avis.query.get_or_404(avis_id)
-#     db.session.delete(avis)
-#     db.session.commit()
-#     save_avis_to_json()
-#     flash('Avis supprimé.')
-#     return redirect(url_for('home'))
 # **** Fin de la gestion des routes pour EMPLOYEE ****
 
 # **** Gestion des routes pour VETERINARIAN ****
@@ -565,11 +481,6 @@ def contact():
     return render_template('contact.html')
 # **** Fin de la gestion des routes pour contact ****
 
-# **** Gestion des routes pour les services ****
-# @app.route('/services')
-# def services():
-#     services = Service.query.all()
-#     return render_template('services.html', services=services)
 @app.route('/services')
 def services():
     services = Service.query.all()
@@ -577,21 +488,6 @@ def services():
         service.images_url = service.images_url.split(",") if service.images_url else []
     return render_template('services.html', services=services)
 
-# @app.route('/service/new', methods=['GET', 'POST'])
-# @role_required('admin', 'employee')
-# def new_service():
-#     form = ServiceForm()
-#     if form.validate_on_submit():
-#         new_service = Service(
-#             title=form.title.data,
-#             description=form.description.data,
-#             images_url=form.images_url.data
-#         )
-#         db.session.add(new_service)
-#         db.session.commit()
-#         flash('Service ajouté avec succès!', 'success')
-#         return redirect(url_for('services'))
-#     return render_template('service_form.html', form=form)
 @app.route('/service/new', methods=['GET', 'POST'])
 @role_required('admin', 'employee')
 def new_service():
@@ -601,9 +497,11 @@ def new_service():
         for file in form.images_url.data:
             if file:
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                images_urls.append(url_for('static', filename=os.path.join('uploads', filename)))
-        
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                image_url = 'uploads/' + filename
+                images_urls.append(image_url)
+
         new_service = Service(
             title=form.title.data,
             description=form.description.data,
@@ -615,21 +513,6 @@ def new_service():
         return redirect(url_for('services'))
     return render_template('service_form.html', form=form)
 
-# @app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
-# @role_required('admin', 'employee')
-# def edit_service(service_id):
-#     service = Service.query.get_or_404(service_id)
-#     form = ServiceForm()
-#     if form.validate_on_submit():
-#         service.title = form.title.data
-#         service.description = form.description.data
-#         db.session.commit()
-#         flash('Service modifié avec succès!', 'success')
-#         return redirect(url_for('services'))
-#     elif request.method == 'GET':
-#         form.title.data = service.title
-#         form.description.data = service.description
-#     return render_template('service_form.html', form=form)
 @app.route('/service/<int:service_id>/edit', methods=['GET', 'POST'])
 @role_required('admin', 'employee')
 def edit_service(service_id):
@@ -646,14 +529,6 @@ def edit_service(service_id):
         form.description.data = service.description
     return render_template('service_form.html', form=form)
 
-# @app.route('/service/<int:service_id>/delete', methods=['POST'])
-# @role_required('admin', 'employee')
-# def delete_service(service_id):
-#     service = Service.query.get_or_404(service_id)
-#     db.session.delete(service)
-#     db.session.commit()
-#     flash('Service supprimé avec succès!', 'success')
-#     return redirect(url_for('services'))
 @app.route('/service/<int:service_id>/delete', methods=['POST'])
 @role_required('admin', 'employee')
 def delete_service(service_id):

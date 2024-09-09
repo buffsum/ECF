@@ -96,8 +96,8 @@
                                             {% endfor %}
                                         </p>
                                         <p>
-                                            {{ form.password.label }}<br>
-                                            {{ form.password(size=32) }}<br>
+                                            {{ form.password.label }}<br><br>
+                                            {{ form.password(size=32, placeholder="Mot de passe (min. 5 caractères)") }}<br>
                                             {% for error in form.password.errors %}
                                                 <span style="color: red;">[{{ error }}]</span>
                                             {% endfor %}

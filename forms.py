@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, MultipleFileField, SubmitField, PasswordField, SelectField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, Length, ValidationError
 
 class ServiceForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -17,6 +17,10 @@ class AnimalForm(FlaskForm):
 
 class CreateUserForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Mot de passe', validators=[DataRequired()])
+    password = PasswordField('Mot de passe', validators=[DataRequired(), Length(min=5)])
     role = SelectField('Rôle', choices=[('employee', 'Employé'), ('veterinarian', 'Vétérinaire')], validators=[DataRequired()])
     submit = SubmitField('Créer un compte')
+
+    def validate_password(self, password):
+        if len(password.data) < 5:
+            raise ValidationError('Le mot de passe doit contenir au moins 5 caractères.')

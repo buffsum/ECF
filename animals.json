@@ -12,5 +12,12 @@
         "image": "cerf2.jpg",
         "description": "eeee",
         "habitat_id": 1
+    },
+    {
+        "name": "lili",
+        "species": "lala",
+        "image": "La_Junqueira.jpeg",
+        "description": "veee",
+        "habitat_id": 1
     }
 ]
